@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/orange" /> <!-- Đây là màu trắng -->
+            <corners android:radius="10dp" /> <!-- Độ cong góc là 10dp (bạn có thể thay đổi giá trị này) -->
+        </shape>
+    </item>
+    <item android:right="2dp" android:left="2dp" android:top="2dp" android:bottom="2dp">
+        <shape>
+            <solid android:color="#FFFFFF" /> <!-- Đây là màu viền cam -->
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+</layer-list>
