@@ -7,4 +7,14 @@
     <dimen name="margin_very_large">32dp</dimen>
     <dimen name="text_size_large">24sp</dimen>
 
+    <dimen name="box_width">90dp</dimen>
+    <dimen name="textsize_36">36dp</dimen>
+    <dimen name="margin_h0">24dp</dimen>
+    <dimen name="margin_h1">20dp</dimen>
+    <dimen name="margin_h2">16dp</dimen>
+    <dimen name="margin_h3">12dp</dimen>
+    <dimen name="margin_h4">8dp</dimen>
+    <dimen name="margin_h5">4dp</dimen>
+    <dimen name="text_size_h5">13sp</dimen>
+
 </resources>
