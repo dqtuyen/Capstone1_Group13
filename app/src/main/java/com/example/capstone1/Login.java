@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ public class Login extends AppCompatActivity {
     FirebaseFirestore db;
     EditText edt_email_login, edt_password;
     Button btn_login;
+    ImageView btn_back;
     TextView txt_forgotpassword, txt_view;
 
     @Override
@@ -39,6 +41,7 @@ public class Login extends AppCompatActivity {
         edt_email_login = findViewById(R.id.edt_email_login);
         edt_password = findViewById(R.id.edt_password);
         btn_login = findViewById(R.id.btn_login);
+        btn_back = findViewById(R.id.btn_back);
         txt_forgotpassword = findViewById(R.id.txt_forgotpassword);
         txt_view = findViewById(R.id.txt_view);
 
@@ -47,7 +50,7 @@ public class Login extends AppCompatActivity {
     }
 
     void init(){
-        String text = "Bạn có sẵn tài khoản để đăng nhập? <b>Đăng nhập</b>";
+        String text = "Bạn chưa có tài khoản? <b>Đăng ký ngay</b>";
         txt_view.setText(Html.fromHtml(text));
     }
     void setEvent() {
@@ -86,6 +89,24 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Register.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        txt_forgotpassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ForgotPassword.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Welcome.class);
                 startActivity(intent);
                 finish();
             }
