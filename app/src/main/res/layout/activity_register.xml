@@ -9,7 +9,7 @@
     tools:context=".Login">
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/btn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_large"
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_large"
-        android:text="Hello! Register to get started"
+        android:text="Xin chào! Hãy đăng ký để bắt đầu"
         android:textSize="30dp"
         android:textStyle="bold" />
 
@@ -31,7 +31,7 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/edt_name"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/margin_large"
@@ -40,13 +40,13 @@
             android:layout_weight="0.5"
             android:background="@drawable/rounded_white_edittext"
             android:ems="10"
+            android:hint="Tên của bạn"
             android:inputType="text"
             android:paddingLeft="20dp"
-            android:text="Username"
             android:textColor="@color/gray" />
 
         <EditText
-            android:id="@+id/editTextText2"
+            android:id="@+id/edt_email"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/margin_large"
@@ -54,13 +54,13 @@
             android:layout_weight="0.5"
             android:background="@drawable/rounded_white_edittext"
             android:ems="10"
+            android:hint="Email"
             android:inputType="textEmailAddress"
             android:paddingLeft="20dp"
-            android:text="Email"
             android:textColor="@color/gray" />
 
         <EditText
-            android:id="@+id/editTextText3"
+            android:id="@+id/edt_password"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/margin_large"
@@ -68,13 +68,14 @@
             android:layout_weight="0.5"
             android:background="@drawable/rounded_white_edittext"
             android:ems="10"
+            android:hint="Mật khẩu"
+
             android:inputType="textVisiblePassword"
             android:paddingLeft="20dp"
-            android:text="Password"
             android:textColor="@color/gray" />
 
         <EditText
-            android:id="@+id/editTextText4"
+            android:id="@+id/edt_confirm_password"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/margin_large"
@@ -82,20 +83,21 @@
             android:layout_weight="0.5"
             android:background="@drawable/rounded_white_edittext"
             android:ems="10"
+            android:hint="Xác nhận mật khẩu"
             android:inputType="textVisiblePassword"
             android:paddingLeft="20dp"
-            android:text="Confirm password"
             android:textColor="@color/gray" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/margin_large"
             android:layout_marginTop="@dimen/margin_large"
             android:layout_weight="0.5"
             android:background="@drawable/rounded_orange_button"
-            android:text="Login"
+            android:padding="0dp"
+            android:text="Đăng kí"
             app:backgroundTint="@null" />
 
         <TextView
@@ -103,11 +105,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.5"
+            android:padding="0dp"
             android:text="" />
+
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/txt_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.2"

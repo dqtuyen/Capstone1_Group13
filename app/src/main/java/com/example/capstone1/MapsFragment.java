@@ -117,27 +117,27 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
             }
 
-//            // Đặt sự kiện nhấn vào marker
-//            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//                @Override
-//
-//                public boolean onMarkerClick(Marker marker) {
-//                    LatLng markerPosition = marker.getPosition();
-//                    if (marker.equals(lastClickedMarker)) {
-//                        // Đã nhấn lần thứ hai vào cùng một marker, hủy thông tin
-//                        if (marker.isInfoWindowShown()) {
-//                            marker.hideInfoWindow();
-//                        }
-//                    } else {
-//                        // Đã nhấn vào một marker khác, hiển thị thông tin và cập nhật biến lastClickedMarker
-//                        marker.showInfoWindow();
-//                        lastClickedMarker = marker;
-//                    }
-//                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(markerPosition, 15);
-//                    googleMap.animateCamera(cameraUpdate);
-//                    return true;
-//                }
-//            });
+            // Đặt sự kiện nhấn vào marker
+            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+
+                public boolean onMarkerClick(Marker marker) {
+                    LatLng markerPosition = marker.getPosition();
+                    if (marker.equals(lastClickedMarker)) {
+                        // Đã nhấn lần thứ hai vào cùng một marker, hủy thông tin
+                        if (marker.isInfoWindowShown()) {
+                            marker.hideInfoWindow();
+                        }
+                    } else {
+                        // Đã nhấn vào một marker khác, hiển thị thông tin và cập nhật biến lastClickedMarker
+                        marker.showInfoWindow();
+                        lastClickedMarker = marker;
+                    }
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(markerPosition, 15);
+                    googleMap.animateCamera(cameraUpdate);
+                    return true;
+                }
+            });
 
         }
     };

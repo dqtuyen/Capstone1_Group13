@@ -9,7 +9,7 @@
     android:background="@drawable/color_background">
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/btn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_large"
@@ -31,45 +31,45 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/edt_email_login"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/margin_large"
-            android:layout_marginBottom="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/margin_medium"
             android:layout_weight="0.5"
             android:background="@drawable/rounded_white_edittext"
             android:ems="10"
-            android:textColor="@color/gray"
+            android:hint="Email"
             android:inputType="textEmailAddress"
             android:paddingLeft="20dp"
-            android:text="Enter your email" />
+            android:textColor="@color/gray" />
 
         <EditText
-            android:id="@+id/editTextText2"
+            android:id="@+id/edt_password"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/margin_large"
             android:layout_weight="0.5"
             android:background="@drawable/rounded_white_edittext"
             android:ems="10"
+            android:hint="Mật khẩu"
             android:inputType="textVisiblePassword"
             android:paddingLeft="20dp"
-            android:textColor="@color/gray"
-            android:text="Enter your password" />
+            android:textColor="@color/gray" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/txt_forgotpassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Forgot Password?"
             android:layout_marginHorizontal="@dimen/margin_large"
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_large"
-            android:gravity="right"/>
+            android:gravity="right"
+            android:text="Quên mật khẩu?" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5"
@@ -88,7 +88,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/txt_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.2"

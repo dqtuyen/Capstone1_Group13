@@ -7,7 +7,7 @@
     <dimen name="margin_very_large">32dp</dimen>
     <dimen name="text_size_large">24sp</dimen>
 
-    <dimen name="box_width">90dp</dimen>
+    <dimen name="box_width">30dp</dimen>
     <dimen name="textsize_36">36dp</dimen>
     <dimen name="margin_h0">24dp</dimen>
     <dimen name="margin_h1">20dp</dimen>
