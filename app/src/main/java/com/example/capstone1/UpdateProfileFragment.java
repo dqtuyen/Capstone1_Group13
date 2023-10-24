@@ -3,10 +3,13 @@ package com.example.capstone1;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +58,29 @@ public class UpdateProfileFragment extends Fragment {
         }
     }
 
+    ImageView btn_back;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_update_profile, container, false);
+        View view =  inflater.inflate(R.layout.fragment_update_profile, container, false);
+        btn_back = view.findViewById(R.id.btn_back);
+        setEvent();
+
+        return view;
+    }
+
+    void setEvent() {
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    fragmentManager.popBackStack(); // Quay lại fragment trước đó
+                } else {
+                    // Không còn fragment trong Back Stack, thực hiện hành động khác nếu cần
+                }
+            }
+        });
     }
 }

@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,7 +66,7 @@ public class AccountFragment extends Fragment {
         }
     }
     ImageButton imageButtonView;
-    Button btn_logout;
+    Button btn_logout, btn_information, btn_history, btn_update_role;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,8 +75,11 @@ public class AccountFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         imageButtonView = view.findViewById(R.id.imageButtonView);
         btn_logout = view.findViewById(R.id.btn_logout);
+        btn_information = view.findViewById(R.id.btn_information);
+        btn_history = view.findViewById(R.id.btn_history);
+        btn_update_role = view.findViewById(R.id.btn_update_role);
         // Tên tài nguyên hình ảnh hoặc URL hình ảnh cần hiển thị
-        String imageUrl = "https://haycafe.vn/wp-content/uploads/2022/02/Anh-gai-xinh-Viet-Nam.jpg";
+        String imageUrl = "https://scontent.fdad3-5.fna.fbcdn.net/v/t39.30808-6/369010065_1746686709081571_4477404930095956354_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=4b-YSe1e7K8AX9yMnod&_nc_ht=scontent.fdad3-5.fna&cb_e2o_trans=t&oh=00_AfBj4wv-u-t91U7i1rUDZKmlre4RwEjsm_fWd4fYOymuIg&oe=653D48A9";
 
         Glide.with(this)
                 .load(imageUrl)
@@ -96,7 +101,13 @@ public class AccountFragment extends Fragment {
 
             }
         });
-
+        btn_information.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Welcome.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void clearLoginInfo() {

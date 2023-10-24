@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
+    tools:context=".HomeFragment"
+    android:id="@+id/fragment_account"
+    >
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -40,38 +44,63 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/img_background_avt" />
 
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Andrew Smith"
-                android:textSize="18dp"
-                android:layout_gravity="center"
-                android:textStyle="bold" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+
+                    android:text="Andrew Smith"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.476" />
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#FFFFFF"
+                    android:src="@drawable/ic_edit"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/textView9"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Role 👋"
-
                 android:layout_gravity="center"
+                android:text="Role 👋"
                 android:textSize="15dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="#CCCCCC" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/margin_short"
+                    android:layout_marginTop="@dimen/margin_small"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -79,7 +108,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_large"
-                        android:src="@drawable/back" />
+                        android:src="@drawable/call" />
 
                     <TextView
                         android:id="@+id/txt_call"
@@ -100,7 +129,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_large"
-                        android:src="@drawable/back" />
+                        android:src="@drawable/email" />
 
                     <TextView
                         android:id="@+id/txt_gmail"
@@ -121,7 +150,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_large"
-                        android:src="@drawable/back" />
+                        android:src="@drawable/address_marker" />
 
                     <TextView
                         android:id="@+id/txt_address"
@@ -134,15 +163,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/margin_short">
+                    android:layout_marginTop="@dimen/margin_short"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/img_numcar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_large"
-                        android:src="@drawable/back" />
+                        android:src="@drawable/number_car" />
 
                     <TextView
                         android:id="@+id/txt_numcar"
@@ -155,57 +184,60 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/margin_short">
+                    android:layout_marginTop="@dimen/margin_short"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/img_typecar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/back"
-                        android:layout_marginHorizontal="@dimen/margin_large"/>
+                        android:layout_marginHorizontal="@dimen/margin_large"
+                        android:src="@drawable/motorcycle" />
 
                     <TextView
                         android:id="@+id/txt_typecar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TextView"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:text="TextView" />
                 </LinearLayout>
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#CCCCCC" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/txt_luotcuuho"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TextView"
+                        android:layout_marginTop="15dp"
                         android:gravity="center"
-                        android:textSize="24sp"
+                        android:text="15"
                         android:textColor="@color/orange"
-                        android:textStyle="bold"
-                        android:layout_marginTop="15dp"/>
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txt_ghichuluotcuuho"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="TextView" />
+                        android:text="Lần gọi cứu hộ" />
                 </LinearLayout>
 
                 <View
@@ -215,30 +247,31 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/txt_hangthanhvien"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TextView"
+                        android:layout_marginTop="15dp"
                         android:gravity="center"
-                        android:textSize="24sp"
+                        android:text="Kim Cương"
                         android:textColor="@color/orange"
-                        android:textStyle="bold"
-                        android:layout_marginTop="15dp"/>
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txt_ghichuhangthanhvien"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="TextView" />
+                        android:text="Hạng thành viên " />
                 </LinearLayout>
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -250,23 +283,24 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/btn_information"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_large"
-                    android:layout_marginTop="@dimen/margin_short"
+                    android:layout_marginTop="@dimen/margin_medium"
                     android:background="@drawable/rounded_gray_button"
-                    android:drawableLeft="@drawable/back"
+                    android:drawableLeft="@drawable/address_marker"
                     android:drawablePadding="8dp"
                     android:gravity=""
                     android:padding="0dp"
                     android:paddingStart="20dp"
-                    android:text="Button"
+                    android:text="Thông tin của bạn"
                     android:textColor="@color/black"
                     app:backgroundTint="@null"
                     app:iconPadding="15dp" />
+
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/btn_history"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_large"
@@ -277,26 +311,28 @@
                     android:gravity=""
                     android:padding="0dp"
                     android:paddingStart="20dp"
-                    android:text="Button"
+                    android:text="Lịch sử hành trình"
                     android:textColor="@color/black"
                     app:backgroundTint="@null"
                     app:iconPadding="15dp" />
+
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/btn_update_role"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_short"
                     android:background="@drawable/rounded_gray_button"
-                    android:drawableLeft="@drawable/back"
+                    android:drawableLeft="@drawable/convert"
                     android:drawablePadding="8dp"
                     android:gravity=""
                     android:padding="0dp"
                     android:paddingStart="20dp"
-                    android:text="Button"
+                    android:text="Nâng cấp vai trò"
                     android:textColor="@color/black"
                     app:backgroundTint="@null"
                     app:iconPadding="15dp" />
+
                 <Button
                     android:id="@+id/button"
                     android:layout_width="match_parent"
@@ -317,13 +353,12 @@
                 <Button
                     android:id="@+id/btn_logout"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="@dimen/margin_medium"
                     android:layout_height="wrap_content"
-                    android:text="Đăng xuất"
-                    android:background="@drawable/rounded_orange_button"
-                    app:backgroundTint="@null"
                     android:layout_marginHorizontal="@dimen/margin_large"
-                    />
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:background="@drawable/rounded_orange_button"
+                    android:text="Đăng xuất"
+                    app:backgroundTint="@null" />
 
             </LinearLayout>
         </LinearLayout>
