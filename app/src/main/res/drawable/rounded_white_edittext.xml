@@ -1,4 +1,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#FFFFFF" /> <!-- Màu trắng -->
-    <corners android:radius="10dp" /> <!-- Độ cong góc 8dp (bạn có thể thay đổi giá trị này) -->
+    <solid android:color="#F7F8F9" /> <!-- Màu trắng -->
+    <corners android:radius="10dp" />
+    <stroke android:color="#E8ECF4" android:width="2dp" /> <!-- Độ cong góc 8dp (bạn có thể thay đổi giá trị này) -->
 </shape>

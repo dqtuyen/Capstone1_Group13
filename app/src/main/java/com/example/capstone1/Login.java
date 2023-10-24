@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -24,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class Login extends AppCompatActivity {
 
     FirebaseUser user;
-    FirebaseAuth mAuth;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db;
     EditText edt_email_login, edt_password;
     Button btn_login;
@@ -44,7 +45,6 @@ public class Login extends AppCompatActivity {
         btn_back = findViewById(R.id.btn_back);
         txt_forgotpassword = findViewById(R.id.txt_forgotpassword);
         txt_view = findViewById(R.id.txt_view);
-
         init();
         setEvent();
     }
@@ -74,9 +74,8 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                            saveLoginInfo(email, password);
+                            goToMainActivity();
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -113,5 +112,18 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    // Lưu thông tin đăng nhập sau khi đăng nhập thành công
+    private void saveLoginInfo(String email, String password) {
+        SharedPreferences preferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("email", email);
+        editor.putString("password", password);
+        editor.apply();
+    }
 
+    void goToMainActivity() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

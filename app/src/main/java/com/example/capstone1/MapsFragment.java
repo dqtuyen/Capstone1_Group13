@@ -46,6 +46,7 @@ import com.google.android.libraries.places.api.model.PlaceLikelihood;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
@@ -78,12 +79,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     FindCurrentPlaceRequest request =
             FindCurrentPlaceRequest.builder(placeFields).build();
 
-    private List<PlaceLikelihood> placeLikelihoods;
-    LatLng latLng;
-    String address;
-    private String placeId;
     private static final int REQUEST_CODE = 200;
-
+    LatLng center;
+    RectangularBounds bounds;
     Button test;
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -140,6 +138,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             });
 
         }
+
     };
 
     @Nullable
@@ -161,19 +160,31 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
         placesClient = Places.createClient(requireContext());
 
+        /////////
+        getLastLocation(new LocationCallback() {
+            @Override
+            public void onLocationReceived(LatLng location) {
+                center = new LatLng(location.latitude, location.longitude);
+                bounds = calculateBounds(center, 3);
+                // Xử lý vị trí đã nhận được ở đây
+                Toast.makeText(requireContext(), "Latitude: " + location.latitude + ", Longitude: " + location.longitude, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLocationNotFound() {
+                // Xử lý khi không tìm thấy vị trí
+                Toast.makeText(requireContext(), "Location not found", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                LatLng center = new LatLng(16.067679, 108.180982);
-//                calculateBounds(center,3);
-//                Toast.makeText(requireContext(), "", Toast.LENGTH_SHORT).show();
-                getCurrentPlace("Tiệm sửa xe");
-                getCurrentPlace("sửa xe");
+                searchNearbyCarRepairShops("Tiệm sửa xe");
+//                getCurrentPlace("Tiệm sửa xe");
+//                getCurrentPlace("sửa xe");
 
 
-                //displayMarkersForAutoCompletePredictions(predictions);
-                //getLastLocation();
             }
         });
 
@@ -196,75 +207,68 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void onMapReady(GoogleMap googleMap) {
-        setMarkerAtNearbyPlaces();
+
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(requireContext(), "Quyền truy cập được cấp", Toast.LENGTH_SHORT).show();
                 // Quyền truy cập vị trí đã được cấp
             } else {
                 // Quyền truy cập vị trí bị từ chối
+                Toast.makeText(requireContext(), "Quyền truy cập bị từ chối", Toast.LENGTH_SHORT).show();
             }
         }
     }
-//    private void getCurrentPlace() {
-//
-//        FindCurrentPlaceRequest request = FindCurrentPlaceRequest.builder(placeFields).build();
-//
-//        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//            placesClient.findCurrentPlace(request).addOnCompleteListener(task -> {
-//                if (task.isSuccessful()) {
-//                    FindCurrentPlaceResponse response = task.getResult();
-//                    placeLikelihoods = new ArrayList<>();
-//                    placeLikelihoods.addAll(response.getPlaceLikelihoods());
-//                    Collections.sort(placeLikelihoods, new PlaceLikelihoodComparator());
-//                    Collections.reverse(placeLikelihoods);
-//
-//                    placeId = placeLikelihoods.get(0).getPlace().getId();
-//                    latLng = placeLikelihoods.get(0).getPlace().getLatLng();
-//                    address = placeLikelihoods.get(0).getPlace().getAddress();
-//
-//                    //Removing item of the list at 0 index
-//                    placeLikelihoods.remove(0);
-//
-//                    setMarkerAtNearbyPlaces(); // Sửa: Gọi hàm để đặt marker ở các tiệm sửa xe gần nhất.
-//                } else {
-//                    Toast.makeText(requireContext(), "Place not found: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-//                }
-//            });
-//        }
-//    }
+    private void searchNearbyCarRepairShops(String query) {
+        Places.initialize(requireContext(), "AIzaSyCxTUngn0mwDNeFZYz-WtqavuykNLzhx8Y"); // Thay thế YOUR_API_KEY bằng khóa API của bạn
 
-    private void setMarkerAtNearbyPlaces() {
-        if (placeLikelihoods != null && !placeLikelihoods.isEmpty()) {
-            for (PlaceLikelihood place : placeLikelihoods) {
-                MarkerOptions markerOptions = new MarkerOptions()
-                        .position(place.getPlace().getLatLng())
-                        .title(place.getPlace().getAddress());
-                mMap.addMarker(markerOptions);
-            }
-        } else {
-            Toast.makeText(requireContext(), "No nearby repair shops found.", Toast.LENGTH_SHORT).show();
-        }
+        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
+                .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                .setQuery(query)
+                .build();
+
+        Places.createClient(requireContext()).findAutocompletePredictions(request)
+                .addOnSuccessListener((FindAutocompletePredictionsResponse response) -> {
+                    for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
+                        String placeId = prediction.getPlaceId();
+                        String fullText = prediction.getFullText(null).toString();
+
+                        FetchPlaceRequest placeRequest = FetchPlaceRequest.builder(placeId, Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME))
+                                .build();
+
+                        Places.createClient(requireContext()).fetchPlace(placeRequest)
+                                .addOnSuccessListener((FetchPlaceResponse placeResponse) -> {
+                                    Place place = placeResponse.getPlace();
+
+                                    // Lấy tọa độ của địa điểm
+                                    LatLng location = place.getLatLng();
+
+                                    // Tạo một Marker trên bản đồ
+                                    MarkerOptions markerOptions = new MarkerOptions()
+                                            .position(location)
+                                            .title(fullText);
+
+                                    // Thêm Marker lên bản đồ
+                                    mMap.addMarker(markerOptions);
+                                })
+                                .addOnFailureListener((Exception e) -> {
+                                    Toast.makeText(requireContext(), "Lỗi khi lấy chi tiết vị trí: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+                    }
+                })
+                .addOnFailureListener((Exception e) -> {
+                    String errorMessage = "Lỗi khi tìm kiếm địa điểm: " + e.getMessage();
+                    Log.e("MyTag", errorMessage);
+                });
     }
 
 
-    private static class PlaceLikelihoodComparator implements Comparator<PlaceLikelihood> {
-        @Override
-        public int compare(PlaceLikelihood place1, PlaceLikelihood place2) {
-            return Double.compare(place1.getLikelihood(), place2.getLikelihood());
-        }
-    }
 
     // Trong phương thức getCurrentPlace, chúng ta sẽ tạo một đối tượng RectangularBounds để giới hạn tìm kiếm trong bán kính 10KM.
     private void getCurrentPlace(String query) {
-        getLastLocation(new LocationCallback() {
-            @Override
-            public void onLocationReceived(LatLng location) {
-                LatLng center = new LatLng(location.latitude, location.longitude);
-                RectangularBounds bounds = calculateBounds(center, 1);
                 // Tạo yêu cầu tìm kiếm
                 FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                         .setQuery(query)
@@ -285,21 +289,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                         Log.i(TAG, prediction.getFullText(null).toString());
                     }
                     showMarker();
-                });
 
-                task.addOnFailureListener((exception) -> {
-                    // Xử lý lỗi
+                    task.addOnFailureListener((exception) -> {
+                        // Xử lý lỗi
+                    });
                 });
-                // Xử lý vị trí đã nhận được ở đây
-                Toast.makeText(requireContext(), "Latitude: " + location.latitude + ", Longitude: " + location.longitude, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onLocationNotFound() {
-                // Xử lý khi không tìm thấy vị trí
-                Toast.makeText(requireContext(), "Location not found", Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 
