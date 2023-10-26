@@ -27,4 +27,21 @@
         >
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+    <Button
+        android:id="@+id/btn_find"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@+id/view_pager"
+        android:layout_marginHorizontal="70dp"
+
+        android:layout_marginBottom="35dp"
+        android:background="@drawable/rounded_orange_button"
+        android:gravity="center_vertical"
+        android:paddingLeft="30dp"
+        android:text="    Tìm tiệm sửa xe gần tôi"
+        app:backgroundTint="@null"
+
+        app:icon="@drawable/ic_map" />
 </RelativeLayout>

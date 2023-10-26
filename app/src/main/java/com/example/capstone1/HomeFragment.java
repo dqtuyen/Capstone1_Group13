@@ -76,13 +76,15 @@ public class HomeFragment extends Fragment {
         LinearLayout horizontalLayout = view.findViewById(R.id.layout_horizontal_scroll_view);
         HorizontalScrollView horizontalScrollView = view.findViewById(R.id.horizontal_scroll_view);
 
-        List<DataTest> dataTests = new ArrayList<>();
-        dataTests.add(new DataTest("Item 1", "099999999","kasewdqt@gmail.com","Đà Nẵng", "99", "75-K1 15324", "SH", "Kim Cương", R.drawable.img_welcom));
-        dataTests.add(new DataTest("Item 2", "088888888","example@gmail.com","Hanoi", "88", "123-K2 45678", "MT", "Gold", R.drawable.img_welcom));
-        dataTests.add(new DataTest("Item 2", "088888888","example@gmail.com","Hanoi", "88", "123-K2 45678", "MT", "Gold", R.drawable.img_welcom));
-        dataTests.add(new DataTest("Item 2", "088888888","example@gmail.com","Hanoi", "88", "123-K2 45678", "MT", "Gold", R.drawable.img_welcom));
+        List<DataTest> carServiceList = new ArrayList<>();
 
-        for (DataTest data : dataTests) {
+        carServiceList.add(new DataTest("UID001", "Auto Care Center", "+1-123-456-7890", "autocare@example.com", "123 Main St, City", "Monday - Friday", "10", "Sedan", "4.8", R.drawable.img_welcom));
+        carServiceList.add(new DataTest("UID002", "Speedy Repairs", "+1-987-654-3210", "speedy@example.com", "456 Elm St, Town", "Monday - Saturday", "8", "SUV", "4.5", R.drawable.img_welcom));
+        carServiceList.add(new DataTest("UID003", "Pro Auto Shop", "+1-555-777-3333", "proauto@example.com", "789 Oak St, Village", "Monday - Sunday", "12", "Truck", "4.9", R.drawable.img_welcom));
+        carServiceList.add(new DataTest("UID004", "City Car Service", "+1-111-222-3333", "citycar@example.com", "321 Pine St, County", "Tuesday - Saturday", "6", "Convertible", "4.7", R.drawable.img_welcom));
+        carServiceList.add(new DataTest("UID005", "Green Auto Garage", "+1-888-888-8888", "greenauto@example.com", "654 Birch St, Suburb", "Monday - Saturday", "5", "Hybrid", "4.6", R.drawable.img_welcom));
+
+        for (DataTest data : carServiceList) {
             View item = LayoutInflater.from(getActivity()).inflate(R.layout.item_rescuest, horizontalLayout, false);
             // Thay thế R.id.xxx bằng ID thực sự của các phần tử trong item_rescuest.xml
             ImageView itemImageView = item.findViewById(R.id.imageView);

@@ -1,17 +1,20 @@
 package com.example.capstone1.Data;
 
 public class DataTest {
+    private String UID;
     private String name;
     private String call;
     private String email;
     private String address;
     private String turns;
+    private String role;
     private String num_car;
     private String type_car;
     private String rank;
 
     private int img;
-    public DataTest(String name, String call, String email, String address, String turns, String num_car, String type_car, String rank, int img) {
+    public DataTest(String UID, String name, String call, String email, String address, String turns, String num_car, String type_car, String rank, int img) {
+        this.UID = UID;
         this.name = name;
         this.call = call;
         this.email = email;
@@ -21,6 +24,14 @@ public class DataTest {
         this.type_car = type_car;
         this.rank = rank;
         this.img = img;
+    }
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
     }
 
     public String getName() {

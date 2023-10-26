@@ -53,6 +53,9 @@ public class ChatBotFragment extends Fragment {
     TextView txtOpenAIStatus;
     ImageView imgChatBoxSend;
 
+    TextView txt_q1, txt_q2, txt_hello;
+    ImageView img_avtchat;
+
     private MessageDataAdapter messageDataAdapter;
     private List<MessageData> messageList;
 
@@ -96,13 +99,15 @@ public class ChatBotFragment extends Fragment {
         addEvents();
         return view;
     }
-
     private void addControls(View view) {
         edtChatBox = view.findViewById(R.id.edtChatBox);
         rvMessageData = view.findViewById(R.id.rvMessageData);
         txtOpenAIStatus = view.findViewById(R.id.txtOpenAIStatus);
         imgChatBoxSend = view.findViewById(R.id.imgChatBoxSend);
-
+        txt_q1 = view.findViewById(R.id.txt_q1);
+        txt_q2 = view.findViewById(R.id.txt_q2);
+        txt_hello = view.findViewById(R.id.txt_hello);
+        img_avtchat = view.findViewById(R.id.img_avtchat);
 
         messageList = new ArrayList<>();
 
@@ -112,6 +117,8 @@ public class ChatBotFragment extends Fragment {
     }
 
     private void addEvents() {
+
+
         imgChatBoxSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,13 +127,23 @@ public class ChatBotFragment extends Fragment {
         });
     }
 
+    private void invisible() {
+        txt_q1.setVisibility(View.INVISIBLE);
+        txt_q2.setVisibility(View.INVISIBLE);
+        txt_hello.setVisibility(View.INVISIBLE);
+        img_avtchat.setVisibility(View.INVISIBLE);
+    }
     private void processSendMessage() {
         String message = edtChatBox.getText().toString();
         if (message.isEmpty()) {
             Toast.makeText(getActivity(), "Nhập nội dung.", Toast.LENGTH_SHORT).show();
             return;
+        } else {
+            invisible();
+            sendMessageByMe(message);
         }
-        sendMessageByMe(message);
+
+
     }
 
     private void sendMessageByMe(String msg) {

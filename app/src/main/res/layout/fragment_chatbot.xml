@@ -6,6 +6,61 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/img_avtchat"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="@dimen/margin_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/avt_chatgpt" />
+
+    <TextView
+        android:id="@+id/txt_hello"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@drawable/rounded_white_edittext"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/margin_medium"
+        android:text="Xin chào, tôi có thể giúp được gì cho bạn?"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_avtchat"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/txt_q1"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@drawable/rounded_white_edittext"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/margin_medium"
+        android:text="Hiển thị số điện thoại tiệm sửa xe gần nhất"
+        app:layout_constraintBottom_toBottomOf="@+id/rvMessageData"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_avtchat"
+        app:layout_constraintVertical_bias="0.977" />
+
+    <TextView
+        android:id="@+id/txt_q2"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@drawable/rounded_white_edittext"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/margin_medium"
+        android:text="Hiển thị cho tôi các tiệm sửa xe gần nhất"
+        app:layout_constraintBottom_toTopOf="@+id/txt_q1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_avtchat"
+        app:layout_constraintVertical_bias="0.978" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMessageData"
         android:layout_width="0dp"
@@ -32,8 +87,9 @@
         android:id="@+id/llChatBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_h5"
-        android:background="@drawable/rounded_rectangle_sent_message"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_marginHorizontal="@dimen/margin_large"
+        android:background="@drawable/rounded_white_edittext"
         android:gravity="center_vertical"
         android:minHeight="48dp"
         android:orientation="horizontal"
