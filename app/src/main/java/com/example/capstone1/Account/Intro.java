@@ -1,4 +1,4 @@
-package com.example.capstone1;
+package com.example.capstone1.Account;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,8 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+
+import com.example.capstone1.R;
 
 public class Intro extends AppCompatActivity {
     ImageView img_rescue, img_logo, img_cloud;

@@ -1,4 +1,4 @@
-package com.example.capstone1;
+package com.example.capstone1.Fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.capstone1.Activity.MainActivity;
+import com.example.capstone1.R;
 import com.google.gson.Gson;
 
 import java.io.InputStream;

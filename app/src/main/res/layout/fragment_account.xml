@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:backgroundTint="#FFFFFF"
-    tools:context=".HomeFragment"
+    tools:context=".Fragment.HomeFragment"
     android:id="@+id/fragment_account"
     >
 

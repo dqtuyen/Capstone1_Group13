@@ -1,4 +1,4 @@
-package com.example.capstone1;
+package com.example.capstone1.Fragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.capstone1.Data.DataLocation;
+import com.example.capstone1.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;

@@ -1,10 +1,12 @@
-package com.example.capstone1;
+package com.example.capstone1.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -14,13 +16,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.capstone1.Data.DataLocation;
+import com.example.capstone1.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -31,11 +37,19 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class UpdateRole extends AppCompatActivity implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -49,7 +63,17 @@ public class UpdateRole extends AppCompatActivity implements OnMapReadyCallback 
     FrameLayout frame_map;
     ImageView btn_back;
 
+    Button btn_updaterole;
+
+    double latitude;
+    double longitude;
+    String addressLine;
+
+    LinearLayout hint_layout;
+    EditText edt_address_name;
     EditText edt_address_detail, edt_city;
+
+    TextView txt_hint;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +84,10 @@ public class UpdateRole extends AppCompatActivity implements OnMapReadyCallback 
         btn_back = findViewById(R.id.btn_back);
         spinner_update_role = findViewById(R.id.spinner_update_role);
         frame_map = findViewById(R.id.frame_map);
-
+        btn_updaterole = findViewById(R.id.btn_updaterole);
+        edt_address_name = findViewById(R.id.edt_address_name);
+        hint_layout = findViewById(R.id.hint_layout);
+        txt_hint = findViewById(R.id.txt_hint);
         // Khởi tạo SupportMapFragment
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map2);
         // Liên kết với sự kiện OnMapReadyCallback
@@ -117,8 +144,8 @@ public class UpdateRole extends AppCompatActivity implements OnMapReadyCallback 
             public void onCameraIdle() {
                 // Lấy tọa độ latitude và longitude khi di chuyển bản đồ kết thúc (người dùng thả tay)
                 LatLng center = mMap.getCameraPosition().target;
-                double latitude = center.latitude;
-                double longitude = center.longitude;
+                latitude = center.latitude;
+                longitude = center.longitude;
                 Log.d("MapMove", "Latitude: " + latitude + ", Longitude: " + longitude);
                 // Xử lý tọa độ mới tại đây
                 // Sử dụng Geocoder để lấy địa chỉ
@@ -129,7 +156,7 @@ public class UpdateRole extends AppCompatActivity implements OnMapReadyCallback 
                         Address address = addresses.get(0);
 
                         // Lấy thông tin chi tiết địa chỉ
-                        String addressLine = address.getAddressLine(0); // Số nhà và tên đường
+                        addressLine = address.getAddressLine(0); // Số nhà và tên đường
 //                        String city = address.getLocality(); // Thành phố
 //                        String state = address.getAdminArea(); // Tỉnh/Quận
 //                        String country = address.getCountryName(); // Quốc gia
@@ -189,7 +216,7 @@ public class UpdateRole extends AppCompatActivity implements OnMapReadyCallback 
             return "";
         }
     }
-
+    int role = 0;
     private void choose_role() {
         String[] options = {"Người dùng", "Cứu hộ"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, options);
@@ -201,9 +228,12 @@ public class UpdateRole extends AppCompatActivity implements OnMapReadyCallback 
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedOption[0] = options[position];
                 if (position == 1) {
-                    frame_map.setVisibility(View.VISIBLE);
+                    hint_layout.setVisibility(View.VISIBLE);
+                    txt_hint.setVisibility(View.GONE);
+                    role++;
                 } else {
-                    frame_map.setVisibility(View.GONE);
+                    hint_layout.setVisibility(View.GONE);
+
                 }
             }
 
@@ -222,7 +252,89 @@ public class UpdateRole extends AppCompatActivity implements OnMapReadyCallback 
                 finish();
             }
         });
+
+        btn_updaterole.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showConfirmationDialog();
+            }
+        });
     }
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    void updateRoleInFirestore() {
+        String uid = user.getUid().toString();
 
+        Map<String, Object> data = new HashMap<>();
+        data.put("latitude", latitude);
+        data.put("longitude", longitude);
+        data.put("address", addressLine);
+        data.put("address_name", edt_address_name.getText().toString());
+
+
+        db.collection("Location").document(uid)
+                .set(data)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getApplicationContext(), "Update Success", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+        Map<String, Object> update_role = new HashMap<>();
+        if(role == 1) {
+            update_role.put("role", "rescue");
+        } else {
+            update_role.put("role", "customer");
+        }
+
+        db.collection("Users").document(uid).update(update_role)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getApplicationContext(), "Update Success", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+        private void showConfirmationDialog() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Xác nhận cập nhật");
+            builder.setMessage("Bạn có chắc muốn cập nhật thông tin không?");
+
+            // Nút tích cực (Chấp nhận)
+            builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Thực hiện cập nhật ở đây
+                    updateRoleInFirestore();
+                }
+            });
+
+            // Nút tiêu cực (Hủy bỏ)
+            builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Đóng dialog, không thực hiện cập nhật
+                    dialog.dismiss();
+                }
+            });
+
+            // Hiển thị dialog
+            builder.show();
+        }
 }

@@ -1,4 +1,4 @@
-package com.example.capstone1;
+package com.example.capstone1.Account;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.capstone1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,7 +32,7 @@ public class Register extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser user;
     FirebaseFirestore db;
-    EditText edt_name, edt_email, edt_password, edt_confirm_password;
+    EditText edt_name, edt_email, edt_password, edt_confirm_password, edt_phone;
     Button btn_login;
     ImageButton btn_back;
     TextView txt_view;
@@ -44,11 +45,13 @@ public class Register extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         edt_name = findViewById(R.id.edt_name);
         edt_email = findViewById(R.id.edt_email);
+        edt_phone = findViewById(R.id.edt_phone);
         edt_password = findViewById(R.id.edt_password);
         edt_confirm_password = findViewById(R.id.edt_confirm_password);
         btn_login = findViewById(R.id.btn_login);
         txt_view = findViewById(R.id.txt_view);
         btn_back = findViewById(R.id.btn_back);
+
         init();
         setEvent();
     }
@@ -61,12 +64,12 @@ public class Register extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name, email, password, re_password;
+                String name, email, password, re_password, phone;
                 name = edt_name.getText().toString();
                 email = edt_email.getText().toString();
                 password = edt_password.getText().toString();
                 re_password = edt_confirm_password.getText().toString();
-
+                phone = edt_phone.getText().toString();
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(Register.this,"Enter Email",Toast.LENGTH_SHORT);
                     return;
@@ -83,6 +86,10 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this,"Enter Re-Password",Toast.LENGTH_SHORT);
                     return;
                 }
+                if(TextUtils.isEmpty(phone)){
+                    Toast.makeText(Register.this,"Nhập số điện thoại",Toast.LENGTH_SHORT);
+                    return;
+                }
 
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -91,7 +98,7 @@ public class Register extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             //Toast.makeText(Register.this, "Create Account success.", Toast.LENGTH_SHORT).show();
-                            Adddatabase(email, password, name);
+                            Adddatabase(email, password, name, phone);
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(Register.this, "Create Account fail.", Toast.LENGTH_SHORT).show();
@@ -120,7 +127,7 @@ public class Register extends AppCompatActivity {
         });
     }
 
-    void Adddatabase(String email, String password, String name){
+    void Adddatabase(String email, String password, String name, String phone){
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
@@ -133,23 +140,29 @@ public class Register extends AppCompatActivity {
                             Map<String, Object> DataUser = new HashMap<>();
                             DataUser.put("email", email);
                             DataUser.put("name", name);
-
+                            DataUser.put("phone", phone);
+                            DataUser.put("numbercar", "");
+                            DataUser.put("typecar", "");
+                            DataUser.put("location", "");
+                            DataUser.put("role", "customer");
 
                             db.collection("Users").document(user.getUid())
                                     .set(DataUser)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-//                                            Map<String, Object> DataSaved = new HashMap<>();
-//                                            DataSaved.put("Post_Saved", Arrays.asList(""));
-//                                            DataSaved.put("Post_Posted", Arrays.asList(""));
-//                                            db.collection("Saved").document(user.getUid())
-//                                                    .set(DataSaved).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                                        @Override
-//                                                        public void onComplete(@NonNull Task<Void> task) {
-//
-//                                                        }
-//                                                    });
+                                            Map<String, Object> dataLocation = new HashMap<>();
+                                            dataLocation.put("latitude", "");
+                                            dataLocation.put("longitude", "");
+                                            dataLocation.put("address", "");
+                                            dataLocation.put("address_name", "");
+                                            db.collection("Location").document(user.getUid())
+                                                    .set(dataLocation).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                                        }
+                                                    });
                                             Intent intent = new Intent(getApplicationContext(), Login.class);
                                             startActivity(intent);
                                             finish();

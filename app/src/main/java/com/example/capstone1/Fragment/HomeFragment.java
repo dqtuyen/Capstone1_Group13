@@ -1,10 +1,12 @@
-package com.example.capstone1;
+package com.example.capstone1.Fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +17,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.capstone1.Adapter.AdapterHorizontalScrollView;
 import com.example.capstone1.Data.DataTest;
+import com.example.capstone1.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +37,7 @@ import java.util.List;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,7 +60,7 @@ public class HomeFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment HomeFragment.
      */
-    // TODO: Rename and change types and number of parameters
+    // TODO: Rename and change types and number of parameter
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -58,7 +69,6 @@ public class HomeFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,14 +77,73 @@ public class HomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    //Khai báo biến ggmap
+    private static final int PERMISSION_REQUEST_CODE = 1;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private GoogleMap mMap;
+    private Marker lastClickedMarker;
 
+    LinearLayout horizontalLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
 
-        LinearLayout horizontalLayout = view.findViewById(R.id.layout_horizontal_scroll_view);
+        //Ánh xạ ID
+        // Khởi tạo SupportMapFragment
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map2);
+        mapFragment.getMapAsync(this);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        horizontalLayout = view.findViewById(R.id.layout_horizontal_scroll_view);
         HorizontalScrollView horizontalScrollView = view.findViewById(R.id.horizontal_scroll_view);
+        viewData_cuuhonhieunhat();
+
+
+        return view;
+    }
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+
+            fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(getActivity(), location -> {
+                        if (location != null) {
+                            LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 14));
+                        }
+                    });
+
+
+        } else {
+            // Yêu cầu quyền truy cập vị trí ở đây nếu chưa có quyền.
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+        }
+        // Đặt sự kiện nhấn vào marker
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                LatLng markerPosition = marker.getPosition();
+                if (marker.equals(lastClickedMarker)) {
+                    // Đã nhấn lần thứ hai vào cùng một marker, hủy thông tin
+                    if (marker.isInfoWindowShown()) {
+                        marker.hideInfoWindow();
+                    }
+                } else {
+                    // Đã nhấn vào một marker khác, hiển thị thông tin và cập nhật biến lastClickedMarker
+                    marker.showInfoWindow();
+                    lastClickedMarker = marker;
+                }
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(markerPosition, 15);
+                googleMap.animateCamera(cameraUpdate);
+                return true;
+            }
+        });
+
+    }
+
+    void viewData_cuuhonhieunhat() {
 
         List<DataTest> carServiceList = new ArrayList<>();
 
@@ -100,10 +169,7 @@ public class HomeFragment extends Fragment {
             txt_turns.setText(data.getTurns());
             horizontalLayout.addView(item);
         }
-
-        return view;
     }
-
     public void reloadData() {
         Toast.makeText(getActivity(), "Reload Fragment Home", Toast.LENGTH_SHORT).show();
     }

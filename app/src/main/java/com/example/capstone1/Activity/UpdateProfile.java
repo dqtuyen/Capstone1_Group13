@@ -1,4 +1,4 @@
-package com.example.capstone1;
+package com.example.capstone1.Activity;
 
 import static android.content.ContentValues.TAG;
 
@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.capstone1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -97,7 +98,7 @@ public class UpdateProfile extends AppCompatActivity {
 
 
         db.collection("Users").document(uid)
-                .set(data)
+                .update(data)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

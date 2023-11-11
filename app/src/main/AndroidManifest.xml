@@ -17,16 +17,16 @@
         android:theme="@style/Theme.Capstone1"
         tools:targetApi="31">
         <activity
-            android:name=".Intro"
+            android:name=".Account.Intro"
             android:exported="false" />
         <activity
-            android:name=".UpdateRole"
+            android:name=".Activity.UpdateRole"
             android:exported="false" />
         <activity
-            android:name=".UpdateProfile"
+            android:name=".Activity.UpdateProfile"
             android:exported="false" />
         <activity
-            android:name=".PasswordChanged"
+            android:name=".Account.PasswordChanged"
             android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
@@ -44,19 +44,19 @@
             android:value="AIzaSyCxTUngn0mwDNeFZYz-WtqavuykNLzhx8Y" />
 
         <activity
-            android:name=".ForgotPassword"
+            android:name=".Account.ForgotPassword"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".Login"
+            android:name=".Account.Login"
             android:exported="false" />
         <activity
-            android:name=".Register"
+            android:name=".Account.Register"
             android:exported="false" />
         <activity
-            android:name=".Welcome"
+            android:name=".Account.Welcome"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

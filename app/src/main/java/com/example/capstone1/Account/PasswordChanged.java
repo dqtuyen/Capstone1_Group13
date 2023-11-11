@@ -1,4 +1,4 @@
-package com.example.capstone1;
+package com.example.capstone1.Account;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.example.capstone1.Account.Login;
+import com.example.capstone1.R;
 
 public class PasswordChanged extends AppCompatActivity {
 

@@ -5,220 +5,235 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".HomeFragment">
+    tools:context=".Fragment.HomeFragment">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/imageView4"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@color/white"
+                android:src="@drawable/ic_ring"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.958"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.638" />
 
-                <ImageButton
-                    android:id="@+id/imageView4"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@color/white"
-                    android:src="@drawable/ic_ring"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.958"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.638" />
-
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="Andrew Smith"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/imageView7"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
-
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="Good Morning  👋"
-                    android:textSize="14dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/imageView7"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.621" />
-
-                <ImageView
-                    android:id="@+id/imageView7"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="@dimen/margin_large"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/img_avt_temp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <SearchView
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_large"
-                android:layout_marginVertical="@dimen/margin_medium"
-                android:background="@drawable/rounded_white_edittext">
+                android:layout_marginStart="20dp"
+                android:text="Andrew Smith"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView7"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
 
-            </SearchView>
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="Good Morning  👋"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView7"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.621" />
 
             <ImageView
-                android:id="@+id/img_adv"
-                android:layout_width="match_parent"
-                android:layout_height="136dp"
-                android:layout_marginHorizontal="@dimen/margin_large"
-                android:background="@drawable/rounded_white_edittext"
+                android:id="@+id/imageView7"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_medium"
                 android:scaleType="centerCrop"
-                android:src="@drawable/banner" />
+                android:src="@drawable/img_avt_temp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_large"
+            android:layout_marginVertical="@dimen/margin_medium"
+            android:background="@drawable/rounded_white_edittext">
+
+        </SearchView>
+
+        <FrameLayout
+            android:id="@+id/frame_map2"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginHorizontal="@dimen/margin_large"
+            android:layout_marginVertical="@dimen/margin_small">
+
+
+            <fragment
+                android:id="@+id/map2"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_white_edittext" />
+
+        </FrameLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_large"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
-                    <ImageButton
-                        android:id="@+id/img_ring"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginTop="@dimen/margin_small"
-                        android:background="@drawable/rounded_white_edittext"
-                        android:src="@drawable/img_ring" />
-
-                    <TextView
-                        android:id="@+id/txt_ring"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Cứu hộ" />
-                </LinearLayout>
+                        android:layout_marginLeft="@dimen/margin_large"
+                        android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_large"
-                    android:orientation="vertical">
+                        <ImageButton
+                            android:id="@+id/img_ring"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:background="@drawable/rounded_white_edittext"
+                            android:src="@drawable/img_ring" />
 
-                    <ImageButton
-                        android:id="@+id/img_chatbotgpt"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        <TextView
+                            android:id="@+id/txt_ring"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Cứu hộ" />
+                    </LinearLayout>
 
-                        android:layout_marginTop="@dimen/margin_small"
-                        android:background="@drawable/rounded_white_edittext"
-                        android:scaleType="center"
-                        android:src="@drawable/img_chatbotgpt" />
-
-                    <TextView
-                        android:id="@+id/textView15"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="ChatBot" />
+                        android:layout_marginLeft="@dimen/margin_large"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/img_chatbotgpt"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:background="@drawable/rounded_white_edittext"
+                            android:scaleType="center"
+                            android:src="@drawable/img_chatbotgpt" />
+
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="ChatBot" />
+                    </LinearLayout>
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_short"
+                    android:text="Được gọi cứu hộ nhiều nhất"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontal_scroll_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="115dp"
+                    android:layout_marginLeft="@dimen/margin_large">
+
+                    <LinearLayout
+                        android:id="@+id/layout_horizontal_scroll_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" />
+
+                </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_short"
+                    android:text="MotoX Flash"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="136dp"
+                    android:layout_marginHorizontal="@dimen/margin_large"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/banner" />
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_short"
+                    android:text="MotoX Flash"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="136dp"
+                    android:layout_marginHorizontal="@dimen/margin_large"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/banner" />
+
             </LinearLayout>
+        </ScrollView>
 
-            <TextView
-                android:id="@+id/textView16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:layout_marginBottom="@dimen/margin_short"
-                android:text="Được gọi cứu hộ nhiều nhất"
-                android:textSize="18dp"
-                android:textStyle="bold" />
-
-            <HorizontalScrollView
-                android:id="@+id/horizontal_scroll_view"
-                android:layout_width="match_parent"
-                android:layout_height="115dp"
-                android:layout_marginLeft="@dimen/margin_large">
-
-                <LinearLayout
-                    android:id="@+id/layout_horizontal_scroll_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
-
-            </HorizontalScrollView>
-
-            <TextView
-                android:id="@+id/textView16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:layout_marginBottom="@dimen/margin_short"
-                android:text="MotoX Flash"
-                android:textSize="18dp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="match_parent"
-                android:layout_height="136dp"
-                android:layout_marginHorizontal="@dimen/margin_large"
-                android:scaleType="centerCrop"
-                android:src="@drawable/banner" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:layout_marginBottom="@dimen/margin_short"
-                android:text="MotoX Flash"
-                android:textSize="18dp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/imageView9"
-                android:layout_width="match_parent"
-                android:layout_height="136dp"
-                android:layout_marginHorizontal="@dimen/margin_large"
-                android:scaleType="centerCrop"
-                android:src="@drawable/banner" />
-
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
