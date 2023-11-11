@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +15,22 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.example.capstone1.Data.DataTest;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,11 +81,26 @@ public class AccountFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
     ImageButton imageButtonView;
     Button btn_logout, btn_information, btn_history, btn_update_role;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     List<DataTest> carServiceList = new ArrayList<>();
-    TextView txt_call, txt_email, txt_address, txt_numcar, txt_type_moto;
+    TextView txt_call, txt_email, txt_address, txt_numcar, txt_type_moto, txt_name, txt_role;
+    DocumentReference docRef;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+    String uid;
+    String email;
+    String name;
+    String phone;
+    String role;
+    String images;
+
+    ArrayList<String> listsUID = new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,11 +112,14 @@ public class AccountFragment extends Fragment {
         btn_history = view.findViewById(R.id.btn_history);
         btn_update_role = view.findViewById(R.id.btn_update_role);
 
+        txt_role = view.findViewById(R.id.txt_role);
+        txt_name = view.findViewById(R.id.txt_name);
         txt_call = view.findViewById(R.id.txt_call);
         txt_email = view.findViewById(R.id.txt_gmail);
         txt_address = view.findViewById(R.id.txt_address);
         txt_numcar = view.findViewById(R.id.txt_numcar);
         txt_type_moto = view.findViewById(R.id.txt_typecar);
+
         // Tên tài nguyên hình ảnh hoặc URL hình ảnh cần hiển thị
         String imageUrl = "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1698340797~exp=1698341397~hmac=7fb261f6da08e5edd433994a215dff773601a0649d258b694b10ff1e6d0dbed0";
 
@@ -99,12 +127,16 @@ public class AccountFragment extends Fragment {
                 .load(imageUrl)
                 .circleCrop() // Áp dụng cắt ảnh thành hình tròn
                 .into(imageButtonView);
-        data();
-        setData();
+
+        String uid = user.getUid();
+        Log.d("UID", "User UID: " + uid);
+        viewData(uid);
+
         logout();
         setEvent();
         return view;
     }
+
     void setEvent() {
         btn_information.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,14 +153,7 @@ public class AccountFragment extends Fragment {
             }
         });
     }
-    void setData() {
 
-        txt_call.setText(carServiceList.get(1).getCall());
-        txt_email.setText(carServiceList.get(1).getEmail());
-        txt_address.setText(carServiceList.get(1).getAddress());
-        txt_numcar.setText(carServiceList.get(1).getNum_car());
-        txt_type_moto.setText(carServiceList.get(1).getType_car());
-    }
     void logout() {
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +168,6 @@ public class AccountFragment extends Fragment {
         });
 
 
-
     }
 
     private void data() {
@@ -154,6 +178,7 @@ public class AccountFragment extends Fragment {
         carServiceList.add(new DataTest("UID005", "Green Auto Garage", "+1-888-888-8888", "greenauto@example.com", "654 Birch St, Suburb", "Monday - Saturday", "5", "Hybrid", "4.6", R.drawable.back));
 
     }
+
     private void clearLoginInfo() {
         Context context = requireActivity();
         SharedPreferences preferences = context.getSharedPreferences("LoginPrefs", MODE_PRIVATE);
@@ -162,4 +187,42 @@ public class AccountFragment extends Fragment {
         editor.remove("password");
         editor.apply();
     }
+
+
+    public void viewData(String uid) {
+        // Tạo đối tượng Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Lấy dữ liệu của user
+        DocumentReference docRef = db.collection("Users").document(uid);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    // Lấy dữ liệu của user
+                    DocumentSnapshot doc = task.getResult();
+
+                    // Hiển thị dữ liệu của user
+                    String name = doc.getString("name");
+                    String phone = doc.getString("phone");
+                    String email = doc.getString("email");
+                    String location = doc.getString("location");
+                    String numbercar = doc.getString("numbercar");
+                    String typecar = doc.getString("typecar");
+                    String role = doc.getString("role");
+
+                    txt_name.setText(name);
+                    txt_call.setText(phone);
+                    txt_email.setText(email);
+                    txt_address.setText(location);
+                    txt_numcar.setText(numbercar);
+                    txt_type_moto.setText(typecar);
+                    txt_role.setText(role);
+                } else {
+                    // Xử lý lỗi
+                }
+            }
+        });
+    }
 }
+

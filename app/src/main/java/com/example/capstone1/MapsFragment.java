@@ -9,8 +9,11 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +41,11 @@ import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -131,6 +136,47 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(markerPosition, 15);
                     googleMap.animateCamera(cameraUpdate);
                     return true;
+                }
+            });
+
+
+            // Sử dụng Geocoder để lấy địa chỉ
+            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+            try {
+                List<Address> addresses = geocoder.getFromLocation(16.067852, 108.180978, 1);
+
+                if (addresses != null && addresses.size() > 0) {
+                    Address address = addresses.get(0);
+
+                    // Lấy thông tin chi tiết địa chỉ
+                    String addressLine = address.getAddressLine(0); // Số nhà và tên đường
+                    String city = address.getLocality(); // Thành phố
+                    String state = address.getAdminArea(); // Tỉnh/Quận
+                    String country = address.getCountryName(); // Quốc gia
+                    String postalCode = address.getPostalCode(); // Mã bưu chính
+
+                    Log.d("Address", "Address Line: " + addressLine);
+                    Log.d("Address", "City: " + city);
+                    Log.d("Address", "State: " + state);
+                    Log.d("Address", "Country: " + country);
+                    Log.d("Address", "Postal Code: " + postalCode);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Sự kiện di chuyển bản đồ
+            mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+                @Override
+                public void onCameraMove() {
+                    // Lấy tọa độ latitude và longitude khi bản đồ được di chuyển
+                    LatLng center = mMap.getCameraPosition().target;
+                    double latitude = center.latitude;
+                    double longitude = center.longitude;
+                    Log.d("MapMove", "Latitude: " + latitude + ", Longitude: " + longitude);
+                    // Xử lý tọa độ mới tại đây
                 }
             });
 

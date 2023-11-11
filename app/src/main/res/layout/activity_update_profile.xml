@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Thông tin của bạn"
-            android:layout_margin="26sp"
+            android:layout_marginTop="26sp"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold" />
 
@@ -84,7 +84,7 @@
             android:textColor="@color/gray" />
 
         <EditText
-            android:id="@+id/edt_sdt"
+            android:id="@+id/edt_phone"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/margin_large"
@@ -101,7 +101,7 @@
             android:textColor="@color/gray" />
 
         <EditText
-            android:id="@+id/edt_numcar"
+            android:id="@+id/edt_numbercar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/margin_large"
@@ -166,7 +166,7 @@ của bạn để hệ thống có thể xác thực..."
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_update"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/margin_large"
@@ -188,7 +188,7 @@ của bạn để hệ thống có thể xác thực..."
     </LinearLayout>
 
     <TextView
-        android:id="@+id/txt_view"
+        android:id="@+id/txt_init"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.2"

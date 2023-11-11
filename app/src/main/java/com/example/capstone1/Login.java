@@ -135,5 +135,8 @@ public class Login extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), Intro.class);
         startActivity(intent);
         finish();
+
+
+
     }
 }
