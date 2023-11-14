@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Capstone1</string>
+    <string name="app_name">Cứu hộ xe máy</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="description_image_view">OpenAI Image Description</string>
+    <string name="your_fcm_server_key">AAAA-aEDMr4:APA91bFkulQb-yKqZHCdfMMvTnAWHu6eHSaFsPTkTiM4CN4nux4zGjFOpEnk_NXESGI3i98JmZX0AJj7tqyFsxmhhOU5AP4v0fHmxVNNA6olETuUvwhpCg6ip_0NT3kXa-eWUFeC0rP_</string>
 </resources>

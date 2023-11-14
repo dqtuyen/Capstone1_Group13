@@ -17,4 +17,9 @@
     <dimen name="margin_h5">4dp</dimen>
     <dimen name="text_size_h5">13sp</dimen>
 
+
+    <dimen name="text_size_h1">26sp</dimen>
+    <dimen name="text_size_h2">22sp</dimen>
+    <dimen name="text_size_h3">18sp</dimen>
+    <dimen name="text_size_h4">13sp</dimen>
 </resources>

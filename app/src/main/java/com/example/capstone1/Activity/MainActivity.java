@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.example.capstone1.Adapter.ViewPagerAdapter;
 import com.example.capstone1.Fragment.HomeFragment;
@@ -17,6 +18,7 @@ import com.example.capstone1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,15 +31,15 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private BottomNavigationView mBottomNavigationView;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private Button btn_find;
+    private LinearLayout wait_rescue_info;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        FirebaseApp.initializeApp(this);
         mViewPager = findViewById(R.id.view_pager);
         mBottomNavigationView = findViewById(R.id.bottom_navigation);
-        btn_find = findViewById(R.id.btn_find);
+        wait_rescue_info = findViewById(R.id.wait_rescue_info);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mViewPager.setAdapter(adapter);
@@ -105,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        btn_find.setOnClickListener(new View.OnClickListener() {
+        wait_rescue_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mBottomNavigationView.getMenu().findItem(R.id.menu_tab_2).setChecked(true);
@@ -118,9 +120,9 @@ public class MainActivity extends AppCompatActivity {
     }
     void loadVisible() {
         if(mViewPager.getCurrentItem() != 0) {
-            btn_find.setVisibility(View.GONE);
+            wait_rescue_info.setVisibility(View.GONE);
         } else {
-            btn_find.setVisibility(View.VISIBLE);
+            wait_rescue_info.setVisibility(View.VISIBLE);
         }
     }
 
@@ -152,6 +154,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
 }

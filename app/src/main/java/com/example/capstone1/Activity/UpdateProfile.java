@@ -33,7 +33,9 @@ public class UpdateProfile extends AppCompatActivity {
 
     ImageView img_back;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    EditText edt_name, edt_email, edt_phone, edt_numbercar, edt_cartype, edt_location;
+    EditText  edt_email, edt_phone, edt_numbercar, edt_cartype, edt_location;
+
+    EditText edt_name;
     Button btn_update;
     TextView txt_init;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -45,6 +47,7 @@ public class UpdateProfile extends AppCompatActivity {
         btn_update = findViewById(R.id.btn_update);
         img_back = findViewById(R.id.img_back);
         edt_name = findViewById(R.id.edt_name);
+
         edt_email = findViewById(R.id.edt_email);
         edt_phone = findViewById(R.id.edt_phone);
         edt_numbercar = findViewById(R.id.edt_numbercar);
@@ -52,6 +55,7 @@ public class UpdateProfile extends AppCompatActivity {
         edt_location = findViewById(R.id.edt_address);
         txt_init = findViewById(R.id.txt_init);
 
+        Toast.makeText(this, user.getUid().toString(), Toast.LENGTH_SHORT).show();
 
         init();
         setEvent();
@@ -95,6 +99,7 @@ public class UpdateProfile extends AppCompatActivity {
         data.put("numbercar", edt_numbercar.getText().toString());
         data.put("typecar", edt_cartype.getText().toString());
         data.put("location", edt_location.getText().toString());
+
 
 
         db.collection("Users").document(uid)

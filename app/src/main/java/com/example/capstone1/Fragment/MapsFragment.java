@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.capstone1.Data.DataLocation;
+import com.example.capstone1.GoogleMapService;
 import com.example.capstone1.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -49,31 +50,14 @@ import java.util.List;
 import java.util.Locale;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int PERMISSION_REQUEST_CODE = 1;
     private GoogleMap mMap;
     private PlacesClient placesClient;
     private Marker lastClickedMarker;
+    private GoogleMapService googleMapService;
 
     List<DataLocation> locationList = new ArrayList<>();
     private FusedLocationProviderClient fusedLocationProviderClient;
-    List<AutocompletePrediction> predictions;
-    //Use fields to define the data types to return.
-    List<Place.Field> placeFields = Arrays.asList(
-            Place.Field.ID,
-            Place.Field.NAME,
-            Place.Field.ADDRESS,
-            Place.Field.LAT_LNG
-    );
-    // Use the builder to create a FindCurrentPlaceRequest.
-    FindCurrentPlaceRequest request =
-            FindCurrentPlaceRequest.builder(placeFields).build();
-
-    private List<PlaceLikelihood> placeLikelihoods;
-    LatLng latLng;
-    String address;
-    private String placeId;
-    private static final int REQUEST_CODE = 200;
 
     Button test;
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -89,25 +73,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
+            googleMapService = new GoogleMapService(googleMap, fusedLocationProviderClient, getActivity());
+            googleMapService.myLocation();
+            googleMapService.onMarkerClick();
+
             mMap = googleMap;
-
-            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                mMap.setMyLocationEnabled(true);
-
-                fusedLocationProviderClient.getLastLocation()
-                        .addOnSuccessListener(requireActivity(), location -> {
-                            if (location != null) {
-                                LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
-                            }
-                        });
-
-
-            } else {
-                // Yêu cầu quyền truy cập vị trí ở đây nếu chưa có quyền.
-                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
-            }
-
             Data();
 
             for (DataLocation location : locationList) {
@@ -118,28 +88,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                         .snippet(location.getUID());
                 mMap.addMarker(markerOptions);
             }
-            // Đặt sự kiện nhấn vào marker
-            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-
-                public boolean onMarkerClick(Marker marker) {
-                    LatLng markerPosition = marker.getPosition();
-                    if (marker.equals(lastClickedMarker)) {
-                        // Đã nhấn lần thứ hai vào cùng một marker, hủy thông tin
-                        if (marker.isInfoWindowShown()) {
-                            marker.hideInfoWindow();
-                        }
-                    } else {
-                        // Đã nhấn vào một marker khác, hiển thị thông tin và cập nhật biến lastClickedMarker
-                        marker.showInfoWindow();
-                        lastClickedMarker = marker;
-                    }
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(markerPosition, 15);
-                    googleMap.animateCamera(cameraUpdate);
-                    return true;
-                }
-            });
-
 
             // Sử dụng Geocoder để lấy địa chỉ
             Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());

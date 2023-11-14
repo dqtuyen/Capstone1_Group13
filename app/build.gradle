@@ -3,7 +3,7 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'com.google.gms.google-services'
 }
-
+apply plugin: 'com.google.gms.google-services'
 android {
     namespace 'com.example.capstone1'
     compileSdk 33
@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:22.2.0'
     implementation 'com.google.firebase:firebase-storage:20.3.0'
     implementation 'com.google.firebase:firebase-firestore:24.6.1'
+    implementation 'com.google.firebase:firebase-messaging:23.1.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -57,7 +58,7 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:2.4.0'
 
     implementation 'com.google.code.gson:gson:2.8.6'
-
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1' // Thay version bằng phiên bản mới nhất
     //Thư viện hình ảnh
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'

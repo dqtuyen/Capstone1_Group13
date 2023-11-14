@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.capstone1.Data.DataLocation;
+import com.example.capstone1.FCMUtil;
 import com.example.capstone1.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -44,6 +45,7 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -52,7 +54,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class UpdateRole extends AppCompatActivity implements OnMapReadyCallback {
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+
     private static final int PERMISSION_REQUEST_CODE = 1;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private GoogleMap mMap;
@@ -256,6 +258,7 @@ public class UpdateRole extends AppCompatActivity implements OnMapReadyCallback 
         btn_updaterole.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 showConfirmationDialog();
             }
         });
@@ -321,6 +324,8 @@ public class UpdateRole extends AppCompatActivity implements OnMapReadyCallback 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // Thực hiện cập nhật ở đây
+                    FCMUtil fcmUtil = new FCMUtil();
+                    fcmUtil.subscribeToTopic(getApplication(), "rescue");
                     updateRoleInFirestore();
                 }
             });

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.CallForRescue">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/color_background_call_rescue"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            >
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:background="@drawable/back" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_size_h1"
+                android:text="Gọi cứu hộ"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:textSize="@dimen/text_size_h3"
+            android:textStyle="bold"
+            android:text="Bạn bị hư xe?" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:text="Chúng tôi sẽ gửi yêu cầu\ncứu hộ cho bạn" />
+
+        <ImageView
+            android:id="@+id/imageView11"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="-120dp"
+            android:scaleX="-1"
+            app:srcCompat="@drawable/img_rescue" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_call_for_myself"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="@dimen/margin_large"
+        android:layout_marginTop="-30dp"
+        android:background="@drawable/rounded_white_edittext"
+        android:drawableLeft="@drawable/address_marker"
+        android:gravity="center_vertical"
+        android:text="Gọi cứu hộ bản thân"
+        android:textColor="@color/gray"
+        app:backgroundTint="@null"
+        android:elevation="4dp"
+        android:stateListAnimator="@null"
+        app:iconPadding="15dp" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginVertical="@dimen/margin_small"
+        android:text="Xem lại thông tin của bạn"
+        android:textSize="@dimen/text_size_h3"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:text="Tên"
+        android:textSize="@dimen/text_size_h4"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView24"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:text="Dương Quang Tuyến"
+        android:textSize="@dimen/text_size_h3"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginHorizontal="@dimen/margin_large"
+        android:background="@color/orange" />
+
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:text="Số điện thoại"
+        android:layout_marginTop="@dimen/margin_small"
+        android:textSize="@dimen/text_size_h4"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView26"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:text="0911111111"
+        android:textSize="@dimen/text_size_h3"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginHorizontal="@dimen/margin_large"
+        android:background="@color/bluewhile" />
+
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:text="Biển số xe"
+        android:layout_marginTop="@dimen/margin_small"
+        android:textSize="@dimen/text_size_h4"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView26"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:text="75T - 1 55555"
+        android:textSize="@dimen/text_size_h3"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginHorizontal="@dimen/margin_large"
+        android:background="@color/bluewhile" />
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:text="Hãng xe"
+        android:layout_marginTop="@dimen/margin_small"
+        android:textSize="@dimen/text_size_h4"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView26"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:text="SH"
+        android:textSize="@dimen/text_size_h3"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginHorizontal="@dimen/margin_large"
+        android:background="@color/bluewhile" />
+
+    <Button
+        android:id="@+id/btn_edit_info"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:background="@drawable/rounded_orange_button"
+        android:padding="0dp"
+        android:text="Chỉnh sửa thông tin"
+        app:backgroundTint="@null" />
+
+    <TextView
+        android:id="@+id/textView27"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:text="Bạn bè phương xa"
+        android:textSize="@dimen/text_size_h3"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView28"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:text="Bạn bè, người thân của bạn cần sự giúp đỡ?" />
+
+    <Button
+        android:id="@+id/btn_help_friend"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginHorizontal="@dimen/margin_large"
+        android:background="@drawable/rounded_white_edittext"
+        android:drawableLeft="@drawable/address_marker"
+        android:drawablePadding="8dp"
+        android:elevation="4dp"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:stateListAnimator="@null"
+        android:text="Gọi cứu hộ giúp người thân"
+        android:textColor="@color/gray"
+        app:backgroundTint="@null"
+        app:iconPadding="15dp" />
+
+
+</LinearLayout>
