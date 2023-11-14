@@ -1,8 +1,14 @@
 package APIChatGPT.api;
 
+import android.os.Build;
+
+import com.example.capstone1.R;
+
+import io.grpc.android.BuildConfig;
+
 public class OpenAI {
     public static String API="https://api.openai.com/v1/engines/davinci/completions";
-    public static String TOKEN="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";
+    public static String TOKEN= "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";
     public static String METHOD="POST";
-    public static String CONTENT_TYPE="Application/json";
+    public static String CONTENT_TYPE="application/json";
 }
