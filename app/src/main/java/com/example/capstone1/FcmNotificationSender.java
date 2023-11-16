@@ -77,13 +77,13 @@ public class FcmNotificationSender {
             e.printStackTrace();
         }
     }
-    public static void Post_Calling(String fcmServerKey, String receiverToken, String title) {
+    public static void Post_Calling(String fcmServerKey, String receiverToken, String description ,String title) {
         JSONObject jsonObject = new JSONObject();
         // Add the "data" object
         JSONObject dataObject = new JSONObject();
         try {
             dataObject.put("user_name", title);
-            dataObject.put("description", "This is a test notification");
+            dataObject.put("description", description);
             jsonObject.put("data", dataObject);
             jsonObject.put("to", receiverToken);
             HttpUrl URl = HttpUrl.parse("https://fcm.googleapis.com/fcm/send")

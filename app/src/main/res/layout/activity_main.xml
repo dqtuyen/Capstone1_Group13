@@ -35,7 +35,8 @@
         android:layout_alignBottom="@+id/view_pager"
         android:layout_centerHorizontal="true"
         android:background="@drawable/rounded_white_edittext"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,11 +49,11 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:layout_marginTop="7dp"
-                android:indeterminate="true"
-                android:progressTint="@color/orange"
                 android:layout_marginHorizontal="@dimen/margin_large"
-                android:layout_weight="1" />
+                android:layout_marginTop="7dp"
+                android:layout_weight="1"
+                android:indeterminate="true"
+                android:progressTint="@color/orange" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -70,8 +71,8 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="4"
                     android:layout_height="match_parent"
+                    android:layout_weight="4"
                     android:orientation="vertical">
 
                     <TextView
@@ -86,7 +87,7 @@
                         android:id="@+id/textView31"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Đừng lo lắng, sẽ có người đế giúp đỡ bạn ngay thôi"
+                        android:text="Đừng lo lắng, sẽ có người đế giúp đỡ bạn"
                         android:textSize="@dimen/text_size_h4" />
 
                 </LinearLayout>
@@ -103,8 +104,8 @@
                     android:paddingRight="0dp"
                     android:paddingBottom="0dp"
                     android:text="Hủy"
-                    app:backgroundTint="@color/orange"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    app:backgroundTint="@color/orange" />
 
             </LinearLayout>
 
@@ -114,7 +115,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/wait_rescue_info"
+        android:id="@+id/rescue_info"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignBottom="@+id/view_pager"
@@ -124,7 +125,7 @@
         android:visibility="gone">
 
         <ImageView
-            android:id="@+id/imageView14"
+            android:id="@+id/img_rescue"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="@dimen/margin_small"
@@ -139,7 +140,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView30"
+                android:id="@+id/txt_name_rescue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
@@ -148,14 +149,14 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView31"
+                android:id="@+id/txt_info_moto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="75T - 1 55555 • Honda • AirBlade"
                 android:textSize="@dimen/text_size_h4" />
 
             <ImageView
-                android:id="@+id/imageView15"
+                android:id="@+id/img_star"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_gravity="start"

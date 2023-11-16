@@ -3,12 +3,14 @@ package com.example.capstone1.Account;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.capstone1.R;
 
@@ -40,7 +42,13 @@ public class Intro extends AppCompatActivity {
 
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
         img_rescue.startAnimation(animation);
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish(); // Kết thúc IntroActivity sau khi hiển thị xong
+                Toast.makeText(Intro.this, "finish", Toast.LENGTH_SHORT).show();
+            }
+        }, 3000);
 
     }
 }

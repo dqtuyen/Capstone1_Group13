@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,8 @@ import android.widget.Toast;
 
 import com.example.capstone1.Activity.CallForRescue;
 import com.example.capstone1.Activity.ConfirmLocation;
+import com.example.capstone1.Activity.MainActivity;
+import com.example.capstone1.Activity.Rescue_Evaluate;
 import com.example.capstone1.Data.DataTest;
 import com.example.capstone1.FCMUtil;
 import com.example.capstone1.GoogleMapService;
@@ -101,7 +104,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationProviderClient;
     GoogleMapService googleMapService;
     LinearLayout horizontalLayout;
-    ImageButton img_ring, img_chatbotgpt;
+    ImageButton img_ring, img_chatbotgpt, img_test;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -116,26 +119,34 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         HorizontalScrollView horizontalScrollView = view.findViewById(R.id.horizontal_scroll_view);
         img_ring = view.findViewById(R.id.img_ring);
         img_chatbotgpt = view.findViewById(R.id.img_chatbotgpt);
+        img_test = view.findViewById(R.id.img_test);
         viewData_cuuhonhieunhat();
         setEvent();
 
         return view;
     }
+
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        googleMapService = new GoogleMapService(googleMap, fusedLocationProviderClient, getActivity());
-        googleMapService.myLocation();
-        googleMapService.onMarkerClick();
-        googleMapService.initializeMap();
-        googleMapService.setOnAddressReceivedListener(new OnAddressReceivedListener() {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onAddressReceived(String address, String addressName, double latitude, double longitude) {
-                // Xử lý địa chỉ và thông tin vị trí ở đây
-                Log.d("Address", "Received Address: " + address);
-                Log.d("Address", "Received Address Name: " + addressName);
-                Log.d("Location", "Received Latitude: " + latitude);
-                Log.d("Location", "Received Longitude: " + longitude);
+            public void run() {
+                // Tạo service của Google Map và thực hiện các chức năng
+                googleMapService = new GoogleMapService(googleMap, fusedLocationProviderClient, getActivity());
+                googleMapService.myLocation();
+                googleMapService.onMarkerClick();
+                googleMapService.initializeMap();
+                googleMapService.setOnAddressReceivedListener(new OnAddressReceivedListener() {
+                    @Override
+                    public void onAddressReceived(String address, String addressName, double latitude, double longitude) {
+                        // Xử lý địa chỉ và thông tin vị trí ở đây
+                        Log.d("Address", "Received Address: " + address);
+                        Log.d("Address", "Received Address Name: " + addressName);
+                        Log.d("Location", "Received Latitude: " + latitude);
+                        Log.d("Location", "Received Longitude: " + longitude);
+                    }
+                });
             }
-        });
+        }, 4000); // 5 giây
     }
 
     void viewData_cuuhonhieunhat() {
@@ -202,16 +213,21 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
                 String fcmServerKey = "AAAA-aEDMr4:APA91bFkulQb-yKqZHCdfMMvTnAWHu6eHSaFsPTkTiM4CN4nux4zGjFOpEnk_NXESGI3i98JmZX0AJj7tqyFsxmhhOU5AP4v0fHmxVNNA6olETuUvwhpCg6ip_0NT3kXa-eWUFeC0rP_";
                 String receiverToken = "eImI4cXhSR-bWnQP84GKNe:APA91bHvlmJxjpwJggnIDvEAIlB3KA8bT6OBUDDjdoUFxEWzl-CS3vAQZWRhC5XE7Ca7WTUOGz6g8ltGfB0foaSIXRQOc4_FKkOGmVWbfMBUrZP0b3xwGmU9Sy6bJa6FhEUxiqhVL20R";
-                String notificationTitle = "Hello";
+                String notificationTitle = "Xin chào";
                 String notificationBody = "This is a test notification";
 
                 // Gửi thông báo
-                Post_Calling(fcmServerKey, receiverToken, notificationTitle);
+                Post_Calling(fcmServerKey, receiverToken,notificationBody, notificationTitle);
+            }
+        });
+
+        img_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Rescue_Evaluate.class);
+                startActivity(intent);
             }
         });
     }
 
-    public void reloadData() {
-        Toast.makeText(getActivity(), "Reload Fragment Home", Toast.LENGTH_SHORT).show();
-    }
 }

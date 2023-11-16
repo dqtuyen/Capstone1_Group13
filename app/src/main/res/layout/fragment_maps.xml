@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,6 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,7 +20,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+
+            >
 
             <TextView
                 android:id="@+id/textView13"
@@ -66,15 +70,33 @@
                 app:layout_constraintVertical_bias="0.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <SearchView
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchViewHome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_small"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginRight="20dp"
+            app:iconifiedByDefault="false"
+            app:queryHint="Search Here..."
+            android:background="@drawable/rounded_white_edittext"
+            app:searchIcon="@drawable/ic_search">
+
+        </androidx.appcompat.widget.SearchView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_large"
-            android:layout_marginVertical="@dimen/margin_medium"
-            android:background="@drawable/rounded_white_edittext">
-
-        </SearchView>
+            android:layout_marginTop="-10dp"
+            android:background="@drawable/rounded_white_edittext"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_search" />
 
     </LinearLayout>
 
-</RelativeLayout>
+
+
+    </RelativeLayout>

@@ -2,6 +2,8 @@ package com.example.capstone1.Activity;
 
 import static android.content.ContentValues.TAG;
 
+import static com.example.capstone1.FcmNotificationSender.Post_Calling;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.capstone1.GenarateCharacter;
 import com.example.capstone1.GoogleMapService;
 import com.example.capstone1.OnAddressReceivedListener;
 import com.example.capstone1.R;
@@ -39,6 +42,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +57,10 @@ public class ConfirmLocation extends AppCompatActivity implements OnMapReadyCall
     TextView txt_note, txt_nameAddress, txt_address;
     ProgressBar progressBar;
     ImageView img_marker;
+    GenarateCharacter genarateCharacter;
+
+    //Quan Trọng
+    String nameList;
     private FusedLocationProviderClient fusedLocationProviderClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +74,7 @@ public class ConfirmLocation extends AppCompatActivity implements OnMapReadyCall
         txt_nameAddress = findViewById(R.id.txt_nameAddress);
         txt_address = findViewById(R.id.txt_address);
         edt_note = findViewById(R.id.edt_note);
+        genarateCharacter = new GenarateCharacter();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         // Khởi tạo SupportMapFragment
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map2);
@@ -96,6 +106,16 @@ public class ConfirmLocation extends AppCompatActivity implements OnMapReadyCall
             }
         });
     }
+    void sendNotification() {
+        String fcmServerKey = "AAAA-aEDMr4:APA91bFkulQb-yKqZHCdfMMvTnAWHu6eHSaFsPTkTiM4CN4nux4zGjFOpEnk_NXESGI3i98JmZX0AJj7tqyFsxmhhOU5AP4v0fHmxVNNA6olETuUvwhpCg6ip_0NT3kXa-eWUFeC0rP_";
+        String receiverToken = "eImI4cXhSR-bWnQP84GKNe:APA91bHvlmJxjpwJggnIDvEAIlB3KA8bT6OBUDDjdoUFxEWzl-CS3vAQZWRhC5XE7Ca7WTUOGz6g8ltGfB0foaSIXRQOc4_FKkOGmVWbfMBUrZP0b3xwGmU9Sy6bJa6FhEUxiqhVL20R";
+        String notificationTitle = nameList +"_"+ user.getUid();
+        String notificationBody = "Bạn ơi có người cần bạn giúp đỡ";
+
+        // Gửi thông báo
+        Post_Calling(fcmServerKey, receiverToken,notificationBody, notificationTitle);
+    }
+
     private void setEvent() {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,13 +127,17 @@ public class ConfirmLocation extends AppCompatActivity implements OnMapReadyCall
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplication(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 img_marker.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE); // Hiển thị ProgressBar
 
                 confirm();
                 sendNotificationToRescuers();
+                sendNotification();
+                intent.putExtra("KEY_name_list", nameList);
+                intent.putExtra("KEY", "1");// Đặt key và giá trị cần truyền
+                startActivity(intent);
                 finish();
             }
         });
@@ -131,35 +155,70 @@ public class ConfirmLocation extends AppCompatActivity implements OnMapReadyCall
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+//    void confirm() {
+//        Date currentDate = new Date();
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd-MM-yyyy");
+//        String formattedDateTime = dateFormat.format(currentDate);
+//
+//        String datetime_myuid = "081913112023_uid";
+//        Map<String, Object> data = new HashMap<>();
+//        data.put("datetime", formattedDateTime);
+//        data.put("distance", "");
+//        data.put("evaluateid", "");
+//        data.put("latitude", new_latitude);
+//        data.put("longitude", new_longitude);
+//        data.put("myuid", user.getUid());
+//        data.put("rescueuid", "");
+//        db.collection("RescueInformation").document(datetime_myuid)
+//                .set(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        Toast.makeText(ConfirmLocation.this, "Thành công", Toast.LENGTH_SHORT).show();
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        e.printStackTrace();
+//                        Toast.makeText(getApplicationContext(), "Thất bại", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
+
     void confirm() {
-        Date currentDate = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd-MM-yyyy");
-        String formattedDateTime = dateFormat.format(currentDate);
+    Date currentDate = new Date();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd-MM-yyyy");
+    String formattedDateTime = dateFormat.format(currentDate);
 
-        String datetime_myuid = "081913112023_uid";
-        Map<String, Object> data = new HashMap<>();
-        data.put("datetime", formattedDateTime);
-        data.put("distance", "");
-        data.put("evaluateid", "");
-        data.put("latitude", new_latitude);
-        data.put("longitude", new_longitude);
-        data.put("myuid", user.getUid());
-        data.put("rescueuid", "");
-        db.collection("RescueInformation").document(datetime_myuid)
-                .set(data).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(ConfirmLocation.this, "Thành công", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "Thất bại", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
+    String document = user.getUid();
+        nameList= genarateCharacter.getLastFiveCharacters(user.getUid()) + "_" +
+            genarateCharacter.convertDateTimeFormat(formattedDateTime);
+    // Tạo một ArrayList chứa thông tin
+    ArrayList<String> dataArray = new ArrayList<>();
+    dataArray.add(formattedDateTime); // datetime
+    dataArray.add(""); // distance
+    dataArray.add(""); // evaluateid
+    dataArray.add(String.valueOf(new_latitude)); // latitude
+    dataArray.add(String.valueOf(new_longitude)); // longitude
+    dataArray.add(user.getUid()); // myuid
+    dataArray.add(""); // rescueuid
 
+    // Ghi ArrayList này vào Firebase
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    db.collection("RescueInformation").document(document)
+            .set(Collections.singletonMap(nameList, dataArray))
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Toast.makeText(ConfirmLocation.this, "Thành công", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Thất bại", Toast.LENGTH_SHORT).show();
+                }
+            });
+}
     private void sendNotificationToRescuers() {
         FirebaseMessaging.getInstance().subscribeToTopic("rescue_topic")
                 .addOnCompleteListener(task -> {
