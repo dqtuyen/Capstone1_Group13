@@ -95,6 +95,7 @@ public class Welcome extends AppCompatActivity {
         Intent introIntent = new Intent(this, Intro.class);
         startActivity(introIntent);
 
+
         finish();
     }
 }

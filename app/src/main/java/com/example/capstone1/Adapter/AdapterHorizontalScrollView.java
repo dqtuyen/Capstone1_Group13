@@ -8,15 +8,15 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.capstone1.Data.DataTest;
+import com.example.capstone1.Data.DataUser;
 import com.example.capstone1.R;
 
 import java.util.List;
 
 public class AdapterHorizontalScrollView extends RecyclerView.Adapter<AdapterHorizontalScrollView.ViewHolder> {
-    private List<DataTest> data;
+    private List<DataUser> data;
 
-    public AdapterHorizontalScrollView(List<DataTest> data) {
+    public AdapterHorizontalScrollView(List<DataUser> data) {
         this.data = data;
     }
 
@@ -46,13 +46,13 @@ public class AdapterHorizontalScrollView extends RecyclerView.Adapter<AdapterHor
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        DataTest item = data.get(position);
+        DataUser item = data.get(position);
 
-        holder.imageView.setImageResource(item.getImg());
+        holder.imageView.setImageResource(R.drawable.ic_app);
         holder.txt_name.setText(item.getName());
         holder.txt_sdt.setText(item.getCall());
         holder.txt_address.setText(item.getAddress());
-        holder.txt_turns.setText(item.getTurns());
+        holder.txt_turns.setText(item.getDecription());
     }
 
     @Override

@@ -3,15 +3,11 @@ package com.example.capstone1.Fragment;
 import static android.content.ContentValues.TAG;
 
 import static com.example.capstone1.FcmNotificationSender.Post_Calling;
-import static com.example.capstone1.FcmNotificationSender.sendFcmNotification;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -19,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,25 +23,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.capstone1.Activity.CallForRescue;
-import com.example.capstone1.Activity.ConfirmLocation;
-import com.example.capstone1.Activity.MainActivity;
+import com.example.capstone1.Activity.RescueCallingList;
 import com.example.capstone1.Activity.Rescue_Evaluate;
-import com.example.capstone1.Data.DataTest;
-import com.example.capstone1.FCMUtil;
+import com.example.capstone1.Data.DataUser;
 import com.example.capstone1.GoogleMapService;
-import com.example.capstone1.NotificationSender;
 import com.example.capstone1.OnAddressReceivedListener;
 import com.example.capstone1.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -151,15 +138,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     void viewData_cuuhonhieunhat() {
 
-        List<DataTest> carServiceList = new ArrayList<>();
+        List<DataUser> carServiceList = new ArrayList<>();
 
-        carServiceList.add(new DataTest("UID001", "Auto Care Center", "+1-123-456-7890", "autocare@example.com", "123 Main St, City", "Monday - Friday", "10", "Sedan", "4.8", R.drawable.img_welcom));
-        carServiceList.add(new DataTest("UID002", "Speedy Repairs", "+1-987-654-3210", "speedy@example.com", "456 Elm St, Town", "Monday - Saturday", "8", "SUV", "4.5", R.drawable.img_welcom));
-        carServiceList.add(new DataTest("UID003", "Pro Auto Shop", "+1-555-777-3333", "proauto@example.com", "789 Oak St, Village", "Monday - Sunday", "12", "Truck", "4.9", R.drawable.img_welcom));
-        carServiceList.add(new DataTest("UID004", "City Car Service", "+1-111-222-3333", "citycar@example.com", "321 Pine St, County", "Tuesday - Saturday", "6", "Convertible", "4.7", R.drawable.img_welcom));
-        carServiceList.add(new DataTest("UID005", "Green Auto Garage", "+1-888-888-8888", "greenauto@example.com", "654 Birch St, Suburb", "Monday - Saturday", "5", "Hybrid", "4.6", R.drawable.img_welcom));
+//        carServiceList.add(new DataUser("UID001", "Auto Care Center", "+1-123-456-7890", "autocare@example.com", "123 Main St, City", "Monday - Friday", "10", "Sedan", "4.8", R.drawable.img_welcom));
+//        carServiceList.add(new DataUser("UID002", "Speedy Repairs", "+1-987-654-3210", "speedy@example.com", "456 Elm St, Town", "Monday - Saturday", "8", "SUV", "4.5", R.drawable.img_welcom));
+//        carServiceList.add(new DataUser("UID003", "Pro Auto Shop", "+1-555-777-3333", "proauto@example.com", "789 Oak St, Village", "Monday - Sunday", "12", "Truck", "4.9", R.drawable.img_welcom));
+//        carServiceList.add(new DataUser("UID004", "City Car Service", "+1-111-222-3333", "citycar@example.com", "321 Pine St, County", "Tuesday - Saturday", "6", "Convertible", "4.7", R.drawable.img_welcom));
+//        carServiceList.add(new DataUser("UID005", "Green Auto Garage", "+1-888-888-8888", "greenauto@example.com", "654 Birch St, Suburb", "Monday - Saturday", "5", "Hybrid", "4.6", R.drawable.img_welcom));
 
-        for (DataTest data : carServiceList) {
+        for (DataUser data : carServiceList) {
             View item = LayoutInflater.from(getActivity()).inflate(R.layout.item_rescuest, horizontalLayout, false);
             // Thay thế R.id.xxx bằng ID thực sự của các phần tử trong item_rescuest.xml
             ImageView itemImageView = item.findViewById(R.id.imageView);
@@ -168,11 +155,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             TextView txt_address = item.findViewById(R.id.edt_address);
             TextView txt_turns = item.findViewById(R.id.edt_turns);
 
-            itemImageView.setImageResource(data.getImg());
+            itemImageView.setImageResource(R.drawable.ic_app);
             txt_name.setText(data.getName());
             txt_sdt.setText(data.getCall());
             txt_address.setText(data.getAddress());
-            txt_turns.setText(data.getTurns());
+            txt_turns.setText(data.getDecription());
             horizontalLayout.addView(item);
         }
     }
@@ -224,7 +211,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         img_test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Rescue_Evaluate.class);
+                Intent intent = new Intent(getActivity(), RescueCallingList.class);
                 startActivity(intent);
             }
         });

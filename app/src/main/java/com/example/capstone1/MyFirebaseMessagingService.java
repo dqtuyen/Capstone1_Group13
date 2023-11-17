@@ -18,8 +18,11 @@ package com.example.capstone1;
         import androidx.core.app.NotificationCompat;
         import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+        import com.example.capstone1.Account.Intro;
+        import com.example.capstone1.Account.Welcome;
         import com.example.capstone1.Activity.ConfirmLocation;
         import com.example.capstone1.Activity.MainActivity;
+        import com.example.capstone1.Activity.RescueCallingList;
         import com.google.android.gms.tasks.OnCompleteListener;
         import com.google.android.gms.tasks.OnFailureListener;
         import com.google.android.gms.tasks.OnSuccessListener;
@@ -79,13 +82,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
     //
     private void sendNotification(String key, String messageBody, String name) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, RescueCallingList.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("notification_clicked", true); // Gửi cờ thông báo đã được bấm
-        intent.putExtra("key_user", key);
+
+        Intent intent2 = new Intent("com.example.capstone1.MyFirebaseMessagingService");
+        intent2.putExtra("notification_clicked", true); // Gửi cờ thông báo đã được bấm
+        intent2.putExtra("key_user", key);
+        sendBroadcast(intent2);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+
+
 
         String channelId = "My channel ID";
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

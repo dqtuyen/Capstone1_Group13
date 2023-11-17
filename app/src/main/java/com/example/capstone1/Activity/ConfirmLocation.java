@@ -183,29 +183,40 @@ public class ConfirmLocation extends AppCompatActivity implements OnMapReadyCall
 //                    }
 //                });
 //    }
+    void setCallingRescue(String id_rescue_info) {
+        Map<String, String> data = new HashMap<>();
+        data.put("id_rescue_info", id_rescue_info);
+        db.collection("CallingForRescue").document(user.getUid())
+                .set(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
 
+                    }
+                });
+    }
     void confirm() {
     Date currentDate = new Date();
     SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd-MM-yyyy");
     String formattedDateTime = dateFormat.format(currentDate);
-
     String document = user.getUid();
         nameList= genarateCharacter.getLastFiveCharacters(user.getUid()) + "_" +
             genarateCharacter.convertDateTimeFormat(formattedDateTime);
-    // Tạo một ArrayList chứa thông tin
+
+        // Tạo một ArrayList chứa thông tin
     ArrayList<String> dataArray = new ArrayList<>();
     dataArray.add(formattedDateTime); // datetime
-    dataArray.add(""); // distance
+    dataArray.add(""); // description
     dataArray.add(""); // evaluateid
     dataArray.add(String.valueOf(new_latitude)); // latitude
     dataArray.add(String.valueOf(new_longitude)); // longitude
     dataArray.add(user.getUid()); // myuid
     dataArray.add(""); // rescueuid
 
+    setCallingRescue(nameList);
     // Ghi ArrayList này vào Firebase
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     db.collection("RescueInformation").document(document)
-            .set(Collections.singletonMap(nameList, dataArray))
+            .update(Collections.singletonMap(nameList, dataArray))
             .addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {

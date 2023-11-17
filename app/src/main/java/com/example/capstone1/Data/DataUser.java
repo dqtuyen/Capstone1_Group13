@@ -1,29 +1,50 @@
 package com.example.capstone1.Data;
 
-public class DataTest {
+public class DataUser {
     private String UID;
     private String name;
     private String call;
     private String email;
     private String address;
-    private String turns;
-    private String role;
+    private String decription;
+    private String time;
     private String num_car;
     private String type_car;
     private String rank;
 
-    private int img;
-    public DataTest(String UID, String name, String call, String email, String address, String turns, String num_car, String type_car, String rank, int img) {
+    private String img;
+    public DataUser(String UID, String name, String call, String email, String address, String turns,String time, String num_car, String type_car, String rank, String img) {
         this.UID = UID;
         this.name = name;
         this.call = call;
         this.email = email;
         this.address = address;
-        this.turns = turns;
+        this.decription = turns;
+        this.time = time;
         this.num_car = num_car;
         this.type_car = type_car;
         this.rank = rank;
         this.img = img;
+    }
+
+    public DataUser(String UID, String name, String call, String address, String decription, String time, String num_car, String type_car, String img) {
+        this.UID = UID;
+        this.name = name;
+        this.call = call;
+        this.address = address;
+        this.decription = decription;
+        this.time = time;
+        this.num_car = num_car;
+        this.type_car = type_car;
+        this.img = img;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getUID() {
@@ -66,12 +87,12 @@ public class DataTest {
         this.address = address;
     }
 
-    public String getTurns() {
-        return turns;
+    public String getDecription() {
+        return decription;
     }
 
-    public void setTurns(String turns) {
-        this.turns = turns;
+    public void setDecription(String decription) {
+        this.decription = decription;
     }
 
     public String getNum_car() {
@@ -98,11 +119,11 @@ public class DataTest {
         this.rank = rank;
     }
 
-    public int getImg() {
+    public String getImg() {
         return img;
     }
 
-    public void setImg(int img) {
+    public void setImg(String img) {
         this.img = img;
     }
 }

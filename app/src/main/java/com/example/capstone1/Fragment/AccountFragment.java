@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.capstone1.Account.Login;
-import com.example.capstone1.Data.DataTest;
+import com.example.capstone1.Data.DataUser;
 import com.example.capstone1.R;
 import com.example.capstone1.Activity.UpdateProfile;
 import com.example.capstone1.Activity.UpdateRole;
@@ -84,7 +84,7 @@ public class AccountFragment extends Fragment {
     ImageButton imageButtonView;
     Button btn_logout, btn_information, btn_history, btn_update_role;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    List<DataTest> carServiceList = new ArrayList<>();
+    List<DataUser> carServiceList = new ArrayList<>();
     TextView txt_call, txt_email, txt_address, txt_numcar, txt_type_moto, txt_name, txt_role;
     DocumentReference docRef;
 
@@ -169,14 +169,14 @@ public class AccountFragment extends Fragment {
 
     }
 
-    private void data() {
-        carServiceList.add(new DataTest("UID001", "Auto Care Center", "+1-123-456-7890", "autocare@example.com", "123 Main St, City", "Monday - Friday", "10", "Sedan", "4.8", R.drawable.back));
-        carServiceList.add(new DataTest("UID002", "Speedy Repairs", "+1-987-654-3210", "speedy@example.com", "456 Elm St, Town", "Monday - Saturday", "8", "SUV", "4.5", R.drawable.back));
-        carServiceList.add(new DataTest("UID003", "Pro Auto Shop", "+1-555-777-3333", "proauto@example.com", "789 Oak St, Village", "Monday - Sunday", "12", "Truck", "4.9", R.drawable.back));
-        carServiceList.add(new DataTest("UID004", "City Car Service", "+1-111-222-3333", "citycar@example.com", "321 Pine St, County", "Tuesday - Saturday", "6", "Convertible", "4.7", R.drawable.back));
-        carServiceList.add(new DataTest("UID005", "Green Auto Garage", "+1-888-888-8888", "greenauto@example.com", "654 Birch St, Suburb", "Monday - Saturday", "5", "Hybrid", "4.6", R.drawable.back));
-
-    }
+//    private void data() {
+//        carServiceList.add(new DataUser("UID001", "Auto Care Center", "+1-123-456-7890", "autocare@example.com", "123 Main St, City", "Monday - Friday", "10", "Sedan", "4.8", R.drawable.back));
+//        carServiceList.add(new DataUser("UID002", "Speedy Repairs", "+1-987-654-3210", "speedy@example.com", "456 Elm St, Town", "Monday - Saturday", "8", "SUV", "4.5", R.drawable.back));
+//        carServiceList.add(new DataUser("UID003", "Pro Auto Shop", "+1-555-777-3333", "proauto@example.com", "789 Oak St, Village", "Monday - Sunday", "12", "Truck", "4.9", R.drawable.back));
+//        carServiceList.add(new DataUser("UID004", "City Car Service", "+1-111-222-3333", "citycar@example.com", "321 Pine St, County", "Tuesday - Saturday", "6", "Convertible", "4.7", R.drawable.back));
+//        carServiceList.add(new DataUser("UID005", "Green Auto Garage", "+1-888-888-8888", "greenauto@example.com", "654 Birch St, Suburb", "Monday - Saturday", "5", "Hybrid", "4.6", R.drawable.back));
+//
+//    }
 
     private void clearLoginInfo() {
         Context context = requireActivity();
