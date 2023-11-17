@@ -8,7 +8,6 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.capstone1.Data.DataLocation;
 import com.example.capstone1.FCMUtil;
 import com.example.capstone1.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -37,7 +35,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -45,7 +42,6 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -83,7 +79,7 @@ public class UpdateRole extends AppCompatActivity implements OnMapReadyCallback 
 
         edt_address_detail = findViewById(R.id.edt_address_detail);
         edt_city = findViewById(R.id.edt_city);
-        btn_back = findViewById(R.id.btn_back);
+        btn_back = findViewById(R.id.btn_back01);
         spinner_update_role = findViewById(R.id.spinner_update_role);
         frame_map = findViewById(R.id.frame_map);
         btn_updaterole = findViewById(R.id.btn_updaterole);

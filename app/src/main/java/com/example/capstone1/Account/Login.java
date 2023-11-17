@@ -45,7 +45,7 @@ public class Login extends AppCompatActivity {
         edt_email_login = findViewById(R.id.edt_email_login);
         edt_password = findViewById(R.id.edt_password);
         btn_login = findViewById(R.id.btn_login);
-        btn_back = findViewById(R.id.btn_back);
+        btn_back = findViewById(R.id.btn_back01);
         txt_forgotpassword = findViewById(R.id.txt_forgotpassword);
         txt_view = findViewById(R.id.txt_view);
         init();

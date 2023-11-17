@@ -100,13 +100,13 @@
         <EditText
             android:id="@+id/edtChatBox"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="19dp"
             android:layout_gravity="center"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:hint="Enter message"
+            android:hint="Vui lòng nhập tin nhắn của bạn"
             android:maxLines="6" />
 
         <ImageView

@@ -34,7 +34,7 @@ public class ForgotPassword extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
         //Ánh xạ ID
         btn_sendcode = findViewById(R.id.btn_sendcode);
-        btn_back = findViewById(R.id.btn_back);
+        btn_back = findViewById(R.id.btn_back01);
         edt_email = findViewById(R.id.edt_email);
         txt_view = findViewById(R.id.txt_view);
         setEvent();

@@ -21,7 +21,7 @@
             >
 
             <ImageButton
-                android:id="@+id/btn_back"
+                android:id="@+id/btn_back01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_large"
@@ -36,9 +36,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_large"
+            android:text="Bạn bè phương xa"
             android:textSize="@dimen/text_size_h3"
-            android:textStyle="bold"
-            android:text="Bạn bè phương xa" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView20"
@@ -58,78 +58,77 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_history2"
+    <EditText
+        android:id="@+id/edt_location2"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="5dp"
         android:layout_marginHorizontal="@dimen/margin_large"
-        android:layout_marginTop="-30dp"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_weight="0.5"
         android:background="@drawable/rounded_white_edittext"
         android:drawableLeft="@drawable/address_marker"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        android:paddingStart="20dp"
-        android:paddingTop="8dp"
-        android:text="Vị trí"
-        android:textColor="@color/gray"
-        app:backgroundTint="@null"
-        android:elevation="4dp"
-        android:stateListAnimator="@null"
-        app:iconPadding="15dp" />
+        android:drawablePadding="@dimen/margin_medium"
+        android:ems="10"
+        android:hint="Địa chỉ"
+        android:includeFontPadding="false"
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:textColor="@color/gray" />
 
-    <Button
-        android:id="@+id/btn_history2"
+    <EditText
+        android:id="@+id/edt_name2"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="@dimen/margin_small"
+        android:layout_height="3dp"
         android:layout_marginHorizontal="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_weight="0.5"
         android:background="@drawable/rounded_white_edittext"
         android:drawableLeft="@drawable/ic_edit"
-        android:drawablePadding="8dp"
-        android:gravity=""
-        android:paddingStart="20dp"
-        android:paddingTop="8dp"
-        android:text="Họ và tên"
-        android:textColor="@color/gray"
-        app:backgroundTint="@null"
-        app:iconPadding="15dp" />
+        android:drawablePadding="@dimen/margin_medium"
+        android:ems="10"
+        android:hint="Tên của bạn"
+        android:includeFontPadding="false"
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:textColor="@color/gray" />
 
-    <Button
-        android:id="@+id/btn_history2"
+    <EditText
+        android:id="@+id/edt_phone2"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="@dimen/margin_small"
+        android:layout_height="0dp"
         android:layout_marginHorizontal="@dimen/margin_large"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_weight="0.5"
         android:background="@drawable/rounded_white_edittext"
         android:drawableLeft="@drawable/call"
-        android:drawablePadding="8dp"
-        android:gravity=""
-        android:paddingStart="20dp"
-        android:paddingTop="8dp"
-        android:text="Số điện thoại"
-        android:textColor="@color/gray"
-        app:backgroundTint="@null"
-        app:iconPadding="15dp" />
+        android:drawablePadding="@dimen/margin_medium"
+        android:ems="10"
+        android:hint="Số điện thoại"
+        android:includeFontPadding="false"
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:textColor="@color/gray" />
 
-    <Button
-        android:id="@+id/btn_history2"
+    <EditText
+        android:id="@+id/edt_numbercar2"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="@dimen/margin_small"
+        android:layout_height="0dp"
         android:layout_marginHorizontal="@dimen/margin_large"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_weight="0.5"
         android:background="@drawable/rounded_white_edittext"
         android:drawableLeft="@drawable/number_car"
-        android:drawablePadding="8dp"
-        android:gravity=""
-        android:paddingStart="20dp"
-        android:paddingTop="8dp"
-        android:text="Biển số xe"
-        android:textColor="@color/gray"
-        app:backgroundTint="@null"
-        app:iconPadding="15dp" />
+        android:drawablePadding="@dimen/margin_medium"
+        android:ems="10"
+        android:hint="Biển số xe"
+        android:includeFontPadding="false"
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:textColor="@color/gray" />
 
     <Button
-        android:id="@+id/btn_login3"
+        android:id="@+id/btn_Confirm_information"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginHorizontal="@dimen/margin_large"

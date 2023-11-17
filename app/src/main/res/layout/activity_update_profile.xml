@@ -36,11 +36,10 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cập nhật thông tin liên lạc của bạn"
         android:layout_marginLeft="@dimen/margin_large"
+        android:text="Cập nhật thông tin liên lạc của bạn."
         android:textSize="18sp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,7 +76,7 @@
             android:drawableLeft="@drawable/email"
             android:drawablePadding="@dimen/margin_medium"
             android:ems="10"
-            android:hint="Email"
+            android:hint="Nhập email của bạn"
             android:includeFontPadding="false"
             android:inputType="text"
             android:paddingLeft="20dp"

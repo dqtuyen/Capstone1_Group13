@@ -20,7 +20,7 @@ public class CallForRescue extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_for_rescue);
 
-        btn_back = findViewById(R.id.btn_back);
+        btn_back = findViewById(R.id.btn_back01);
         btn_call_for_myself = findViewById(R.id.btn_call_for_myself);
         btn_help_friend = findViewById(R.id.btn_help_friend);
         btn_edit_info = findViewById(R.id.btn_edit_info);

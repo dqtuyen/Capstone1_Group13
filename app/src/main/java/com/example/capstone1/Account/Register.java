@@ -50,7 +50,7 @@ public class Register extends AppCompatActivity {
         edt_confirm_password = findViewById(R.id.edt_confirm_password);
         btn_login = findViewById(R.id.btn_login);
         txt_view = findViewById(R.id.txt_view);
-        btn_back = findViewById(R.id.btn_back);
+        btn_back = findViewById(R.id.btn_back01);
 
         init();
         setEvent();

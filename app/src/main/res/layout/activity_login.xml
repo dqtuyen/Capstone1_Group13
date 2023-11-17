@@ -9,7 +9,7 @@
     android:background="@drawable/color_background">
 
     <ImageButton
-        android:id="@+id/btn_back"
+        android:id="@+id/btn_back01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_large"
@@ -20,9 +20,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_large"
-        android:text="Welcome back! Glad to see you, Again!"
-        android:textStyle="bold"
-        android:textSize="30dp"/>
+        android:text="Chào mừng trở lại! \nThật vui khi gặp lại bạn!"
+        android:textSize="30dp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             android:layout_weight="0.5"
             android:background="@drawable/rounded_white_edittext"
             android:ems="10"
-            android:hint="Email"
+            android:hint="Nhập email của bạn"
             android:inputType="textEmailAddress"
             android:paddingLeft="20dp"
             android:textColor="@color/gray" />
@@ -72,12 +72,11 @@
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:text="Login"
-            android:background="@drawable/rounded_orange_button"
-            app:backgroundTint="@null"
             android:layout_marginHorizontal="@dimen/margin_large"
-            />
+            android:layout_weight="0.5"
+            android:background="@drawable/rounded_orange_button"
+            android:text="Đăng nhập"
+            app:backgroundTint="@null" />
 
         <TextView
             android:id="@+id/textView7"
