@@ -19,6 +19,7 @@ public class Rescue_Evaluate extends AppCompatActivity {
     Button btn_send_evaluate, btn_cancel;
     EditText edt_vietdanhgia;
     private int starCount = 0;
+    String img;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,16 +36,21 @@ public class Rescue_Evaluate extends AppCompatActivity {
         btn_cancel = findViewById(R.id.btn_cancel);
         edt_vietdanhgia = findViewById(R.id.edt_vietdanhgia);
 
+        Intent intent = getIntent();
+        if (intent != null) {
+            img = intent.getStringExtra("IMG");
+        } else {
+            // Xử lý trường hợp intent là null
+        }
+
         setImage();
         setEventClickStar();
         setEvent();
     }
     void setImage() {
-        // Tên tài nguyên hình ảnh hoặc URL hình ảnh cần hiển thị
-        String imageUrl = "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1698340797~exp=1698341397~hmac=7fb261f6da08e5edd433994a215dff773601a0649d258b694b10ff1e6d0dbed0";
 
         Glide.with(this)
-                .load(imageUrl)
+                .load(img)
                 .circleCrop() // Áp dụng cắt ảnh thành hình tròn
                 .into(imageButtonView);
     }
@@ -134,6 +140,7 @@ public class Rescue_Evaluate extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Rescue_Evaluate.this, MainActivity.class);
+                intent.putExtra("KEY", 0);
                 startActivity(intent);
                 finish();
             }
@@ -143,6 +150,7 @@ public class Rescue_Evaluate extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Rescue_Evaluate.this, MainActivity.class);
+                intent.putExtra("KEY", 0);
                 startActivity(intent);
                 finish();
             }

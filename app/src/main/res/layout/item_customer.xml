@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/margin_medium"
     android:layout_marginVertical="@dimen/margin_short"
     android:background="@drawable/rounded_white_edittext"
     android:orientation="vertical">
@@ -68,7 +67,7 @@
                 android:id="@+id/txt_evaluated"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Đánh giá: Chủ tiệm thân thiện " />
+                android:text="Mô tả , info.get(6) " />
 
         </LinearLayout>
     </LinearLayout>
@@ -93,6 +92,7 @@
 
             <TextView
                 android:id="@+id/txt_address"
+                android:layout_marginBottom="@dimen/margin_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />

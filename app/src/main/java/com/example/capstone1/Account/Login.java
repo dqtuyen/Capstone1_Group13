@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.capstone1.Activity.MainActivity;
+import com.example.capstone1.Activity.Role;
 import com.example.capstone1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

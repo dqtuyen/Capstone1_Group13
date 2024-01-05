@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.capstone1.Fragment.AccountFragment;
 import com.example.capstone1.Fragment.ChatBotFragment;
+import com.example.capstone1.Fragment.HistoryFragment;
 import com.example.capstone1.Fragment.HomeFragment;
 import com.example.capstone1.Fragment.MapsFragment;
 
@@ -22,7 +23,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return new HomeFragment();
             case 1:
-                return new MapsFragment();
+                return new HistoryFragment();
             case 2:
                 return new ChatBotFragment();
             case 3:

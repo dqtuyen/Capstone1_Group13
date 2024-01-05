@@ -23,12 +23,30 @@ public class GenarateCharacter {
 
         return desiredElement;
     }
+    public String trimmedCustom(String address_line) {
+        String fullAddress = address_line;
 
+        // Tách chuỗi thành mảng sử dụng dấu phẩy làm dấu phân cách
+        String[] parts = fullAddress.split(",");
+
+        // Kiểm tra xem có ít nhất một phần trước khi lấy phần đầu tiên
+        if (parts.length > 0) {
+            // Lấy chuỗi trước dấu phẩy đầu tiên
+            return parts[0].trim() + ", " + parts[1].trim() + ", " + parts[2].trim();
+        } else {
+            // Chuỗi không có dấu phẩy
+            System.out.println("Chuỗi không có dấu phẩy trong địa chỉ.");
+            return "";
+        }
+    }
     public String getUID(String key) {
         String[] parts = key.split("_");
 
         String desiredElement = parts[2];
 
         return desiredElement;
+    }
+    public String removeBrackets(String input) {
+        return input.replaceAll("[\\[\\]]", "");
     }
 }

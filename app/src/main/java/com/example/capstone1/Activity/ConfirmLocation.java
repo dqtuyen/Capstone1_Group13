@@ -8,10 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,14 +35,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ConfirmLocation extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -80,10 +73,25 @@ public class ConfirmLocation extends AppCompatActivity implements OnMapReadyCall
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map2);
         // Liên kết với sự kiện OnMapReadyCallback
         mapFragment.getMapAsync(this);
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            name = intent.getStringExtra("NAME");
+            phone = intent.getStringExtra("PHONE");
+            typecar= intent.getStringExtra("TYPECAR");
+            numbercar = intent.getStringExtra("NUMBERCAR");
+        } else {
+            // Xử lý trường hợp intent là null
+        }
+
         setEvent();
+
     }
+
+
     private double new_latitude;
     private double new_longitude;
+    private String new_address;
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         googleMapService = new GoogleMapService(googleMap, fusedLocationProviderClient, this);
@@ -98,6 +106,7 @@ public class ConfirmLocation extends AppCompatActivity implements OnMapReadyCall
                 Log.d("Address", "Received Address Name: " + addressName);
                 new_latitude = latitude;
                 new_longitude = longitude;
+                new_address = address;
                 Log.d("Location", "Received Latitude: " + new_latitude);
                 Log.d("Location", "Received Longitude: " + new_longitude);
 
@@ -135,8 +144,10 @@ public class ConfirmLocation extends AppCompatActivity implements OnMapReadyCall
                 confirm();
                 sendNotificationToRescuers();
                 sendNotification();
+
                 intent.putExtra("KEY_name_list", nameList);
                 intent.putExtra("KEY", "1");// Đặt key và giá trị cần truyền
+
                 startActivity(intent);
                 finish();
             }
@@ -155,80 +166,46 @@ public class ConfirmLocation extends AppCompatActivity implements OnMapReadyCall
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-//    void confirm() {
-//        Date currentDate = new Date();
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd-MM-yyyy");
-//        String formattedDateTime = dateFormat.format(currentDate);
-//
-//        String datetime_myuid = "081913112023_uid";
-//        Map<String, Object> data = new HashMap<>();
-//        data.put("datetime", formattedDateTime);
-//        data.put("distance", "");
-//        data.put("evaluateid", "");
-//        data.put("latitude", new_latitude);
-//        data.put("longitude", new_longitude);
-//        data.put("myuid", user.getUid());
-//        data.put("rescueuid", "");
-//        db.collection("RescueInformation").document(datetime_myuid)
-//                .set(data).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        Toast.makeText(ConfirmLocation.this, "Thành công", Toast.LENGTH_SHORT).show();
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        e.printStackTrace();
-//                        Toast.makeText(getApplicationContext(), "Thất bại", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//    }
-    void setCallingRescue(String id_rescue_info) {
-        Map<String, String> data = new HashMap<>();
-        data.put("id_rescue_info", id_rescue_info);
-        db.collection("CallingForRescue").document(user.getUid())
-                .set(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+    String name, phone, typecar, numbercar;
+
+    void confirm() {
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd-MM-yyyy");
+        String formattedDateTime = dateFormat.format(currentDate);
+        String document = user.getUid();
+            nameList= genarateCharacter.getLastFiveCharacters(user.getUid()) + "_" +
+                genarateCharacter.convertDateTimeFormat(formattedDateTime);
+
+            // Tạo một ArrayList chứa thông tin
+        ArrayList<String> dataArray = new ArrayList<>();
+        dataArray.add(name); //name
+        dataArray.add(phone); //phone
+        dataArray.add(formattedDateTime); // datetime
+        dataArray.add(txt_note.getText().toString()); // description
+        dataArray.add(new_address); // address
+        dataArray.add(String.valueOf(new_latitude)); // latitude
+        dataArray.add(String.valueOf(new_longitude)); // longitude
+        dataArray.add(user.getUid()); // myuid
+        //dataArray.add(""); // rescueuid
+
+        //setCallingRescue(nameList);
+        // Ghi ArrayList này vào Firebase
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("CallingForRescue").document(document)
+                .set(Collections.singletonMap(nameList, dataArray))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
+                        Toast.makeText(ConfirmLocation.this, "Thành công", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Thất bại", Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
-    void confirm() {
-    Date currentDate = new Date();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd-MM-yyyy");
-    String formattedDateTime = dateFormat.format(currentDate);
-    String document = user.getUid();
-        nameList= genarateCharacter.getLastFiveCharacters(user.getUid()) + "_" +
-            genarateCharacter.convertDateTimeFormat(formattedDateTime);
-
-        // Tạo một ArrayList chứa thông tin
-    ArrayList<String> dataArray = new ArrayList<>();
-    dataArray.add(formattedDateTime); // datetime
-    dataArray.add(""); // description
-    dataArray.add(""); // evaluateid
-    dataArray.add(String.valueOf(new_latitude)); // latitude
-    dataArray.add(String.valueOf(new_longitude)); // longitude
-    dataArray.add(user.getUid()); // myuid
-    dataArray.add(""); // rescueuid
-
-    setCallingRescue(nameList);
-    // Ghi ArrayList này vào Firebase
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    db.collection("RescueInformation").document(document)
-            .update(Collections.singletonMap(nameList, dataArray))
-            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(ConfirmLocation.this, "Thành công", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Thất bại", Toast.LENGTH_SHORT).show();
-                }
-            });
 }
     private void sendNotificationToRescuers() {
         FirebaseMessaging.getInstance().subscribeToTopic("rescue_topic")

@@ -4,22 +4,37 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.capstone1.Data.DataLocation;
+import com.example.capstone1.Fragment.AccountFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,6 +54,79 @@ public class GoogleMapService {
     }
     public GoogleMapService(GoogleMap map) {
         this.googleMap = map;
+    }
+
+
+//        for (DataLocation location : locationList) {
+//            LatLng markerLocation = new LatLng(location.getLatitude(), location.getLongitude());
+//            MarkerOptions markerOptions = new MarkerOptions()
+//                    .position(markerLocation)
+//                    .title(location.getName_address())
+//                    .snippet(location.getUID())
+//                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.motorcycle));
+//
+//            mMap.addMarker(markerOptions);
+//            Marker marker = googleMap.addMarker(markerOptions);
+//            marker.showInfoWindow();
+//        }
+//
+//    }
+    public void addMarkerAndShowInformation(List<DataLocation> locationList, GoogleMap mMap) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        // Lấy dữ liệu của user
+        DocumentReference docRef = db.collection("Users").document(user.getUid());
+
+
+        for (DataLocation location : locationList) {
+            LatLng markerLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        // Lấy dữ liệu của user
+                        DocumentSnapshot doc = task.getResult();
+
+                        String img = doc.getString("img");
+                        Glide.with(activity)
+                                .asBitmap()
+                                .load(img) // Thay location.getImageUrl() bằng phương thức trả về URL của ảnh
+                                .override(70, 70)
+                                .circleCrop()
+                                .into(new CustomTarget<Bitmap>() {
+                                    @Override
+                                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                        // Tạo MarkerOptions với biểu tượng là ảnh đã tải
+                                        MarkerOptions markerOptions = new MarkerOptions()
+                                                .position(markerLocation)
+                                                .title(location.getName_address())
+                                                .snippet(location.getUID())
+                                                .icon(BitmapDescriptorFactory.fromBitmap(resource));
+
+                                        // Thêm Marker vào Map
+                                        mMap.addMarker(markerOptions);
+                                    }
+
+                                    @Override
+                                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                                        // Xử lý khi tải ảnh bị xóa
+                                    }
+
+                                    @Override
+                                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                                        // Xử lý khi tải ảnh thất bại
+                                    }
+                                });
+                    } else {
+                        // Xử lý lỗi
+                    }
+                }
+            });
+
+            //String img = "https://firebasestorage.googleapis.com/v0/b/capstone-7a4dc.appspot.com/o/img_avt_users%2Fimage_null.jpg?alt=media&token=7710185b-c951-4861-8b2d-a5109dbc5c75";
+            // Sử dụng Glide để tải ảnh từ URL
+
+        }
     }
 
     //Phương thức click vào marker
@@ -126,7 +214,9 @@ public class GoogleMapService {
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(markerLocation)
                     .title(location.getName_address())
-                    .snippet(location.getUID());
+                    .snippet(location.getUID())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.motorcycle));
+
             mMap.addMarker(markerOptions);
         }
     }
@@ -212,6 +302,23 @@ public class GoogleMapService {
         if (parts.length > 0) {
             // Lấy chuỗi trước dấu phẩy đầu tiên
             return parts[0].trim();
+        } else {
+            // Chuỗi không có dấu phẩy
+            System.out.println("Chuỗi không có dấu phẩy trong địa chỉ.");
+            return "";
+        }
+    }
+
+    public String trimmedCustom(String address_line) {
+        String fullAddress = address_line;
+
+        // Tách chuỗi thành mảng sử dụng dấu phẩy làm dấu phân cách
+        String[] parts = fullAddress.split(",");
+
+        // Kiểm tra xem có ít nhất một phần trước khi lấy phần đầu tiên
+        if (parts.length > 0) {
+            // Lấy chuỗi trước dấu phẩy đầu tiên
+            return parts[0].trim() + ", " + parts[1].trim() + ", " + parts[2].trim();
         } else {
             // Chuỗi không có dấu phẩy
             System.out.println("Chuỗi không có dấu phẩy trong địa chỉ.");
