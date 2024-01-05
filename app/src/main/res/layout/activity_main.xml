@@ -34,13 +34,12 @@
     <LinearLayout
         android:id="@+id/wait_rescue_info"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_alignBottom="@+id/view_pager"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="811dp"
         android:background="@drawable/rounded_white_edittext"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -97,7 +96,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/btn_cancel"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
