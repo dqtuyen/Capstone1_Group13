@@ -89,7 +89,7 @@ public class UpdateProfile extends AppCompatActivity {
                 }
 
 
-                //Email
+                //email
                 if(!email.contains("@gmail.com")){
                     Toast.makeText(UpdateProfile.this, "Vui lòng nhập đúng định dạng Email", Toast.LENGTH_SHORT).show();
                     return;

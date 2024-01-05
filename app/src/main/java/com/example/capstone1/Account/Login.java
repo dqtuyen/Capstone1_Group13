@@ -74,7 +74,7 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                //Email
+                //email
                 if(!email.contains("@gmail.com")){
                     Toast.makeText(Login.this, "Vui lòng nhập đúng định dạng Email", Toast.LENGTH_SHORT).show();
                     return;

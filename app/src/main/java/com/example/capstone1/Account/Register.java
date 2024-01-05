@@ -94,7 +94,7 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
-                //name
+                //Name
                 if(!isFirstCharUppercase(name)){
                     Toast.makeText(Register.this, "Các chữ cái đầu của tên phải viết in hoa", Toast.LENGTH_SHORT).show();
                     return;

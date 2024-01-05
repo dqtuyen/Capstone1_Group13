@@ -75,6 +75,7 @@ public class ForgotPassword extends AppCompatActivity {
                         Toast.makeText(ForgotPassword.this, "Vui lòng nhập đúng định dạng email", Toast.LENGTH_SHORT).show();
                         return;
                     }
+
                     auth.fetchSignInMethodsForEmail(email)
                             .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                                 @Override
