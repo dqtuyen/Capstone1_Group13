@@ -20,6 +20,7 @@ import com.example.capstone1.Activity.MainActivity;
 import com.example.capstone1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -73,6 +74,26 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
+                //Email
+                if(!email.contains("@gmail.com")){
+                    Toast.makeText(Login.this, "Vui lòng nhập đúng định dạng Email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!isValidEmail(email)){
+                    Toast.makeText(Login.this, "Vui lòng nhập đúng định dạng Email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //Password
+                if(password.length() < 5){
+                    Toast.makeText(Login.this, "Mật khẩu phải có hơn 5 kí tự", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!hasLetterAndNumber(password)){
+                    Toast.makeText(Login.this, "Mật khẩu phải có cả chữ và số", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -87,6 +108,7 @@ public class Login extends AppCompatActivity {
                 });
             }
         });
+
         txt_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,6 +146,15 @@ public class Login extends AppCompatActivity {
         editor.apply();
     }
 
+    //Email không được có khoảng trống và dấu
+    private boolean isValidEmail(String email) {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        return email.matches(emailPattern) && !email.contains(" ") && !email.contains("â");
+    }
+
+    private boolean hasLetterAndNumber(String password) {
+        return password.matches("^(?=.*[a-zA-Z])(?=.*\\d).+$");
+    }
     void goToMainActivity() {
 
         new Handler().postDelayed(new Runnable() {

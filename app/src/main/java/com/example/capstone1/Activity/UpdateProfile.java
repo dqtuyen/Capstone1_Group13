@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.capstone1.Account.Register;
 import com.example.capstone1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -66,6 +67,44 @@ public class UpdateProfile extends AppCompatActivity {
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Thư - NAME
+                String name, email,phone;
+                name = edt_name.getText().toString();
+                email = edt_email.getText().toString();
+                phone = edt_phone.getText().toString();
+
+                if(name.length() < 5){
+                    Toast.makeText(UpdateProfile.this, "Tên phải có hơn 5 kí tự", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(!isFirstCharUppercase(name)){
+                    Toast.makeText(UpdateProfile.this, "Các chữ cái đầu của tên phải viết in hoa", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(hasNumber(name)){
+                    Toast.makeText(UpdateProfile.this, "Tên không thể chứa số", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                //Email
+                if(!email.contains("@gmail.com")){
+                    Toast.makeText(UpdateProfile.this, "Vui lòng nhập đúng định dạng Email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!isValidEmail(email)){
+                    Toast.makeText(UpdateProfile.this, "Vui lòng nhập đúng định dạng Email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //Phone
+                if(!isValidPhoneNumber(phone)){
+                    Toast.makeText(UpdateProfile.this, "Số điện thoại phải có 10 chữ số", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 setData();
             }
         });
@@ -85,6 +124,32 @@ public class UpdateProfile extends AppCompatActivity {
 
     }
 
+    //Viết hoa chữ cái
+    private boolean isFirstCharUppercase(String name) {
+        return !name.isEmpty() && Character.isUpperCase(name.charAt(0));
+    }
+
+    //Không được có khoảng cách và dấu
+    private boolean isValidEmail(String email) {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        return email.matches(emailPattern) && !email.contains(" ") && !email.contains("â");
+    }
+
+    //Tên không được chưa số
+    private boolean hasNumber(String name) {
+        return name.matches(".*\\d.*");
+    }
+
+    //Phone phải đủ 10 số
+    private boolean isValidPhoneNumber(String phone) {
+        return phone.length() == 10;
+    }
+
+    //Nhập đủ biên số xe
+    //private boolean isValidNumberCar(String numbercar) {
+        // Ví dụ:"43C-12345" hoặc "43C-1234"
+      //  return numbercar.matches("[A-Z]{2}-\\d{4,5}");
+    //}
     void init(){
         String text = "<b>Để sau</b>";
         txt_init.setText(Html.fromHtml(text));
@@ -107,7 +172,7 @@ public class UpdateProfile extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getApplicationContext(), "Update Success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Update thành công", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
