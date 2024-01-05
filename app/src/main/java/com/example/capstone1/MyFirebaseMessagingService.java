@@ -82,7 +82,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
     //
     private void sendNotification(String key, String messageBody, String name) {
-        Intent intent = new Intent(this, RescueCallingList.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         Intent intent2 = new Intent("com.example.capstone1.MyFirebaseMessagingService");

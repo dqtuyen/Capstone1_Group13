@@ -103,7 +103,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView24"
+        android:id="@+id/txt_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_large"
@@ -129,7 +129,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView26"
+        android:id="@+id/txt_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_large"
@@ -155,7 +155,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView26"
+        android:id="@+id/txt_numcar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_large"
@@ -180,7 +180,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView26"
+        android:id="@+id/txt_typecar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_large"

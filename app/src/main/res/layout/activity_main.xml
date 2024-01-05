@@ -11,8 +11,10 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation" />
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_navigation">
+
+    </androidx.viewpager.widget.ViewPager>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -28,12 +30,14 @@
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
+
     <LinearLayout
         android:id="@+id/wait_rescue_info"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/view_pager"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="811dp"
         android:background="@drawable/rounded_white_edittext"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -131,12 +135,12 @@
             android:layout_marginHorizontal="@dimen/margin_small"
             android:layout_marginVertical="@dimen/margin_small"
             android:layout_weight="1"
-            app:srcCompat="@drawable/back" />
+            tools:srcCompat="@tools:sample/avatars" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="3.3"
             android:orientation="vertical">
 
             <TextView
@@ -144,23 +148,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
-                android:text="Dương Quang Tuyến"
-                android:textSize="@dimen/margin_h2"
-                android:textStyle="bold" />
+                android:text=""
+                android:textSize="@dimen/margin_h2" />
 
             <TextView
                 android:id="@+id/txt_info_moto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="75T - 1 55555 • Honda • AirBlade"
+                android:text=""
                 android:textSize="@dimen/text_size_h4" />
 
-            <ImageView
-                android:id="@+id/img_star"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_gravity="start"
-                app:srcCompat="@drawable/ic_star" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="-2dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:text="5"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/img_btn_star"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="#00000000"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/one_star_orange" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -170,20 +197,20 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imageView16"
+                android:id="@+id/img_call"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_short"
+                android:layout_height="match_parent"
+                android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/avt_chatgpt" />
+                app:srcCompat="@drawable/ic_call" />
 
             <ImageView
-                android:id="@+id/imageView17"
+                android:id="@+id/img_mess"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_short"
+                android:layout_height="match_parent"
+                android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/avt_chatgpt" />
+                app:srcCompat="@drawable/ic_mess" />
         </LinearLayout>
 
 

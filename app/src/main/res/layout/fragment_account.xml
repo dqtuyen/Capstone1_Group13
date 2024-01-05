@@ -27,7 +27,7 @@
                 android:layout_height="160dp">
 
                 <ImageView
-                    android:id="@+id/imageView6"
+                    android:id="@+id/img_background"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
@@ -35,7 +35,7 @@
             </FrameLayout>
 
             <ImageButton
-                android:id="@+id/imageButtonView"
+                android:id="@+id/img_avt"
                 android:layout_width="175dp"
                 android:layout_height="175dp"
                 android:layout_gravity="center"

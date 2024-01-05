@@ -9,30 +9,44 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.capstone1.Adapter.MyPagerAdapter;
 import com.example.capstone1.Adapter.ViewPagerAdapter;
+import com.example.capstone1.Data.DataCallingForRescue;
 import com.example.capstone1.Fragment.AccountFragment;
 import com.example.capstone1.Fragment.ChatBotFragment;
 import com.example.capstone1.Fragment.HistoryFragment;
 import com.example.capstone1.Fragment.HomeFragment;
 import com.example.capstone1.Fragment.MapsFragment;
 import com.example.capstone1.GenarateCharacter;
+import com.example.capstone1.GlobalData;
 import com.example.capstone1.GoogleMapService;
 import com.example.capstone1.OnAddressReceivedListener;
 import com.example.capstone1.R;
@@ -47,6 +61,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
@@ -57,111 +72,6 @@ import java.util.Map;
 import APIChatGPT.MessageDataAdapterTest;
 
 public class MainActivity extends AppCompatActivity {
-
-    private BroadcastReceiver messageReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String title = intent.getStringExtra("title");
-            String body = intent.getStringExtra("body");
-
-            // Xử lý dữ liệu nhận được từ service ở đây
-            // Ví dụ: Hiển thị thông báo trong MainActivity
-            Toast.makeText(MainActivity.this, title + " -> " + body, Toast.LENGTH_SHORT).show();
-            Log.e("LOG",title + " -> " + body );
-        }
-    };
-
-
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-
-        Log.d("LOG", "Đã bấm vào thông báo");
-
-        if (intent.getBooleanExtra("notification_clicked", false)) {
-            String title = intent.getStringExtra("title");
-            String key_user = intent.getStringExtra("key_user");
-            Log.d("LOG", "Notification Clicked - Title: " + title + ", Key_User: " + key_user);
-
-
-            String key = genarateCharacter.getKey(key_user);
-            String uid_custommer = genarateCharacter.getUID(key_user);
-            Log.d("LOG", "Notification Clicked - Title: " + title + ", Key: " + key);
-            updateSixthElement(key);
-            getInfoCustommer(key, uid_custommer);
-        }
-    }
-    void getInfoCustommer(String key_user, String uid_custommer) {
-        db.collection("RescueInformation").document(uid_custommer)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            // Kiểm tra xem trường arrayFieldName có tồn tại không
-                            if (documentSnapshot.contains(key_user)) {
-                                List<Object> dataArray = (List<Object>) documentSnapshot.get(key_user);
-
-                                String dateTime = dataArray.get(0).toString();
-                                String distance = dataArray.get(1).toString();
-                                String evaluateid = dataArray.get(2).toString();
-                                String latitude = dataArray.get(3).toString();
-                                String longitude = dataArray.get(4).toString();
-                                String uid_cus = uid_custommer;
-                                String uid_res = dataArray.get(6).toString();
-
-                                Log.d("LOG", "Info: " +  dateTime + distance +
-                                        evaluateid + latitude + longitude + uid_cus + uid_res);
-                            } else {
-                                // Trường arrayFieldName không tồn tại trong tài liệu
-                                System.out.println("Trường arrayFieldName không tồn tại.");
-                            }
-                        } else {
-                            // Tài liệu không tồn tại
-                            System.out.println("Tài liệu không tồn tại.");
-                        }
-                    }
-                });
-    }
-
-    void updateSixthElement(String key_user) {
-        db.collection("RescueInformation").document("nWNVygakezUI0b7A0yknmrDX9Sg1")
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            List<String> dataArray = (List<String>) documentSnapshot.get(key_user);
-
-                            if (dataArray != null && dataArray.size() >= 7) {
-                                dataArray.set(6, user.getUid()); // Cập nhật giá trị tại vị trí thứ 6
-
-                                // Cập nhật lại toàn bộ mảng vào Firestore
-                                db.collection("RescueInformation").document("nWNVygakezUI0b7A0yknmrDX9Sg1")
-                                        .update(key_user, dataArray)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Log.d("LOG", "Thành công");
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                e.printStackTrace();
-                                                Log.d("LOG", "Thất bại");
-                                            }
-                                        });
-                            } else {
-                                Log.d("LOG", "Mảng không đủ phần tử");
-                            }
-                        } else {
-                            Log.d("LOG", "Tài liệu không tồn tại");
-                        }
-                    }
-                });
-    }
-    //BottomNavigationView
     private ViewPager mViewPager;
     private BottomNavigationView mBottomNavigationView;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -169,12 +79,14 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout rescue_info;
     List<Fragment> fragmentList;
     GenarateCharacter genarateCharacter;
-
-    ImageView img_star, img_rescue;
-    TextView txt_name_rescue, txt_info_moto;
+    ImageButton img_btn_star;
+    ImageView img_call, img_mess;
+    ImageView img_rescue;
+    TextView txt_name_rescue, txt_info_moto, txt_star;
 
     //Quan trọng
     String Key_name_list = "";
+    String myRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,11 +94,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
 
-        img_star = findViewById(R.id.img_star);
+        txt_star = findViewById(R.id.txt_star);
+        img_btn_star = findViewById(R.id.img_btn_star);
         img_rescue = findViewById(R.id.img_rescue);
         txt_name_rescue = findViewById(R.id.txt_name_rescue);
         txt_info_moto = findViewById(R.id.txt_info_moto);
-
+        img_call = findViewById(R.id.img_call);
+        img_mess = findViewById(R.id.img_mess);
         mViewPager = findViewById(R.id.view_pager);
         mBottomNavigationView = findViewById(R.id.bottom_navigation);
         wait_rescue_info = findViewById(R.id.wait_rescue_info);
@@ -197,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
         fragmentList.add(new ChatBotFragment());
         fragmentList.add(new AccountFragment());
         genarateCharacter = new GenarateCharacter();
+
+
+
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragmentList);
         mViewPager.setAdapter(pagerAdapter);
 // Xác định số lượng trang được giữ lại (ví dụ: 2)
@@ -209,27 +126,102 @@ public class MainActivity extends AppCompatActivity {
         MessageDataAdapterTest messageDataAdapterTest = new MessageDataAdapterTest();
         messageDataAdapterTest.sendMessageToOpenAI("Bác hồ tên thật là gì?");
 
-        IntentFilter intentFilter = new IntentFilter("com.example.capstone1.MyFirebaseMessagingService");
-        registerReceiver(messageReceiver, intentFilter);
+
+        getMyUser();
+
+    }
+    String CUSlongitude, CUSlatitude, CUSaddress, uidCustomer, idField, CUSname,infoCar, CUSphone, CUSdescription, CUSimg;
+    ArrayList<DataCallingForRescue> dataCallingForRescues = new ArrayList<>();
+    void getDataRescueInformation(String field) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Users").document(user.getUid());
+
+        // Thực hiện truy vấn để lấy thông tin từ collection và document cụ thể
+        db.collection("RescueInformation").document(user.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // Document tồn tại, lấy trường mảng và gán vào Map
+                                List<Object> arrayField = (List<Object>) document.get(field);
+                                if (arrayField != null) {
+                                    Map<Integer, String> info = new HashMap<>();
+                                    for (int i = 0; i < arrayField.size(); i++) {
+                                        info.put(i , arrayField.get(i).toString());
+                                    }
+                                    // Sử dụng Map chứa các giá trị từ trường mảng ở đây
+                                    // Ví dụ: Log các giá trị trong Map
+                                    for (Map.Entry<Integer, String> entry : info.entrySet()) {
+                                        Log.d("MapData", entry.getKey() + ": " + entry.getValue().toString());
+                                    }
+
+                                    dataCallingForRescues.add(new DataCallingForRescue(
+                                            info.get(0), info.get(1), info.get(2),
+                                            info.get(3), info.get(4), info.get(5),
+                                            info.get(6), info.get(7), info.get(8), info.get(9)
+                                    ));
+                                    for (DataCallingForRescue data : dataCallingForRescues) {
+                                        // Lấy giá trị từ mỗi phần tử và làm điều gì đó với nó
+                                        CUSlongitude = data.getLongitude();
+                                        CUSlatitude = data.getLatitude();
+                                        CUSphone = data.getPhone();
+                                        CUSname = data.getName();
+                                        CUSimg = data.getImg();
+                                        CUSaddress = data.getAddress();
+                                        CUSdescription = data.getDescription();
+                                        Log.d("TEST", CUSdescription);
+                                    }
+                                }
+                            } else {
+                                // Document không tồn tại
+                            }
+                        } else {
+                            // Đã xảy ra lỗi trong quá trình truy vấn
+                            Exception e = task.getException();
+                            if (e instanceof FirebaseFirestoreException) {
+                                // Xử lý lỗi FirestoreException
+                            } else {
+                                // Xử lý các loại lỗi khác
+                            }
+                        }
+                    }
+                });
     }
 
-    void sendNotification() {
-        String fcmServerKey = "AAAA-aEDMr4:APA91bFkulQb-yKqZHCdfMMvTnAWHu6eHSaFsPTkTiM4CN4nux4zGjFOpEnk_NXESGI3i98JmZX0AJj7tqyFsxmhhOU5AP4v0fHmxVNNA6olETuUvwhpCg6ip_0NT3kXa-eWUFeC0rP_";
-        String receiverToken = "eImI4cXhSR-bWnQP84GKNe:APA91bHvlmJxjpwJggnIDvEAIlB3KA8bT6OBUDDjdoUFxEWzl-CS3vAQZWRhC5XE7Ca7WTUOGz6g8ltGfB0foaSIXRQOc4_FKkOGmVWbfMBUrZP0b3xwGmU9Sy6bJa6FhEUxiqhVL20R";
-        String notificationTitle = Key_name_list + user.getUid();
-        String notificationBody = "Bạn ơi có người cần bạn giúp đỡ";
+    void getMyUser() {
+        db.collection("Users").document(user.getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            DocumentSnapshot doc = task.getResult();
+                            //String myName, myPhone, myEmail, myAvgStar, myLocation, myNumberCar, myTypeCar, myImg, myRole;
+//                            myName = doc.getString("name");
+//                            myPhone = doc.getString("phone");
+//                            myEmail = doc.getString("email");
+//                            myAvgStar = doc.getString("avgstar");
+//                            myLocation = doc.getString("location");
+//                            myNumberCar = doc.getString("numbercar");
+//                            myTypeCar = doc.getString("typecar");
+//                            myImg = doc.getString("img");
+                            myRole = doc.getString("role");
 
-        // Gửi thông báo
-        Post_Calling(fcmServerKey, receiverToken,notificationBody, notificationTitle);
+                            GlobalData globalData = GlobalData.getInstance();
+                            globalData.setRole(myRole);
+                        }
+                    }
+                });
     }
-
     void checkClickComfirm() {
         String valueFromActivity2 = null;
 
         Intent intent = getIntent();
         if (intent != null) {
             valueFromActivity2 = intent.getStringExtra("KEY");
-            Key_name_list = intent.getStringExtra("KEY_name_list");
+            Key_name_list = intent.getStringExtra("KEY_name_list") + Status.ON;
             if(valueFromActivity2 != null && valueFromActivity2.equals("1")) {
                 wait_rescue_info.setVisibility(View.VISIBLE);
                 updateData5s();
@@ -246,47 +238,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    void getRescueInfo(){
-        Map<Object, String> data = new HashMap<>();
-        data.put("","");
-
-    }
-//    void updateData5s() {
-//        final Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                FirebaseFirestore db = FirebaseFirestore.getInstance();
-//                DocumentReference docRef = db.collection("RescueInformation").document("nWNVygakezUI0b7A0yknmrDX9Sg1");
-//
-//                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            DocumentSnapshot doc = task.getResult();
-//                            String rescueuid = doc.getString("rescueuid");
-//
-//                            if (rescueuid != null && !rescueuid.isEmpty()) {
-//                                Toast.makeText(MainActivity.this, "Đã có xe đại vương ơi", Toast.LENGTH_SHORT).show();
-//                                wait_rescue_info.setVisibility(View.GONE);
-//                                rescue_info.setVisibility(View.VISIBLE);
-//                                handler.removeCallbacksAndMessages(null); // Dừng việc lặp lại
-//                            } else {
-//                                Toast.makeText(MainActivity.this, "Đang tìm kiếm xe", Toast.LENGTH_SHORT).show();
-//                            }
-//                        } else {
-//                            // Xử lý lỗi
-//                        }
-//                    }
-//                });
-//
-//                // Lặp lại sau 5 giây nếu điều kiện vẫn chưa được thỏa mãn
-//                if (!handler.hasMessages(0)) {
-//                    handler.postDelayed(this, 5000); // 5000 milliseconds = 5 seconds
-//                }
-//            }
-//        }, 5000); // Delay ban đầu, 5000 milliseconds = 5 seconds
-//    }
 
         void updateData5s() {
         final Handler handler = new Handler();
@@ -294,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                DocumentReference docRef = db.collection("RescueInformation").document("nWNVygakezUI0b7A0yknmrDX9Sg1"); // Thay thế "document_id" bằng ID thực của tài liệu
+                DocumentReference docRef = db.collection("RescueInformation").document(user.getUid()); // Thay thế "document_id" bằng ID thực của tài liệu
 
                 docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -303,18 +254,23 @@ public class MainActivity extends AppCompatActivity {
                             List<Object> myArray = (List<Object>) documentSnapshot.get(Key_name_list);
                             if (myArray != null && myArray.size() >= 7) {
 
-                                String itemAtIndex7 = myArray.get(6).toString(); // Lấy phần tử ở vị trí thứ 7 (chỉ số bắt đầu từ 0)
+                                String uid_rescue = myArray.get(8).toString(); // Lấy phần tử ở vị trí thứ 7 (chỉ số bắt đầu từ 0)
                                 handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if(itemAtIndex7 != null && !itemAtIndex7.isEmpty()) {
+                                        if(uid_rescue != null && !uid_rescue.isEmpty()) {
+
+                                            getDataRescueInformation(Key_name_list);
+                                            Log.d("TEST", Key_name_list);
                                             Toast.makeText(MainActivity.this, "Đã có xe đại vương ơi", Toast.LENGTH_SHORT).show();
-                                            getInfoRescue(itemAtIndex7);
+                                            getInfoRescue(uid_rescue);
                                             wait_rescue_info.setVisibility(View.GONE);
                                             rescue_info.setVisibility(View.VISIBLE);
 
+
+
                                             handler.removeCallbacksAndMessages(null); // Dừng việc lặp lại
-                                            Log.d("TAG", "Item at index 7: " + itemAtIndex7.toString());
+                                            Log.d("TAG", "uid_rescue: " + uid_rescue.toString());
                                         } else {
                                             Toast.makeText(MainActivity.this, "Đang tìm kiếm xe", Toast.LENGTH_SHORT).show();
                                         }
@@ -343,6 +299,57 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 5000); // Delay ban đầu, 5000 milliseconds = 5 seconds
     }
+
+    private void showCustomDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+// Inflate layout custom_dialog_layout.xml vào dialog
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.custom_nofitication_dialog_reveced, null);
+        TextView txt_star;
+        txt_star = findViewById(R.id.txt_star);
+        ImageView dialogImage = dialogView.findViewById(R.id.dialog_image);
+        TextView dialog_name = dialogView.findViewById(R.id.dialog_name);
+        TextView dialog_information = dialogView.findViewById(R.id.dialog_information);
+
+
+        txt_star.setText(RESavgstar);
+// Set hình ảnh và nội dung cho dialog
+        Glide.with(this)
+                .load(RESimg)
+                .circleCrop() // Áp dụng cắt ảnh thành hình tròn
+                .into(dialogImage);
+
+        dialogImage.setImageResource(R.drawable.img_rescue); // Thay đổi hình ảnh
+        dialog_name.setText(RESname);
+        dialog_information.setText(RESnumbercar + " • " + REStypecar);
+// Tạo AlertDialog từ builder và thiết lập layout custom vào dialog
+        builder.setView(dialogView);
+
+// Tạo dialog từ builder và gán vào biến dialog
+        final AlertDialog dialog = builder.create();
+
+        Button btn_ok = dialogView.findViewById(R.id.btn_ok);
+        Button btn_information = dialogView.findViewById(R.id.btn_information);
+
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        btn_information.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplication(), Processing.class);
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+    String RESname, RESphoneNumber, RESnumbercar, REStypecar, RESavgstar, RESimg;
     void getInfoRescue(String iudRescue) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
                 DocumentReference docRef = db.collection("Users").document(iudRescue);
@@ -352,16 +359,26 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot doc = task.getResult();
-                            String name = doc.getString("name");
-                            String numbercar = doc.getString("numbercar");
-                            String typecar = doc.getString("typecar");
-                            String avgstar = doc.getString("avgstar");
-                            String img = doc.getString("img");
+                            RESname = doc.getString("name");
+                            RESphoneNumber = doc.getString("phone");
+                            RESnumbercar = doc.getString("numbercar");
+                            REStypecar = doc.getString("typecar");
+                            RESavgstar = doc.getString("avgstar");
+                            RESimg = doc.getString("img");
 
-                            img_star.setImageResource(R.drawable.one_star_orange);
-                            img_rescue.setImageResource(R.drawable.back);
-                            txt_name_rescue.setText(name);
-                            txt_info_moto.setText(numbercar + " • " + typecar);
+                            Glide.with(MainActivity.this)
+                                    .load(RESimg)
+                                    .circleCrop() // Áp dụng cắt ảnh thành hình tròn
+                                    .into(img_rescue);
+
+                            txt_star.setText(RESavgstar);
+
+
+                            txt_name_rescue.setText(Html.fromHtml("<b>" + RESname + "</b> đang đến"));
+                            txt_info_moto.setText(RESnumbercar + " • " + REStypecar);
+
+                            showCustomDialog();
+
                         } else {
                             // Xử lý lỗi
                         }
@@ -456,6 +473,44 @@ public class MainActivity extends AppCompatActivity {
                 mBottomNavigationView.getMenu().findItem(R.id.menu_tab_2).setChecked(true);
                 mViewPager.setCurrentItem(1);
 
+            }
+        });
+        rescue_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ViewInformation.class);
+                intent.putExtra("RESNAME", RESname);
+                intent.putExtra("RESPHONE", RESphoneNumber);
+                intent.putExtra("RESNUMBERCAR", RESnumbercar);
+                intent.putExtra("RESTYPECAR", REStypecar);
+                intent.putExtra("RESIMG", RESimg);
+                intent.putExtra("RESAVGSTAR", RESavgstar);
+
+                intent.putExtra("CUSimg", CUSimg);
+                intent.putExtra("CUSlatitude", CUSlatitude);
+                intent.putExtra("CUSlongitude", CUSlongitude);
+                intent.putExtra("CUSdescription", CUSdescription);
+                intent.putExtra("CUSaddress", CUSaddress);
+                intent.putExtra("CUSname", CUSname);
+                startActivity(intent);
+            }
+        });
+        img_call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Tạo một Intent với ACTION_DIAL và dữ liệu số điện thoại
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + RESphoneNumber));
+
+                // Kiểm tra xem thiết bị có ứng dụng điện thoại không trước khi chuyển hướng
+                PackageManager packageManager = getPackageManager();
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent); // Chuyển hướng đến ứng dụng điện thoại
+                } else {
+                    // Xử lý khi không có ứng dụng điện thoại được tìm thấy
+                    Toast.makeText(getApplicationContext(), "Không tìm thấy ứng dụng điện thoại", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

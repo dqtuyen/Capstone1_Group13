@@ -1,10 +1,13 @@
 package com.example.capstone1.Fragment;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,26 +16,40 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.capstone1.Account.Login;
 import com.example.capstone1.Data.DataUser;
 import com.example.capstone1.R;
 import com.example.capstone1.Activity.UpdateProfile;
 import com.example.capstone1.Activity.UpdateRole;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,16 +98,17 @@ public class AccountFragment extends Fragment {
         }
     }
 
-    ImageButton imageButtonView;
+    ImageButton img_avt;
     Button btn_logout, btn_information, btn_history, btn_update_role;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     List<DataUser> carServiceList = new ArrayList<>();
     TextView txt_call, txt_email, txt_address, txt_numcar, txt_type_moto, txt_name, txt_role;
     DocumentReference docRef;
-
+    private static final int PICK_IMAGE_REQUEST = 1;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReference().child("img_avt_users");
     String uid;
     String email;
     String name;
@@ -105,7 +123,7 @@ public class AccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account, container, false);
-        imageButtonView = view.findViewById(R.id.imageButtonView);
+        img_avt = view.findViewById(R.id.img_avt);
         btn_logout = view.findViewById(R.id.btn_logout);
         btn_information = view.findViewById(R.id.btn_information);
         btn_history = view.findViewById(R.id.btn_history);
@@ -119,23 +137,15 @@ public class AccountFragment extends Fragment {
         txt_numcar = view.findViewById(R.id.txt_numcar);
         txt_type_moto = view.findViewById(R.id.txt_typecar);
 
-        // Tên tài nguyên hình ảnh hoặc URL hình ảnh cần hiển thị
-        String imageUrl = "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1698340797~exp=1698341397~hmac=7fb261f6da08e5edd433994a215dff773601a0649d258b694b10ff1e6d0dbed0";
 
-        Glide.with(this)
-                .load(imageUrl)
-                .circleCrop() // Áp dụng cắt ảnh thành hình tròn
-                .into(imageButtonView);
 
         String uid = user.getUid();
         Log.d("UID", "User UID: " + uid);
         viewData(uid);
-
         logout();
         setEvent();
         return view;
     }
-
     void setEvent() {
         btn_information.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,8 +161,155 @@ public class AccountFragment extends Fragment {
                 startActivity(intent);
             }
         });
-    }
 
+        img_avt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+            }
+        });
+
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            // Lấy Uri của ảnh đã chọn
+            imageUri = data.getData();
+
+
+
+            Glide.with(this)
+                    .load(imageUri)
+                    .circleCrop() // Áp dụng cắt ảnh thành hình tròn
+                    .into(img_avt);
+
+            img_avt.setImageURI(imageUri); // Hiển thị ảnh đã chọn lên ImageView
+            //upLoadLinkAvt();
+
+            Glide.with(this)
+                    .asBitmap()
+                    .load(imageUri)
+                    .override(300, 300) // Thiết lập kích thước mong muốn
+                    // ... Các thiết lập khác nếu cần
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            resource.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+
+                            byte[] data = baos.toByteArray();
+                            uploadImageToFirebase(data);
+                            // Upload 'data' lên Firebase Storage
+                        }
+                    });
+        }
+    }
+    public void uploadImageToFirebase(byte[] imageData) {
+        // Khởi tạo FirebaseStorage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        // Tham chiếu đến thư mục bạn muốn lưu trữ ảnh trong Firebase Storage
+        StorageReference storageRef = storage.getReference().child("img_avt_users");
+
+        // Tạo tên cho ảnh hoặc sử dụng tên duy nhất, ví dụ: UUID.randomUUID().toString()
+        String imageName = "image_" + System.currentTimeMillis() + ".jpg";
+
+        // Tham chiếu đến file trên Firebase Storage
+        StorageReference imageRef = storageRef.child(imageName);
+
+        // Upload dữ liệu ảnh lên Firebase Storage
+        UploadTask uploadTask = imageRef.putBytes(imageData);
+
+        // Lắng nghe sự kiện hoàn thành upload
+        uploadTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // Lấy URL của ảnh sau khi upload thành công
+                imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    // Lấy đường dẫn URL của ảnh đã tải lên
+                    String imageUrl = uri.toString();
+                    Log.d("tag", imageUrl);
+                    // Ở đây bạn có thể làm gì đó với URL của ảnh, ví dụ: lưu vào Firestore, hiển thị lên ImageView, vv.
+                    Map<String,Object> Users = new HashMap<>();
+                                Users.put("img",imageUrl);
+
+                                db.collection("Users").document(user.getUid())
+                                        .update(Users)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                e.printStackTrace();
+                                                Toast.makeText(getContext(), "Post failed.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                }).addOnFailureListener(e -> {
+                    // Xảy ra lỗi khi lấy URL ảnh
+                });
+            } else {
+                // Xảy ra lỗi khi upload ảnh
+            }
+        });
+    }
+    UploadTask uploadTask;
+    Uri imageUri;
+//    void upLoadLinkAvt() {
+//        String fileName = "image_" + user.getUid() + ".jpg";
+//        StorageReference imageRef = storageRef.child(fileName);
+//        final String[] imageUrl = new String[1];
+//        // Tải ảnh lên Firebase Storage
+//
+//        if (imageUri != null) {
+//            // Tải ảnh lên Firebase Storage
+//            uploadTask = imageRef.putFile(imageUri);
+//            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        // Lấy URL của ảnh đã tải lên
+//                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                            @Override
+//                            public void onSuccess(Uri downloadUri) {
+//                                // Thực hiện các hành động tiếp theo với URL của ảnh đã tải lên
+//                                imageUrl[0] = downloadUri.toString();
+//                                Map<String,Object> Users = new HashMap<>();
+//                                Users.put("img",imageUrl[0]);
+//
+//                                db.collection("Users").document(user.getUid())
+//                                        .update(Users)
+//                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                            @Override
+//                                            public void onSuccess(Void aVoid) {
+//                                                Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+//                                            }
+//                                        })
+//                                        .addOnFailureListener(new OnFailureListener() {
+//                                            @Override
+//                                            public void onFailure(@NonNull Exception e) {
+//                                                e.printStackTrace();
+//                                                Toast.makeText(getContext(), "Post failed.", Toast.LENGTH_SHORT).show();
+//                                            }
+//                                        });
+//                            }
+//                        });
+//                    } else {
+//                        // Xử lý khi quá trình tải lên không thành công
+//                    }
+//                }
+//            });
+//        } else {
+//            // Người dùng chưa chọn ảnh, hiển thị thông báo
+//            Toast.makeText(getContext(), "Please choose logo", Toast.LENGTH_SHORT).show();
+//        }
+//    }
     void logout() {
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,6 +362,7 @@ public class AccountFragment extends Fragment {
                     String name = doc.getString("name");
                     String phone = doc.getString("phone");
                     String email = doc.getString("email");
+                    String img = doc.getString("img");
                     String location = doc.getString("location");
                     String numbercar = doc.getString("numbercar");
                     String typecar = doc.getString("typecar");
@@ -217,11 +375,19 @@ public class AccountFragment extends Fragment {
                     txt_numcar.setText(numbercar);
                     txt_type_moto.setText(typecar);
                     txt_role.setText(role);
+
+                    Glide.with(AccountFragment.this)
+                            .load(img)
+                            .circleCrop() // Áp dụng cắt ảnh thành hình tròn
+                            .into(img_avt);
+
                 } else {
                     // Xử lý lỗi
                 }
             }
         });
     }
+
+
 }
 
