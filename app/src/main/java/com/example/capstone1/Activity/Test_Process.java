@@ -1,5 +1,7 @@
 package com.example.capstone1.Activity;
 
+import static com.example.capstone1.MyFirebaseMessagingService.TAG;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.capstone1.Data.DataCallingForRescue;
@@ -29,18 +32,23 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -171,7 +179,67 @@ public class Test_Process extends AppCompatActivity implements OnMapReadyCallbac
                     String formattedTime = sdf.format(calendar.getTime());
                     txt_time_daxong.setText(formattedTime);
                     txt_title.setText("Công việc đã hoàn thành...");
+
+
+                    setData();
+                    Intent intent = new Intent(Test_Process.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
+            }
+        });
+    }
+
+    private void setData() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+// Tham chiếu đến collection/document chứa trường cần thay đổi
+        DocumentReference docRef = db.collection("RescueInformation").document(uidCustomer);
+
+// Đọc dữ liệu từ trường cũ
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    // Lấy dữ liệu từ trường cũ
+                    Object data = documentSnapshot.get(idField+Status.ON);
+                    String oldFieldName = idField;
+                    String newFieldName = oldFieldName.replace("_ON", "");
+                    // Thêm dữ liệu vào trường mới
+                    docRef.update(idField + Status.DONE, data)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // Nếu thêm thành công, xóa trường cũ
+                                    docRef.update(idField + Status.ON, FieldValue.delete())
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    // Xóa thành công
+                                                    // Thực hiện các hành động khác sau khi xóa thành công
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    // Xử lý khi xóa thất bại
+                                                }
+                                            });
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Xử lý khi thêm dữ liệu mới thất bại
+                                }
+                            });
+                }
+            }
+            // Xử lý khi đọc dữ liệu thất bại
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Xử lý khi đọc dữ liệu thất bại
             }
         });
     }

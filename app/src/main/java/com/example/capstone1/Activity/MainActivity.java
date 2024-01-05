@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -48,6 +49,7 @@ import com.example.capstone1.Fragment.MapsFragment;
 import com.example.capstone1.GenarateCharacter;
 import com.example.capstone1.GlobalData;
 import com.example.capstone1.GoogleMapService;
+import com.example.capstone1.MyFirebaseMessagingService;
 import com.example.capstone1.OnAddressReceivedListener;
 import com.example.capstone1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView img_call, img_mess;
     ImageView img_rescue;
     TextView txt_name_rescue, txt_info_moto, txt_star;
-
+    Button btn_cancel;
     //Quan trọng
     String Key_name_list = "";
     String myRole;
@@ -105,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
         mBottomNavigationView = findViewById(R.id.bottom_navigation);
         wait_rescue_info = findViewById(R.id.wait_rescue_info);
         rescue_info = findViewById(R.id.rescue_info);
+        btn_cancel = findViewById(R.id.btn_cancel);
+
         fragmentList = new ArrayList<>();
         fragmentList.add(new HomeFragment());
         fragmentList.add(new HistoryFragment());
@@ -417,7 +421,72 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
+    void deleteDocument() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = db.collection("CallingForRescue").document(user.getUid());
+
+        documentReference.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(MyFirebaseMessagingService.TAG, "Document deleted");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(MyFirebaseMessagingService.TAG, "Error deleting document", e);
+                    }
+                });
+    }
     void setEvent() {
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                // Thiết lập title của dialog
+                builder.setTitle("Bạn có chắc chắn muốn HỦY tìm kiếm?");
+
+                // Thiết lập message của dialog
+                builder.setMessage("Ấn OK để xác nhận HỦY");
+
+                // Thiết lập nút OK và xử lý sự kiện khi nhấn
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Xử lý khi nhấn nút OK
+                        Toast.makeText(MainActivity.this, "OK button clicked", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+
+                        wait_rescue_info.setVisibility(View.GONE);
+                        deleteDocument();
+                    }
+                });
+
+                // Thiết lập nút Cancel và xử lý sự kiện khi nhấn
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Xử lý khi nhấn nút Cancel
+                        Toast.makeText(MainActivity.this, "Cancel button clicked", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
+                // Tạo và hiển thị dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+
+
+
+
+
+
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

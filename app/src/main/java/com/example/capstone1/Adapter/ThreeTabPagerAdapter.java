@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ThreeTabPagerAdapter extends FragmentPagerAdapter {
-    final String[] tabTitles = {"Hiện tại", "Hoàn thành", "Đã hủy"};
+    final String[] tabTitles = {"Hiện tại", "Hoàn thành"};
     private final List<Fragment> mFragments = new ArrayList<>();
 
     public ThreeTabPagerAdapter(FragmentManager fm) {
@@ -23,7 +23,7 @@ public class ThreeTabPagerAdapter extends FragmentPagerAdapter {
         // Thêm các fragment vào adapter
         mFragments.add(new DocumentPresentFragment());
         mFragments.add(new DocumentCompletedFragment());
-        mFragments.add(new DocumentFailFragment());
+        //mFragments.add(new DocumentFailFragment());
     }
 
     @Override
