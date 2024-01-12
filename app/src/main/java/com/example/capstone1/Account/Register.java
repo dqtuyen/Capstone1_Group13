@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -74,10 +75,12 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this,"Enter Email",Toast.LENGTH_SHORT);
                     return;
                 }
+
                 if(TextUtils.isEmpty(password)){
                     Toast.makeText(Register.this,"Enter Password",Toast.LENGTH_SHORT);
                     return;
                 }
+
                 if(TextUtils.isEmpty(name)){
                     Toast.makeText(Register.this,"Enter Name",Toast.LENGTH_SHORT);
                     return;
@@ -91,6 +94,50 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
+                //Name
+                if(!isFirstCharUppercase(name)){
+                    Toast.makeText(Register.this, "Các chữ cái đầu của tên phải viết in hoa", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(hasNumber(name)){
+                    Toast.makeText(Register.this, "Tên không thể chứa số", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(name.length() < 5){
+                    Toast.makeText(Register.this, "Tên phải có hơn 5 kí tự", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                //Email
+                if(!email.contains("@gmail.com")){
+                    Toast.makeText(Register.this, "Vui lòng nhập đúng định dạng Email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!isValidEmail(email)){
+                    Toast.makeText(Register.this, "Vui lòng nhập đúng định dạng Email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //Phone
+                if(!isValidPhoneNumber(phone)){
+                    Toast.makeText(Register.this, "Số điện thoại phải có 10 chữ số", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                //Password
+                if(password.length() < 5){
+                    Toast.makeText(Register.this, "Mật khẩu phải có hơn 5 kí tự", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!hasLetterAndNumber(password)){
+                    Toast.makeText(Register.this, "Mật khẩu phải có cả chữ và số", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                //Re-password
+                if(!password.equals(re_password)){
+                    Toast.makeText(Register.this, "Mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -107,6 +154,7 @@ public class Register extends AppCompatActivity {
                 });
             }
         });
+
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +175,23 @@ public class Register extends AppCompatActivity {
         });
     }
 
+    private boolean isFirstCharUppercase(String name) {
+        return !name.isEmpty() && Character.isUpperCase(name.charAt(0));
+    }
+    private boolean hasNumber(String name) {
+        return name.matches(".*\\d.*");
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        return email.matches(emailPattern) && !email.contains(" ") && !email.contains("â");
+    }
+    private boolean isValidPhoneNumber(String phone) {
+        return phone.length() == 10;
+    }
+    private boolean hasLetterAndNumber(String password) {
+        return password.matches("^(?=.*[a-zA-Z])(?=.*\\d).+$");
+    }
     void Adddatabase(String email, String password, String name, String phone){
 
         mAuth.signInWithEmailAndPassword(email, password)

@@ -58,6 +58,7 @@ public class ForgotPassword extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         // Gửi email thành công.
+                                        //Toast.makeText(ForgotPassword.this, "Đã gửi Email", Toast.LENGTH_SHORT).show();
                                         // Người dùng sẽ nhận được một email chứa liên kết để khôi phục mật khẩu.
                                     } else {
                                         // Xảy ra lỗi khi gửi email khôi phục.
@@ -65,6 +66,16 @@ public class ForgotPassword extends AppCompatActivity {
                                     }
                                 }
                             });
+                    //Thông báo khi nhập email có dấu
+                    if(!isValidEmail(email)){
+                        Toast.makeText(ForgotPassword.this, "Vui lòng nhập đúng định dạng email", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if(email.length() < 5){
+                        Toast.makeText(ForgotPassword.this, "Vui lòng nhập đúng định dạng email", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     auth.fetchSignInMethodsForEmail(email)
                             .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                                 @Override
@@ -79,8 +90,9 @@ public class ForgotPassword extends AppCompatActivity {
                                             Intent intent = new Intent(getApplicationContext(), PasswordChanged.class);
                                             startActivity(intent);
                                             finish();
+
                                         } else {
-                                            Toast.makeText(ForgotPassword.this, "Vui lòng nhập đúng email của bạn", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(ForgotPassword.this, "Đã gửi", Toast.LENGTH_SHORT).show();
                                             // Địa chỉ email không tồn tại trên hệ thống Firebase Authentication.
                                         }
                                     } else {
@@ -114,6 +126,9 @@ public class ForgotPassword extends AppCompatActivity {
             }
         });
     }
-
+    private boolean isValidEmail(String email) {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        return email.matches(emailPattern) && !email.contains(" ") && !email.contains("â");
+    }
 
 }
