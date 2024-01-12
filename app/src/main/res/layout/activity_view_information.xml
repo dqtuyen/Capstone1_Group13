@@ -74,7 +74,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="30dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -94,16 +95,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textStyle="bold"
                         android:gravity="center"
-                        android:text="Đang đến" />
+                        android:text="Đang đến"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txt_time_dangden"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:text="13:00" />
                 </LinearLayout>
@@ -112,8 +113,8 @@
                     android:id="@+id/view1"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_weight="0.5"
                     android:layout_marginBottom="18dp"
+                    android:layout_weight="0.5"
                     android:background="@color/gray">
 
                 </View>
@@ -130,8 +131,8 @@
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center"
-                        android:padding="7dp"
                         android:layout_weight="1"
+                        android:padding="7dp"
                         android:src="@drawable/point" />
 
 
@@ -140,16 +141,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textStyle="bold"
                         android:gravity="center"
-                        android:text="Đã đến" />
+                        android:text="Đã đến"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txt_time_daden"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:text="" />
 
@@ -159,8 +160,8 @@
                     android:id="@+id/view2"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_weight="0.5"
                     android:layout_marginBottom="18dp"
+                    android:layout_weight="0.5"
                     android:background="@color/gray">
 
                 </View>
@@ -176,8 +177,8 @@
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center"
-                        android:padding="7dp"
                         android:layout_weight="1"
+                        android:padding="7dp"
                         android:src="@drawable/point" />
 
                     <TextView
@@ -185,9 +186,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textStyle="bold"
                         android:gravity="center"
-                        android:text="Đã xong" />
+                        android:text="Đã xong"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txt_time_daxong"

@@ -121,8 +121,9 @@
         android:ems="10"
         android:hint="Địa chỉ"
         android:includeFontPadding="false"
-        android:inputType="text"
         android:paddingLeft="20dp"
+        android:inputType="text"
+        android:editable="false"
         android:textColor="@color/gray" />
     <Button
         android:id="@+id/btn_Confirm_information"

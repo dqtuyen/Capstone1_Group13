@@ -38,6 +38,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -72,7 +73,7 @@ public class Test_Process extends AppCompatActivity implements OnMapReadyCallbac
     String longitude, latitude, address, uidCustomer, idField, name, img, infoCar, phone, description, avgstar;
 
     String CUSlongitude, CUSlatitude, CUSaddress, CUSuidCustomer, CUSidField, CUSname, CUSimg, CUSinfoCar, CUSphone, CUSdescription, CUSavgstar;
-    Calendar calendar = Calendar.getInstance();
+
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private static int CHECK = 0;
     private String role = Role.RESCUE;
@@ -147,11 +148,15 @@ public class Test_Process extends AppCompatActivity implements OnMapReadyCallbac
         txt_info.setText(infoCar);
         txt_avgstar.setVisibility(View.GONE);
         img_btn_star.setVisibility(View.GONE);
-
+        Calendar calendar = Calendar.getInstance();
         String formattedTime = sdf.format(calendar.getTime());
         txt_time_dangden.setText(formattedTime);
         txt_address.setText(address);
         txt_note.setText(description);
+
+
+
+
     }
 
     private void setEventForRescue() {
@@ -165,6 +170,7 @@ public class Test_Process extends AppCompatActivity implements OnMapReadyCallbac
                     int orangeColor = ContextCompat.getColor(Test_Process.this, R.color.orange);
                     view1.setBackgroundColor(orangeColor);
 
+                    Calendar calendar = Calendar.getInstance();
                     String formattedTime = sdf.format(calendar.getTime());
                     txt_time_daden.setText(formattedTime);
                     btn_confirm.setText("Xác nhận đã xong");
@@ -174,23 +180,93 @@ public class Test_Process extends AppCompatActivity implements OnMapReadyCallbac
                     img_daxong.setImageResource(R.drawable.done);
                     img_daxong.setPadding(0, 0, 0, 0);
 
+                    Calendar calendar = Calendar.getInstance();
                     int orangeColor = ContextCompat.getColor(Test_Process.this, R.color.orange);
                     view2.setBackgroundColor(orangeColor);
                     String formattedTime = sdf.format(calendar.getTime());
                     txt_time_daxong.setText(formattedTime);
                     txt_title.setText("Công việc đã hoàn thành...");
 
-
                     setData();
-                    Intent intent = new Intent(Test_Process.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    setDataCustomer();
+
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                    CollectionReference usersCollection = db.collection("users");
+
+                    DocumentReference newDocRef = usersCollection.document();
+
+
+                    newDocRef.set(new HashMap<>())
+                            .addOnSuccessListener(aVoid -> {
+
+                                Log.d("Firestore", "Document created successfully!");
+                            })
+                            .addOnFailureListener(e -> {
+
+                                Log.e("Firestore", "Error creating document", e);
+                            });
                 }
             }
         });
     }
-
+    private int tasksCompleted = 0;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private void setData() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+// Tham chiếu đến collection/document chứa trường cần thay đổi
+        DocumentReference docRef = db.collection("RescueInformation").document(user.getUid());
+
+// Đọc dữ liệu từ trường cũ
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    // Lấy dữ liệu từ trường cũ
+                    Object data = documentSnapshot.get(idField+Status.ON);
+                    String oldFieldName = idField;
+                    String newFieldName = oldFieldName.replace("_ON", "");
+                    // Thêm dữ liệu vào trường mới
+                    docRef.update(idField + Status.DONE, data)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // Nếu thêm thành công, xóa trường cũ
+                                    docRef.update(idField + Status.ON, FieldValue.delete())
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    tasksCompleted++;
+                                                    // Xóa thành công
+                                                    // Thực hiện các hành động khác sau khi xóa thành công
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    // Xử lý khi xóa thất bại
+                                                }
+                                            });
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Xử lý khi thêm dữ liệu mới thất bại
+                                }
+                            });
+                }
+            }
+            // Xử lý khi đọc dữ liệu thất bại
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Xử lý khi đọc dữ liệu thất bại
+            }
+        });
+    }
+    private void setDataCustomer() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 // Tham chiếu đến collection/document chứa trường cần thay đổi
@@ -215,6 +291,13 @@ public class Test_Process extends AppCompatActivity implements OnMapReadyCallbac
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
+                                                    tasksCompleted++;
+                                                    if (tasksCompleted >= 2) {
+                                                        // Both tasks have completed
+                                                        Intent intent = new Intent(Test_Process.this, MainActivity.class);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
                                                     // Xóa thành công
                                                     // Thực hiện các hành động khác sau khi xóa thành công
                                                 }
@@ -244,14 +327,13 @@ public class Test_Process extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         googleMapService = new GoogleMapService(googleMap, fusedLocationProviderClient, this);
         googleMapService.myLocation();
 
         mMap = googleMap;
-        googleMapService.addMarkerAndShowInformation(locationList, mMap);
+        googleMapService.addMarkerAndShowInformation(locationList, mMap, img);
         LatLng currentLocation = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 14));
 

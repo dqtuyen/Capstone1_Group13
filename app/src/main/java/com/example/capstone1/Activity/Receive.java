@@ -49,7 +49,7 @@ public class Receive extends AppCompatActivity implements OnMapReadyCallback {
     TextView txt_name, txt_phone, txt_numcar, txt_typecar, txt_address;
     Button btn_receive, btn_cancel;
     ImageButton btn_back;
-    String longitude, latitude, address, uidCustomer, idField, name, description;
+    String longitude, latitude, address, uidCustomer, idField, name, description, imgCustomer;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private GoogleMapService googleMapService;
     private GoogleMap mMap;
@@ -74,6 +74,7 @@ public class Receive extends AppCompatActivity implements OnMapReadyCallback {
         Intent intent = getIntent();
         if (intent != null) {
             uidCustomer = intent.getStringExtra("UID_CUSTOMER");
+            imgCustomer = intent.getStringExtra("IMG");
             address = intent.getStringExtra("ADDRESS");
             latitude = intent.getStringExtra("LATITUDE");
             longitude = intent.getStringExtra("LONGITUDE");
@@ -101,7 +102,7 @@ public class Receive extends AppCompatActivity implements OnMapReadyCallback {
         googleMapService.myLocation();
 
         mMap = googleMap;
-        googleMapService.addMarkerAndShowInformation(locationList, mMap);
+        googleMapService.addMarkerAndShowInformation(locationList, mMap, imgCustomer);
         LatLng currentLocation = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 14));
 
@@ -214,6 +215,21 @@ public class Receive extends AppCompatActivity implements OnMapReadyCallback {
         //setCallingRescue(nameList);
         // Ghi ArrayList này vào Firebase
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("RescueInformation").document(uidCustomer)
+                .update(Collections.singletonMap(nameList, dataArray))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(Receive.this, "Thành công", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         db.collection("RescueInformation").document(user.getUid())
                 .update(Collections.singletonMap(nameList, dataArray))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

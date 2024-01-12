@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -182,7 +183,11 @@ public class ConfirmLocation extends AppCompatActivity implements OnMapReadyCall
         dataArray.add(name); //name
         dataArray.add(phone); //phone
         dataArray.add(formattedDateTime); // datetime
-        dataArray.add(txt_note.getText().toString()); // description
+        if(TextUtils.isEmpty(edt_note.toString())) {
+            dataArray.add("Không có ghi chú"); // description
+        } else  {
+            dataArray.add(edt_note.getText().toString()); // description
+        }
         dataArray.add(new_address); // address
         dataArray.add(String.valueOf(new_latitude)); // latitude
         dataArray.add(String.valueOf(new_longitude)); // longitude

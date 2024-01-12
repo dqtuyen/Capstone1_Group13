@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -99,6 +101,15 @@ public class ChatBotFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chatbot, container, false);
         addControls(view);
         addEvents();
+
+        WebView myWebView = view.findViewById(R.id.myWeb); // Thay thế R.id.webView bằng ID của WebView trong layout của bạn
+        WebSettings webSettings = myWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true); // Cho phép JavaScript (nếu cần)
+        webSettings.setDomStorageEnabled(true); // Cho phép bộ nhớ lưu trữ DOM
+
+        myWebView.loadUrl("https://chinhgpt.zapier.app");
+
+
         return view;
     }
     private void addControls(View view) {

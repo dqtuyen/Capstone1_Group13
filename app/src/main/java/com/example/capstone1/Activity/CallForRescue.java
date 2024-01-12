@@ -1,24 +1,17 @@
 package com.example.capstone1.Activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.capstone1.GlobalData;
 import com.example.capstone1.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class CallForRescue extends AppCompatActivity {
@@ -86,7 +79,7 @@ public class CallForRescue extends AppCompatActivity {
         btn_help_friend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplication(), HelpFriends.class);
+                Intent intent = new Intent(CallForRescue.this, ConfirmHelpFriend.class);
                 startActivity(intent);
                 finish();
             }

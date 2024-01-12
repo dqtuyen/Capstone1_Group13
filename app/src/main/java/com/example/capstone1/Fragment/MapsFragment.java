@@ -1,23 +1,19 @@
 package com.example.capstone1.Fragment;
 
-import static android.app.Activity.RESULT_OK;
+import static com.example.capstone1.FcmNotificationSender.Post_Calling;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -31,16 +27,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.capstone1.Activity.MainActivity;
 import com.example.capstone1.Adapter.StreetAdapter;
 import com.example.capstone1.Data.DataLocation;
+import com.example.capstone1.GenarateCharacter;
 import com.example.capstone1.GoogleMapService;
 import com.example.capstone1.R;
 import com.example.capstone1.StreetModel;
 import com.example.capstone1.StreetNameSuggesterDaNang;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -49,24 +45,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AutocompletePrediction;
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.PlaceLikelihood;
-import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -85,7 +76,18 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     RecyclerView recyclerView;
     private StreetAdapter adapter;
-    Button test;
+    Button btn_confirm;
+    private GoogleMap googleMap;
+    String name, phone, numbercar;
+    public void receiveDataFromActivity(String name, String phone, String numbercar) {
+        // Sử dụng dữ liệu được nhận ở đây, ví dụ:
+        Log.d("MapsFragment", "Address Line: " + name);
+        Log.d("MapsFragment", "Latitude: " + phone);
+        Log.d("MapsFragment", "Longitude: " + numbercar);
+        this.name = name;
+        this.phone = phone;
+        this.numbercar = numbercar;
+    }
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
@@ -126,6 +128,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
     };
 
+    private void sendDataToActivity() {
+
+    }
     private void moveCameraToLocation(LatLng location) {
         if (mMap != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
@@ -136,19 +141,130 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void processDataFromAdapter(String data) {
         // Xử lý dữ liệu từ Adapter trong Fragment
         if(data != "") {
-            googleMapService.searchAddress(getContext(), data + "Da Nang");
+            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+            try {
+                // Sử dụng Geocoder để tìm kiếm địa chỉ
+                List<Address> addressList = geocoder.getFromLocationName(data + "Da Nang", 1);
+
+                if (addressList != null && addressList.size() > 0) {
+                    // Lấy địa chỉ đầu tiên từ danh sách
+                    Address address = addressList.get(0);
+
+                    // Lấy thông tin chi tiết về địa chỉ
+                    String locality = address.getLocality(); // Thành phố
+                    String country = address.getCountryName(); // Quốc gia
+                    addressLine = address.getAddressLine(0); // Địa chỉ đầy đủ
+                    latitude = address.getLatitude(); // Vĩ độ
+                    longitude = address.getLongitude(); // Kinh độ
+
+                    txt_address.setText("Địa chỉ: "+ addressLine);
+
+                    // Hiển thị thông tin địa chỉ
+                    String result = "Locality: " + locality + "\nCountry: " + country +
+                            "\nAddress: " + addressLine + "\nLatitude: " + latitude +
+                            "\nLongitude: " + longitude;
+
+                    Log.d("AddressInfo", result);
+
+                    // Hiển thị thông tin địa chỉ (tùy chọn)
+                    // Tạo LatLng từ thông tin địa chỉ
+                    LatLng markerLocation = new LatLng(latitude, longitude);
+
+                    // Tạo MarkerOptions
+                    MarkerOptions markerOptions = new MarkerOptions()
+                            .position(markerLocation)
+                            .title(locality) // Sử dụng thành phố làm tiêu đề marker (có thể thay đổi)
+                            .snippet(addressLine); // Sử dụng địa chỉ đầy đủ làm mô tả marker (có thể thay đổi)
+
+                    // Hiển thị marker trên bản đồ
+                    mMap.clear();
+                    mMap.addMarker(markerOptions);
+
+                    // Đưa camera đến vị trí của marker và phóng to mức zoom mong muốn
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerLocation, 14));
+
+                    // Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+                } else {
+                    Log.e("AddressInfo", "Address not found");
+                    // Hiển thị thông báo lỗi (tùy chọn)
+                    // Toast.makeText(context, "Address not found", Toast.LENGTH_SHORT).show();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             recyclerView.setVisibility(View.GONE);
         }
         receivedData = data;
         Log.d("Fragment", "Received data from Adapter: " + data);
 
     }
+
+    String addressLine;
+    double latitude;
+    double longitude;
+    ArrayList<String> dataArray = new ArrayList<>();
     void setEvent() {
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                googleMapService.searchAddress(getContext(), query + "Da Nang");
+                Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+                try {
+                    // Sử dụng Geocoder để tìm kiếm địa chỉ
+                    List<Address> addressList = geocoder.getFromLocationName(query + "Da Nang", 1);
+
+                    if (addressList != null && addressList.size() > 0) {
+                        // Lấy địa chỉ đầu tiên từ danh sách
+                        Address address = addressList.get(0);
+
+                        // Lấy thông tin chi tiết về địa chỉ
+                        String locality = address.getLocality(); // Thành phố
+                        String country = address.getCountryName(); // Quốc gia
+                        addressLine = address.getAddressLine(0); // Địa chỉ đầy đủ
+                        latitude = address.getLatitude(); // Vĩ độ
+                        longitude = address.getLongitude(); // Kinh độ
+
+
+
+                        // Hiển thị thông tin địa chỉ
+                        String result = "Locality: " + locality + "\nCountry: " + country +
+                                "\nAddress: " + addressLine + "\nLatitude: " + latitude +
+                                "\nLongitude: " + longitude;
+
+                        Log.d("AddressInfo", result);
+
+                        txt_address.setText("Địa chỉ: "+ addressLine);
+
+
+                        // Hiển thị thông tin địa chỉ (tùy chọn)
+                        // Tạo LatLng từ thông tin địa chỉ
+                        LatLng markerLocation = new LatLng(latitude, longitude);
+
+                        // Tạo MarkerOptions
+                        MarkerOptions markerOptions = new MarkerOptions()
+                                .position(markerLocation)
+                                .title(locality) // Sử dụng thành phố làm tiêu đề marker (có thể thay đổi)
+                                .snippet(addressLine); // Sử dụng địa chỉ đầy đủ làm mô tả marker (có thể thay đổi)
+
+                        // Hiển thị marker trên bản đồ
+                        mMap.clear();
+                        mMap.addMarker(markerOptions);
+
+                        // Đưa camera đến vị trí của marker và phóng to mức zoom mong muốn
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerLocation, 14));
+
+                        // Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+                    } else {
+                        Log.e("AddressInfo", "Address not found");
+                        // Hiển thị thông báo lỗi (tùy chọn)
+                        // Toast.makeText(context, "Address not found", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //googleMapService.searchAddress(getContext(), query + "Da Nang");
                 return false;
             }
             @Override
@@ -187,7 +303,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
 
     }
-
+    TextView txt_address;
+    EditText edt_name, edt_phone, edt_numbercar;
     private List<StreetModel> convertToStreetModels(List<String> streetNames) {
         // Chuyển đổi danh sách tên đường sang danh sách StreetModel
         List<StreetModel> streetModels = new ArrayList<>();
@@ -212,36 +329,87 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), "AIzaSyCxTUngn0mwDNeFZYz-WtqavuykNLzhx8Y");
         }
+
+
+        googleMap = mMap;
         placesClient = Places.createClient(requireContext());
         recyclerView = view.findViewById(R.id.recyclerView);
         setEvent();
-        Data();
 
+        txt_address = view.findViewById(R.id.txt_address);
+        edt_name = view.findViewById(R.id.edt_name);
+        edt_phone = view.findViewById(R.id.edt_phone);
+        edt_numbercar = view.findViewById(R.id.edt_numbercar);
+        btn_confirm = view.findViewById(R.id.btn_confirm);
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                doneRescue();
+                sendNotification();
+
+                intent.putExtra("KEY_name_list", idField);
+                intent.putExtra("KEY", "1");// Đặt key và giá trị cần truyền
+
+                startActivity(intent);
+                if(getActivity() != null) {
+                    // Kết thúc (hoặc đóng) Activity chứa Fragment
+                    getActivity().startActivity(intent);
+                    getActivity().finish();
+                }
+            }
+        });
         return view;
+    }
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    GenarateCharacter genarateCharacter;
+    String idField;
+    void doneRescue() {
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd-MM-yyyy");
+        String formattedDateTime = dateFormat.format(currentDate);
+        String document = user.getUid();
+        idField = formattedDateTime;
+
+        // Tạo một ArrayList chứa thông tin
+        dataArray.add(edt_name.getText().toString());
+        dataArray.add(edt_phone.getText().toString());
+        dataArray.add(formattedDateTime); // datetime
+        dataArray.add(edt_numbercar.getText().toString());
+        dataArray.add(addressLine);
+        dataArray.add(String.valueOf(latitude));
+        dataArray.add(String.valueOf(longitude));
+        dataArray.add(user.getUid());
+
+        //setCallingRescue(nameList);
+        // Ghi ArrayList này vào Firebase
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("CallingForRescue").document(user.getUid())
+                .set(Collections.singletonMap(idField, dataArray))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "Thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 100 && resultCode == RESULT_OK) {
-////When success
-////Initialize place
-//            Place place = Autocomplete.getPlaceFromIntent(data);
-//            edt_test.setText(place.getAddress());
-//            Log.d("TestAddress", "Address" + place.getAddress());
-//            Log.d("TestAddress", "Name" + place.getName());
-//            Log.d("TestAddress", place.getLatLng().toString());
-//        } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-////When error
-////Initialize status
-//            Status status = Autocomplete.getStatusFromIntent(data);
-////Display toast
-//            Toast.makeText(getContext(), status.getStatusMessage()
-//                    , Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    void sendNotification() {
+        String fcmServerKey = "AAAA-aEDMr4:APA91bFkulQb-yKqZHCdfMMvTnAWHu6eHSaFsPTkTiM4CN4nux4zGjFOpEnk_NXESGI3i98JmZX0AJj7tqyFsxmhhOU5AP4v0fHmxVNNA6olETuUvwhpCg6ip_0NT3kXa-eWUFeC0rP_";
+        String receiverToken = "eImI4cXhSR-bWnQP84GKNe:APA91bHvlmJxjpwJggnIDvEAIlB3KA8bT6OBUDDjdoUFxEWzl-CS3vAQZWRhC5XE7Ca7WTUOGz6g8ltGfB0foaSIXRQOc4_FKkOGmVWbfMBUrZP0b3xwGmU9Sy6bJa6FhEUxiqhVL20R";
+        String notificationTitle = idField +"_"+ user.getUid();
+        String notificationBody = "Bạn ơi có người cần bạn giúp đỡ";
 
-
+        // Gửi thông báo
+        Post_Calling(fcmServerKey, receiverToken,notificationBody, notificationTitle);
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -266,64 +434,4 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void Data() {
-
-
-        locationList.add(new DataLocation(16.067301, 108.220337, "Cà Phê Sài Gòn", "UID1"));
-        locationList.add(new DataLocation(16.053001, 108.218446, "Bánh Mì Ngọt Ngào", "UID2"));
-        locationList.add(new DataLocation(16.047932, 108.225903, "Minimart Đà Nẵng", "UID3"));
-        locationList.add(new DataLocation(16.053611, 108.218305, "Biển Xanh Quán", "UID4"));
-        locationList.add(new DataLocation(16.048742, 108.230002, "Fitness Plus", "UID5"));
-        locationList.add(new DataLocation(16.056794, 108.218841, "Pet Friends", "UID6"));
-        locationList.add(new DataLocation(16.051391, 108.226309, "Hoa Phượng Đỏ", "UID7"));
-        locationList.add(new DataLocation(16.045812, 108.232472, "Bánh Mì Bình Minh", "UID8"));
-        locationList.add(new DataLocation(16.049472, 108.217913, "Fashionista", "UID9"));
-        locationList.add(new DataLocation(16.062739, 108.222348, "Nhân Tâm Pharmacy", "UID10"));
-
-    }
-
-    //Sử dụng callback sẽ đảm bảo rằng bạn nhận được vị trí trong lần đầu tiên chạy.
-    private void getLastLocation(final LocationCallback callback) {
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationProviderClient.getLastLocation()
-                    .addOnCompleteListener(requireActivity(), new OnCompleteListener<Location>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Location> task) {
-                            Location location = task.getResult();
-                            if (location != null) {
-                                double latitude = location.getLatitude();
-                                double longitude = location.getLongitude();
-                                callback.onLocationReceived(new LatLng(latitude, longitude));
-                            } else {
-                                callback.onLocationNotFound();
-                            }
-                        }
-                    });
-        }
-    }
-
-
-    public interface LocationCallback {
-        void onLocationReceived(LatLng location);
-        void onLocationNotFound();
-    }
-
-    // Hàm tính giới hạn bán kính dựa trên tọa độ và bán kính (đơn vị là kilômét)
-    private RectangularBounds calculateBounds(LatLng center, double radiusInKilometers) {
-        double latPerMeter = 1.0 / 111320.0; // 1 độ vĩ tuyến ≈ 111320 mét
-        double lonPerMeter = 1.0 / (40075000.0 / 360.0); // 1 độ kinh tuyến ≈ 40075000 mét / 360 độ
-
-        double latDelta = radiusInKilometers * 1000 * latPerMeter;
-        double lonDelta = radiusInKilometers * 1000 * lonPerMeter;
-
-        double latMin = center.latitude - latDelta;
-        double latMax = center.latitude + latDelta;
-        double lonMin = center.longitude - lonDelta;
-        double lonMax = center.longitude + lonDelta;
-
-        return RectangularBounds.newInstance(
-                new LatLng(latMin, lonMin),
-                new LatLng(latMax, lonMax)
-        );
-    }
 }

@@ -126,6 +126,20 @@ public class ViewInformation extends AppCompatActivity implements OnMapReadyCall
         txt_time_dangden.setText(formattedTime);
         txt_address.setText(CUSaddress);
         txt_note.setText(CUSdescription);
+
+
+        btn_confirm.setText("Đánh giá người cứu hộ");
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ViewInformation.this, Rescue_Evaluate.class);
+                intent.putExtra("RESname", RESname);
+                intent.putExtra("RESimg", RESimg);
+                intent.putExtra("RESinfoCar", RESinfoCar);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void setEventForRescue() {
@@ -137,7 +151,7 @@ public class ViewInformation extends AppCompatActivity implements OnMapReadyCall
         googleMapService.myLocation();
 
         mMap = googleMap;
-        googleMapService.addMarkerAndShowInformation(locationList, mMap);
+        googleMapService.addMarkerAndShowInformation(locationList, mMap, RESimg);
         LatLng currentLocation = new LatLng(Double.parseDouble(CUSlatitude), Double.parseDouble(CUSlatitude));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 14));
 

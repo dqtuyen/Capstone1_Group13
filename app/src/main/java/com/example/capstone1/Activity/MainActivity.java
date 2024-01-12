@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                             List<Object> myArray = (List<Object>) documentSnapshot.get(Key_name_list);
                             if (myArray != null && myArray.size() >= 7) {
 
-                                String uid_rescue = myArray.get(8).toString(); // Lấy phần tử ở vị trí thứ 7 (chỉ số bắt đầu từ 0)
+                                String uid_rescue = myArray.get(9).toString(); // Lấy phần tử ở vị trí thứ 7 (chỉ số bắt đầu từ 0)
                                 handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
@@ -334,7 +334,6 @@ public class MainActivity extends AppCompatActivity {
         final AlertDialog dialog = builder.create();
 
         Button btn_ok = dialogView.findViewById(R.id.btn_ok);
-        Button btn_information = dialogView.findViewById(R.id.btn_information);
 
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -342,14 +341,14 @@ public class MainActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        btn_information.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplication(), Processing.class);
-                startActivity(intent);
-                dialog.dismiss();
-            }
-        });
+//        btn_information.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplication(), ViewInformation.class);
+//                startActivity(intent);
+//                dialog.dismiss();
+//            }
+//        });
 
         dialog.show();
     }

@@ -144,7 +144,10 @@ public class Register extends AppCompatActivity {
                             DataUser.put("numbercar", "");
                             DataUser.put("typecar", "");
                             DataUser.put("location", "");
+                            DataUser.put("avgstar", "");
+                            DataUser.put("numberofrescue", "0");
                             DataUser.put("role", "customer");
+                            DataUser.put("img", "https://firebasestorage.googleapis.com/v0/b/capstone-7a4dc.appspot.com/o/icon_app.png?alt=media&token=821c8add-fb77-4227-872c-fd969e0adc71");
 
                             db.collection("Users").document(user.getUid())
                                     .set(DataUser)
@@ -174,6 +177,21 @@ public class Register extends AppCompatActivity {
                                         public void onFailure(@NonNull Exception e) {
                                             e.printStackTrace();
                                             //Toast.makeText(Register.this, "Đăng kí thật bại", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                            db.collection("RescueInformation")
+                                    .document(user.getUid())
+                                    .set(new HashMap<>()) // Truyền một Map rỗng
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
                                         }
                                     });
                         } else {

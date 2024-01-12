@@ -147,34 +147,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_large"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ImageButton
                             android:id="@+id/img_chatbotgpt"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-
-                            android:layout_marginTop="@dimen/margin_small"
-                            android:background="@drawable/rounded_white_edittext"
-                            android:scaleType="center"
-                            android:src="@drawable/img_chatbotgpt" />
-
-                        <TextView
-                            android:id="@+id/textView15"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="ChatBot" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/margin_large"
-                        android:orientation="vertical">
-
-                        <ImageButton
-                            android:id="@+id/img_test"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
 
@@ -200,7 +177,7 @@
                     android:layout_marginLeft="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_medium"
                     android:layout_marginBottom="@dimen/margin_short"
-                    android:text="Được gọi cứu hộ nhiều nhất"
+                    android:text="Những người cứu hộ tốt nhất"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 

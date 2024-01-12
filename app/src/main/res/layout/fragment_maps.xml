@@ -12,8 +12,7 @@
         android:layout_height="match_parent" />
 
 
-
-    <LinearLayout
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -29,9 +28,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="Andrew Smith"
+                android:text="Nhập vị trí người bạn của bạn"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -45,14 +45,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginBottom="10dp"
-                android:text="Good Morning  👋"
+                android:text="👋"
                 android:textSize="14dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.028"
                 app:layout_constraintStart_toEndOf="@+id/imageView7"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.621" />
+                app:layout_constraintVertical_bias="1.0" />
 
             <ImageView
                 android:id="@+id/imageView7"
@@ -61,7 +62,7 @@
                 android:layout_marginLeft="@dimen/margin_large"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_avt_temp"
+                android:src="@drawable/ic_app"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -78,7 +79,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginRight="20dp"
             app:iconifiedByDefault="false"
-            app:queryHint="Search Here..."
+            app:queryHint="Nhập vị trí người bạn của bạn"
             android:background="@drawable/rounded_white_edittext"
             app:searchIcon="@drawable/ic_search">
 
@@ -95,8 +96,64 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_search" />
 
-    </LinearLayout>
+        </LinearLayout>
 
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="100dp"
+            android:layout_marginHorizontal="@dimen/margin_large"
+            android:background="@drawable/rounded_white_edittext"
+            android:padding="@dimen/margin_medium"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:id="@+id/txt_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Địa chỉ: " />
+
+            <EditText
+                android:id="@+id/edt_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Tên bạn của bạn"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/edt_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Số điện thoại"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/edt_numbercar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Biển số xe"
+                android:inputType="text" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginHorizontal="@dimen/margin_large"
+            android:background="@drawable/rounded_orange_button"
+            app:backgroundTint="@null"
+            android:text="Xác Nhận Vị Trí" />
 
 
     </RelativeLayout>

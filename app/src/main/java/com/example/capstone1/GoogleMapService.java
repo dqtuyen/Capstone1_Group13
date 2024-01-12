@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.capstone1.Data.DataLocation;
 import com.example.capstone1.Fragment.AccountFragment;
+import com.example.capstone1.Fragment.MapsFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -71,7 +73,7 @@ public class GoogleMapService {
 //        }
 //
 //    }
-    public void addMarkerAndShowInformation(List<DataLocation> locationList, GoogleMap mMap) {
+    public void addMarkerAndShowInformation(List<DataLocation> locationList, GoogleMap mMap, String imgCustomer) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         // Lấy dữ liệu của user
@@ -87,7 +89,7 @@ public class GoogleMapService {
                         // Lấy dữ liệu của user
                         DocumentSnapshot doc = task.getResult();
 
-                        String img = doc.getString("img");
+                        String img = imgCustomer;
                         Glide.with(activity)
                                 .asBitmap()
                                 .load(img) // Thay location.getImageUrl() bằng phương thức trả về URL của ảnh
@@ -274,7 +276,16 @@ public class GoogleMapService {
             e.printStackTrace();
         }
     }
+    public static void sendDataToFragment(MapsFragment fragment) {
+        Bundle bundle = new Bundle();
+        bundle.putString("addressLine", "value1");
+        bundle.putString("Latitude", "value2");
+        bundle.putString("locality", "value3");
 
+        if (fragment != null) {
+            fragment.setArguments(bundle);
+        }
+    }
     public String trimmedEnd(String address_line) {
         String fullAddress = address_line;
 

@@ -64,10 +64,12 @@ public class RescueCallingList extends AppCompatActivity {
             String longitude =  firstElement.getLongitude();
             String name =  firstElement.getName();
             String description = firstElement.getDescription();
+            String img = firstElement.getImg();
             String id_field = listIdField.get(position);
             Log.e("LOG", id_field);
             Intent intent = new Intent(this, Receive.class);
             intent.putExtra("NAME", name);
+            intent.putExtra("IMG", img);
             intent.putExtra("UID_CUSTOMER", uid_customer);
             intent.putExtra("ID_FIELD", id_field);
             intent.putExtra("LATITUDE", latitude);

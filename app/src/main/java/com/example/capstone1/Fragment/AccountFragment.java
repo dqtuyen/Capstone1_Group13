@@ -102,7 +102,7 @@ public class AccountFragment extends Fragment {
     Button btn_logout, btn_information, btn_history, btn_update_role;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     List<DataUser> carServiceList = new ArrayList<>();
-    TextView txt_call, txt_email, txt_address, txt_numcar, txt_type_moto, txt_name, txt_role;
+    TextView txt_call, txt_email, txt_address, txt_numcar, txt_type_moto, txt_name, txt_role, txt_name2, txt_luotcuuho;
     DocumentReference docRef;
     private static final int PICK_IMAGE_REQUEST = 1;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -131,13 +131,13 @@ public class AccountFragment extends Fragment {
 
         txt_role = view.findViewById(R.id.txt_role);
         txt_name = view.findViewById(R.id.txt_name);
-        txt_call = view.findViewById(R.id.txt_call);
-        txt_email = view.findViewById(R.id.txt_gmail);
+        txt_call = view.findViewById(R.id.txt_phone);
+        txt_email = view.findViewById(R.id.txt_email);
         txt_address = view.findViewById(R.id.txt_address);
         txt_numcar = view.findViewById(R.id.txt_numcar);
         txt_type_moto = view.findViewById(R.id.txt_typecar);
-
-
+        txt_name2= view.findViewById(R.id.txt_name2);
+        txt_luotcuuho = view.findViewById(R.id.txt_luotcuuho);
 
         String uid = user.getUid();
         Log.d("UID", "User UID: " + uid);
@@ -261,55 +261,7 @@ public class AccountFragment extends Fragment {
     }
     UploadTask uploadTask;
     Uri imageUri;
-//    void upLoadLinkAvt() {
-//        String fileName = "image_" + user.getUid() + ".jpg";
-//        StorageReference imageRef = storageRef.child(fileName);
-//        final String[] imageUrl = new String[1];
-//        // Tải ảnh lên Firebase Storage
-//
-//        if (imageUri != null) {
-//            // Tải ảnh lên Firebase Storage
-//            uploadTask = imageRef.putFile(imageUri);
-//            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-//                    if (task.isSuccessful()) {
-//                        // Lấy URL của ảnh đã tải lên
-//                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                            @Override
-//                            public void onSuccess(Uri downloadUri) {
-//                                // Thực hiện các hành động tiếp theo với URL của ảnh đã tải lên
-//                                imageUrl[0] = downloadUri.toString();
-//                                Map<String,Object> Users = new HashMap<>();
-//                                Users.put("img",imageUrl[0]);
-//
-//                                db.collection("Users").document(user.getUid())
-//                                        .update(Users)
-//                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                            @Override
-//                                            public void onSuccess(Void aVoid) {
-//                                                Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
-//                                            }
-//                                        })
-//                                        .addOnFailureListener(new OnFailureListener() {
-//                                            @Override
-//                                            public void onFailure(@NonNull Exception e) {
-//                                                e.printStackTrace();
-//                                                Toast.makeText(getContext(), "Post failed.", Toast.LENGTH_SHORT).show();
-//                                            }
-//                                        });
-//                            }
-//                        });
-//                    } else {
-//                        // Xử lý khi quá trình tải lên không thành công
-//                    }
-//                }
-//            });
-//        } else {
-//            // Người dùng chưa chọn ảnh, hiển thị thông báo
-//            Toast.makeText(getContext(), "Please choose logo", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+
     void logout() {
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -367,14 +319,22 @@ public class AccountFragment extends Fragment {
                     String numbercar = doc.getString("numbercar");
                     String typecar = doc.getString("typecar");
                     String role = doc.getString("role");
+                    String numberofrescue = doc.getString("numberofrescue");
 
                     txt_name.setText(name);
+                    txt_name2.setText(name);
                     txt_call.setText(phone);
                     txt_email.setText(email);
                     txt_address.setText(location);
                     txt_numcar.setText(numbercar);
                     txt_type_moto.setText(typecar);
-                    txt_role.setText(role);
+                    txt_luotcuuho.setText(numberofrescue);
+                    if(role.contains("rescue")) {
+                        txt_role.setText("Người cứu hộ");
+                    } else {
+                        txt_role.setText("Người dùng");
+                    }
+
 
                     Glide.with(AccountFragment.this)
                             .load(img)

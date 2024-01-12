@@ -82,15 +82,6 @@
             android:layout_margin="8dp"
             android:backgroundTint="@color/orange"
             />
-        <Button
-            android:id="@+id/btn_information"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-
-            android:text="Thông Tin"
-            android:layout_margin="8dp"
-            android:backgroundTint="@color/orange"
-            />
 
     </LinearLayout>
 

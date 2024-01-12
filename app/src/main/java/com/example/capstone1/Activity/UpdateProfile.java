@@ -67,6 +67,7 @@ public class UpdateProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setData();
+                finish();
             }
         });
 

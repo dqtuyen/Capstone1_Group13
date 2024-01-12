@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/menu_tab_1" android:title="Home" app:iconGravity="textTop" android:icon="@drawable/ic_home"/>
-    <item android:id="@+id/menu_tab_2" android:title="Map" app:iconGravity="textTop" android:icon="@drawable/ic_compass"/>
+    <item android:id="@+id/menu_tab_2" android:title="Activity" app:iconGravity="textTop" android:icon="@drawable/ic_compass"/>
     <item android:id="@+id/menu_tab_3" android:title="ChatBot" app:iconGravity="textTop" android:icon="@drawable/ic_chat"/>
     <item android:id="@+id/menu_tab_4" android:title="Account"  app:iconGravity="textTop" android:icon="@drawable/ic_account"/>
 

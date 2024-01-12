@@ -99,111 +99,153 @@
                     android:layout_height="0.5dp"
                     android:background="#CCCCCC" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:text="Tên"
+                    android:textSize="@dimen/text_size_h4"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_name2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:text="Dương Quang Tuyến"
+                    android:textSize="@dimen/text_size_h3"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginHorizontal="@dimen/margin_large"
+                    android:background="@color/orange" />
+
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:text="Email"
                     android:layout_marginTop="@dimen/margin_small"
-                    android:orientation="horizontal">
+                    android:textSize="@dimen/text_size_h4"
+                    android:textStyle="bold" />
 
-                    <ImageView
-                        android:id="@+id/img_call"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_large"
-                        android:src="@drawable/call" />
-
-                    <TextView
-                        android:id="@+id/txt_call"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="TextView" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/txt_email"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/margin_short"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:text="0911111111"
+                    android:textSize="@dimen/text_size_h3"
+                    android:textStyle="bold" />
 
-                    <ImageView
-                        android:id="@+id/img_gmail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_large"
-                        android:src="@drawable/email" />
-
-                    <TextView
-                        android:id="@+id/txt_gmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="TextView" />
-                </LinearLayout>
-
-                <LinearLayout
+                <View
+                    android:id="@+id/view2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/margin_short"
-                    android:orientation="horizontal">
+                    android:layout_height="2dp"
+                    android:layout_marginHorizontal="@dimen/margin_large"
+                    android:background="@color/bluewhile" />
 
-                    <ImageView
-                        android:id="@+id/img_address"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_large"
-                        android:src="@drawable/address_marker" />
-
-                    <TextView
-                        android:id="@+id/txt_address"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="TextView" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/textView25"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/margin_short"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:text="Số điện thoại"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:textSize="@dimen/text_size_h4"
+                    android:textStyle="bold" />
 
-                    <ImageView
-                        android:id="@+id/img_numcar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_large"
-                        android:src="@drawable/number_car" />
-
-                    <TextView
-                        android:id="@+id/txt_numcar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="TextView" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/txt_phone"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/margin_short"
-                    android:layout_marginBottom="@dimen/margin_small"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:text="0911111111"
+                    android:textSize="@dimen/text_size_h3"
+                    android:textStyle="bold" />
 
-                    <ImageView
-                        android:id="@+id/img_typecar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_large"
-                        android:src="@drawable/motorcycle" />
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginHorizontal="@dimen/margin_large"
+                    android:background="@color/bluewhile" />
 
-                    <TextView
-                        android:id="@+id/txt_typecar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="TextView" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:text="Địa chỉ"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:textSize="@dimen/text_size_h4"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:text="Đà nẵng"
+                    android:textSize="@dimen/text_size_h3"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginHorizontal="@dimen/margin_large"
+                    android:background="@color/bluewhile" />
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:text="Biển số xe"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:textSize="@dimen/text_size_h4"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_numcar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:text="75T - 1 55555"
+                    android:textSize="@dimen/text_size_h3"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginHorizontal="@dimen/margin_large"
+                    android:background="@color/bluewhile" />
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:text="Hãng xe"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:textSize="@dimen/text_size_h4"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_typecar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:text="SH"
+                    android:textSize="@dimen/text_size_h3"
+                    android:layout_marginBottom="8dp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -220,7 +262,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.7"
                     android:orientation="vertical">
 
                     <TextView
@@ -246,31 +288,6 @@
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:background="#CCCCCC" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/txt_hangthanhvien"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:gravity="center"
-                        android:text="Kim Cương"
-                        android:textColor="@color/orange"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/txt_ghichuhangthanhvien"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Hạng thành viên " />
-                </LinearLayout>
 
             </LinearLayout>
 
@@ -302,23 +319,6 @@
                     app:iconPadding="15dp" />
 
                 <Button
-                    android:id="@+id/btn_history"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_large"
-                    android:layout_marginTop="@dimen/margin_short"
-                    android:background="@drawable/rounded_gray_button"
-                    android:drawableLeft="@drawable/ic_map_solid"
-                    android:drawablePadding="8dp"
-                    android:gravity=""
-                    android:paddingStart="20dp"
-                    android:paddingTop="8dp"
-                    android:text="Lịch sử hành trình"
-                    android:textColor="@color/black"
-                    app:backgroundTint="@null"
-                    app:iconPadding="15dp" />
-
-                <Button
                     android:id="@+id/btn_update_role"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -345,9 +345,26 @@
                     android:drawableLeft="@drawable/ic_password"
                     android:drawablePadding="8dp"
                     android:gravity=""
-                    android:paddingTop="8dp"
                     android:paddingStart="20dp"
+                    android:paddingTop="8dp"
                     android:text="Thay đổi mật khẩu"
+                    android:textColor="@color/black"
+                    app:backgroundTint="@null"
+                    app:iconPadding="15dp" />
+
+                <Button
+                    android:id="@+id/btn_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_short"
+                    android:background="@drawable/rounded_gray_button"
+                    android:drawableLeft="@drawable/ic_map_solid"
+                    android:drawablePadding="8dp"
+                    android:gravity=""
+                    android:paddingStart="20dp"
+                    android:paddingTop="8dp"
+                    android:text="Đánh giá ứng dụng"
                     android:textColor="@color/black"
                     app:backgroundTint="@null"
                     app:iconPadding="15dp" />

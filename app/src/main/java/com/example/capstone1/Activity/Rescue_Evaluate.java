@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -18,8 +19,9 @@ public class Rescue_Evaluate extends AppCompatActivity {
     ImageButton img_btn_star1, img_btn_star2, img_btn_star3, img_btn_star4, img_btn_star5, imageButtonView, btn_back;
     Button btn_send_evaluate, btn_cancel;
     EditText edt_vietdanhgia;
+    TextView txt_name, txt_infoRescue;
     private int starCount = 0;
-    String img;
+    String img, name, rescueinfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,14 +37,18 @@ public class Rescue_Evaluate extends AppCompatActivity {
         btn_send_evaluate = findViewById(R.id.btn_send_evaluate);
         btn_cancel = findViewById(R.id.btn_cancel);
         edt_vietdanhgia = findViewById(R.id.edt_vietdanhgia);
-
+        txt_name= findViewById(R.id.txt_name);
+        txt_infoRescue = findViewById(R.id.txt_infoRescue);
         Intent intent = getIntent();
         if (intent != null) {
-            img = intent.getStringExtra("IMG");
+            img = intent.getStringExtra("RESimg");
+            rescueinfo = intent.getStringExtra("RESinfoCar");
+            name = intent.getStringExtra("RESname");
         } else {
             // Xử lý trường hợp intent là null
         }
-
+        txt_name.setText(name);
+        txt_infoRescue.setText(rescueinfo);
         setImage();
         setEventClickStar();
         setEvent();

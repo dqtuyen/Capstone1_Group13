@@ -118,12 +118,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         // Khởi tạo SupportMapFragment
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map2);
         mapFragment.getMapAsync(this);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
         horizontalLayout = view.findViewById(R.id.layout_horizontal_scroll_view);
         HorizontalScrollView horizontalScrollView = view.findViewById(R.id.horizontal_scroll_view);
         img_ring = view.findViewById(R.id.img_ring);
         img_chatbotgpt = view.findViewById(R.id.img_chatbotgpt);
-        img_test = view.findViewById(R.id.img_test);
         txt_name = view.findViewById(R.id.txt_name);
         img_avt = view.findViewById(R.id.img_avt);
 
@@ -248,11 +247,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         List<DataUser> carServiceList = new ArrayList<>();
 
-//         carServiceList.add(new DataUser("UID001", "Auto Care Center", "+1-123-456-7890", "autocare@example.com", "123 Main St, City", "Monday - Friday", "10", "Sedan", "4.8", R.drawable.img_welcom));
-//        carServiceList.add(new DataUser("UID002", "Speedy Repairs", "+1-987-654-3210", "speedy@example.com", "456 Elm St, Town", "Monday - Saturday", "8", "SUV", "4.5", R.drawable.img_welcom));
-//        carServiceList.add(new DataUser("UID003", "Pro Auto Shop", "+1-555-777-3333", "proauto@example.com", "789 Oak St, Village", "Monday - Sunday", "12", "Truck", "4.9", R.drawable.img_welcom));
-//        carServiceList.add(new DataUser("UID004", "City Car Service", "+1-111-222-3333", "citycar@example.com", "321 Pine St, County", "Tuesday - Saturday", "6", "Convertible", "4.7", R.drawable.img_welcom));
-//        carServiceList.add(new DataUser("UID005", "Green Auto Garage", "+1-888-888-8888", "greenauto@example.com", "654 Birch St, Suburb", "Monday - Saturday", "5", "Hybrid", "4.6", R.drawable.img_welcom));
+         carServiceList.add(new DataUser("UID001", "Auto Care Center", "+1-123-456-7890", "autocare@example.com", "123 Main St, City", "Monday - Friday", "10", "Sedan", "4.8", "R.drawable.img_welcom", ""));
 
         for (DataUser data : carServiceList) {
             View item = LayoutInflater.from(getActivity()).inflate(R.layout.item_rescuest, horizontalLayout, false);
@@ -321,43 +316,36 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 //                FCMUtil fcmUtil = new FCMUtil();
 //                fcmUtil.subscribeToTopic(getActivity(),"rescue");
 
-                FirebaseMessaging.getInstance().getToken()
-                        .addOnCompleteListener(new OnCompleteListener<String>() {
-                            @Override
-                            public void onComplete(@NonNull Task<String> task) {
-                                if (!task.isSuccessful()) {
-                                    Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-                                    return;
-                                }
-
-                                // Get new FCM registration token
-                                String token = task.getResult();
-
-                                // Log and toast
-
-                                Log.d(TAG, token);
-                            }
-                        });
-                Toast.makeText(getActivity(), "Vui lòng chờ", Toast.LENGTH_SHORT).show();
-                // Thông tin cần thiết
-
-                String fcmServerKey = "AAAA-aEDMr4:APA91bFkulQb-yKqZHCdfMMvTnAWHu6eHSaFsPTkTiM4CN4nux4zGjFOpEnk_NXESGI3i98JmZX0AJj7tqyFsxmhhOU5AP4v0fHmxVNNA6olETuUvwhpCg6ip_0NT3kXa-eWUFeC0rP_";
-                String receiverToken = "eImI4cXhSR-bWnQP84GKNe:APA91bHvlmJxjpwJggnIDvEAIlB3KA8bT6OBUDDjdoUFxEWzl-CS3vAQZWRhC5XE7Ca7WTUOGz6g8ltGfB0foaSIXRQOc4_FKkOGmVWbfMBUrZP0b3xwGmU9Sy6bJa6FhEUxiqhVL20R";
-                String notificationTitle = "Xin chào";
-                String notificationBody = "This is a test notification";
-
-                // Gửi thông báo
-                Post_Calling(fcmServerKey, receiverToken,notificationBody, notificationTitle);
+//                FirebaseMessaging.getInstance().getToken()
+//                        .addOnCompleteListener(new OnCompleteListener<String>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<String> task) {
+//                                if (!task.isSuccessful()) {
+//                                    Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+//                                    return;
+//                                }
+//
+//                                // Get new FCM registration token
+//                                String token = task.getResult();
+//
+//                                // Log and toast
+//
+//                                Log.d(TAG, token);
+//                            }
+//                        });
+//                Toast.makeText(getActivity(), "Vui lòng chờ", Toast.LENGTH_SHORT).show();
+//                // Thông tin cần thiết
+//
+//                String fcmServerKey = "AAAA-aEDMr4:APA91bFkulQb-yKqZHCdfMMvTnAWHu6eHSaFsPTkTiM4CN4nux4zGjFOpEnk_NXESGI3i98JmZX0AJj7tqyFsxmhhOU5AP4v0fHmxVNNA6olETuUvwhpCg6ip_0NT3kXa-eWUFeC0rP_";
+//                String receiverToken = "eImI4cXhSR-bWnQP84GKNe:APA91bHvlmJxjpwJggnIDvEAIlB3KA8bT6OBUDDjdoUFxEWzl-CS3vAQZWRhC5XE7Ca7WTUOGz6g8ltGfB0foaSIXRQOc4_FKkOGmVWbfMBUrZP0b3xwGmU9Sy6bJa6FhEUxiqhVL20R";
+//                String notificationTitle = "Xin chào";
+//                String notificationBody = "This is a test notification";
+//
+//                // Gửi thông báo
+//                Post_Calling(fcmServerKey, receiverToken,notificationBody, notificationTitle);
             }
         });
 
-        img_test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Test_Process.class);
-                startActivity(intent);
-            }
-        });
     }
 
 }

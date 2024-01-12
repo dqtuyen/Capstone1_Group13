@@ -1,5 +1,6 @@
 package com.example.capstone1.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,21 +8,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.capstone1.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +37,7 @@ public class HelpFriends extends AppCompatActivity {
         edt_location2 = findViewById(R.id.edt_location2);
         btn_Confirm_information = findViewById(R.id.btn_Confirm_information);
         btn_back01 = findViewById(R.id.btn_back01);
-
+        edt_location2.setFocusable(false);
         // Xử lý sự kiện khi nút "Confirm Information" được nhấn
         btn_Confirm_information.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,8 +53,21 @@ public class HelpFriends extends AppCompatActivity {
 
             }
         });
-    }
+        edt_location2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HelpFriends.this, ConfirmHelpFriend.class);
+                intent.putExtra("name", edt_name2.getText());
+                intent.putExtra("phone", edt_phone2.getText());
+                intent.putExtra("numbercar", edt_numbercar2.getText());
+                startActivity(intent);
+            }
+        });
 
+    }
+    String addressLine;
+    String latitude;
+    String longitude;
     void setData() {
         if (myFriends != null) {
             String uid = myFriends.getUid();
@@ -85,33 +91,4 @@ public class HelpFriends extends AppCompatActivity {
         }
     }
 
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//    void doneRescueFriend() {
-//        Date currentDate = new Date();
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd-MM-yyyy");
-//        String formattedDateTime = dateFormat.format(currentDate);
-//        String document = user.getUid();
-//        String nameList = idField + Status.ON;
-//
-//        // Tạo một ArrayList chứa thông tin
-//        ArrayList<String> dataArray = new ArrayList<>();
-//
-//        //setCallingRescue(nameList);
-//        // Ghi ArrayList này vào Firebase
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        db.collection("RescueInformation").document(user.getUid())
-//                .update(Collections.singletonMap(nameList, dataArray))
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        Toast.makeText(Receive.this, "Thành công", Toast.LENGTH_SHORT).show();
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        e.printStackTrace();
-//                        Toast.makeText(getApplicationContext(), "Thất bại", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//    }
 }

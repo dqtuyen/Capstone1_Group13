@@ -46,7 +46,7 @@ public class Intro extends AppCompatActivity {
             @Override
             public void run() {
                 finish(); // Kết thúc IntroActivity sau khi hiển thị xong
-                Toast.makeText(Intro.this, "finish", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Intro.this, "finish", Toast.LENGTH_SHORT).show();
             }
         }, 3000);
 
